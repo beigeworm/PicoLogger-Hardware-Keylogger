@@ -13,7 +13,7 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 **COMPONENT LIST**
 1. A Raspberry Pi Pico OR Pico-W (RP2040 chip)
 2. USB-A female port
-3. Some thin gauge wire
+3. Thin gauge wire
 4. Soldering kit
 
 **SETUP**
