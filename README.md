@@ -52,5 +52,5 @@ VCC     =>  5v (PIN 4)
    - `format` : Format file system (LittleFS)
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network : SSID > `PicoLogger` PASSWORD > `12345678`
-   - Goto http://192.168.42.1 to view and clear logs
+   - Goto `http://192.168.42.1` to view and clear logs
 
