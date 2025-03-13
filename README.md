@@ -16,9 +16,6 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 3. Some thin gauge wire
 4. Soldering kit
 
-![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
-
-
 **SETUP**
 1. Download Arduino 1.8.x (Legacy Version)
 2. Goto File > Preferences > then add this line to Additional Boards Manager URLs : `https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json`
@@ -27,3 +24,13 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 5. Goto Tools > then change all options below
 
 ![Board Options](https://github.com/user-attachments/assets/338ac8da-0fd3-4127-92bc-af3d02d599d4)
+
+
+**Wiring Diagram**
+
+GND     =>  GND (PIN 1)
+GPIO 19 =>  D+ (PIN 2)
+GPIO 20 =>  D- (PIN 3)
+VCC     =>  5v (PIN 4)
+
+![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
