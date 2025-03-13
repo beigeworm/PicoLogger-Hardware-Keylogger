@@ -20,12 +20,15 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 
 **SETUP**
 1. Download Arduino 1.8.x (Legacy Version)
-2. Goto File > Preferences > then add this line to Additional Boards Manager URLs : `https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json`
-3. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
-4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
+2. Goto File > Preferences > then add this line to Additional Boards Manager URLs :
+```
+ https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+```
+4. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
+5. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
    - `Pico-PIO-USB-0.6.1.zip`
    - `USBCrowKeyboard.zip`
-5. Goto Tools > then change all options below
+6. Goto Tools > then change all options below
 
 *Options are the same for both Pico and Pico-W*
 
