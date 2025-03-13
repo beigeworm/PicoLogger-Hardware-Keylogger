@@ -23,6 +23,7 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
 5. Goto Tools > then change all options below
 
+*Options are the same for both Pico and Pico-W*
 ![Board Options](https://github.com/user-attachments/assets/338ac8da-0fd3-4127-92bc-af3d02d599d4)
 
 
