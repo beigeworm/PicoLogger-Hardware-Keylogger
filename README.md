@@ -50,6 +50,9 @@ VCC     =>  5v (PIN 4)
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
 
 **USAGE**
+
+Place in between a keyboard and host system (PicoLogger is powered by the host)
+
 1. Serial Control
    - Choose your COM port and 115200 baudrate
    - `read`   : Output logged keys to serial
