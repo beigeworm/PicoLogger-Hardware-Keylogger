@@ -43,3 +43,14 @@ GPIO 20 =>  D- (PIN 3)
 VCC     =>  5v (PIN 4)
 
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
+
+**USAGE**
+1. Serial Control
+   - Choose your COM port and 115200 baudrate
+   - `read`   : Output logged keys to serial
+   - `clear`  : Delete all logs
+   - `format` : Format file system (LittleFS)
+2. Web Interface (Pico-W only)
+   - Connect to the WiFi network : SSID > `PicoLogger` PASSWORD > `12345678`
+   - Goto http://192.168.42.1 to view and clear logs
+
