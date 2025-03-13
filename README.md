@@ -18,3 +18,4 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 
 **SETUP**
 1. Download Arduino 1.8.x (Legacy Version)
+2. Goto File > Preferences and add this line to Additional Boards Manager URLs : `https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json`
