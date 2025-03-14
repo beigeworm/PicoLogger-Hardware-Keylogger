@@ -11,7 +11,7 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 - Serial control
 - Webserver to display results (Pico-W only)
 - Multi keypress handling for key combinations
-- WiFi ON/OFF serial control
+- WiFi ON/OFF serial control (Pico-W only)
 
 **COMPONENT LIST**
 1. A Raspberry Pi Pico OR Pico-W (RP2040 chip)
