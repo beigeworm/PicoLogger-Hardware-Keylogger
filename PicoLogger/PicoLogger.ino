@@ -116,7 +116,7 @@ void readLogFile() {
       }
       i.close();
     }
-    Serial.println("------------------------");
+    Serial.println("\n------------------------");
     Serial.println("\n");
 }
 
