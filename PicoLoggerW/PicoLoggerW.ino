@@ -133,18 +133,43 @@ void handleRoot() {
     server.send(200, "text/html", html);
 }
 
+bool loadWiFiState() {
+    File file = LittleFS.open("/wifi_config.txt", "r");
+    if (!file) {
+        Serial.println("WiFi config not found, defaulting to ON.");
+        return true;
+    }
+
+    String state = file.readString();
+    file.close();
+    state.trim();
+    return (state == "ON");
+}
+
+void saveWiFiState(bool state) {
+    File file = LittleFS.open("/wifi_config.txt", "w");
+    if (file) {
+        file.println(state ? "ON" : "OFF");
+        file.close();
+    } else {
+        Serial.println("Failed to save WiFi state.");
+    }
+}
+
 
 // ======================================= Serial Functions =============================================
 
 void readLog() {
     File i = LittleFS.open("keys.txt", "r");
     delay(200);
+    Serial.println("-------- LOGS ----------");
     if (i) {
       while (i.available()) {
         Serial.write(i.read());
       }
       i.close();
     }
+    Serial.println("\n------------------------");
     Serial.println("\n");
 }
 
@@ -169,34 +194,48 @@ void formatFS() {
 
 
 void setup() {
-  Serial.begin(115200);
-  LittleFS.begin();
-  Keyboard.begin();
-  delay(1000);
-  WiFi.softAP(ssid, password);
-  Serial.println("WiFi AP Started. Connect to: " + String(ssid));
-  Serial.println(WiFi.softAPIP());
-  delay(1000);
-  server.on("/", HTTP_GET, handleRoot);  
-  server.on("/clear", HTTP_POST, handleClearLogs);
-  server.begin();
-  Serial.println("HTTP Server Started.");
+    Serial.begin(115200);
+    LittleFS.begin();
+    Keyboard.begin();
+    delay(1000);
+
+    bool wifiEnabled = loadWiFiState();
+    if (wifiEnabled) {
+        WiFi.softAP(ssid, password);
+        Serial.println("WiFi AP Started. Connect to: " + String(ssid));
+        Serial.println(WiFi.softAPIP());
+    } else {
+        Serial.println("WiFi is disabled. Use 'wifion' to enable.");
+    }
+
+    server.on("/", HTTP_GET, handleRoot);  
+    server.on("/clear", HTTP_POST, handleClearLogs);
+    server.begin();
+    Serial.println("HTTP Server Started.");
 }
 
 void loop() { 
-  if (Serial.available()) {
-    String command = Serial.readStringUntil('\n');
-    command.trim();
-    if (command == "read") {
-      readLog();
-    } else if (command == "clear") {
-      clearLog();
-    } else if (command == "format") {
-      formatFS();
+    if (Serial.available()) {
+        String command = Serial.readStringUntil('\n');
+        command.trim();
+        if (command == "read") {
+            readLog();
+        } else if (command == "clear") {
+            clearLog();
+        } else if (command == "format") {
+            formatFS();
+        } else if (command == "wifion") {
+            WiFi.softAP(ssid, password);
+            Serial.println("WiFi enabled.");
+            saveWiFiState(true);
+        } else if (command == "wifioff") {
+            WiFi.softAPdisconnect(true);
+            Serial.println("WiFi disabled.");
+            saveWiFiState(false);
+        }
     }
-  }
-  server.handleClient();
-  checkInactivity();
+    server.handleClient();
+    checkInactivity();
 }
 
 void setup1() { 
