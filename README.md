@@ -61,7 +61,7 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
    - `format`  : Format file system (LittleFS)
    - `wifion`  : Enable WiFi AP
    - `wifioff` : Disable WiFi AP
-     *WiFi state will be saved to survive restarts*
+     *(WiFi state will be saved to survive restarts)*
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network : SSID > `PicoLogger` PASSWORD > `12345678`
    - Goto `http://192.168.42.1` to view and clear logs
