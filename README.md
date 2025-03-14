@@ -38,13 +38,15 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 **Wiring Diagram**
 
 ```
-GND     =>  GND (PIN 1)
+Pico/Pico-W  ||    USB-A Port
 
-GPIO 19 =>  D+ (PIN 2)
+GND          =>    GND (PIN 1)
 
-GPIO 20 =>  D- (PIN 3)
+GPIO 19      =>    D+ (PIN 2)
 
-VCC     =>  5v (PIN 4)
+GPIO 20      =>    D- (PIN 3)
+
+VCC          =>    5v (PIN 4)
 ```
 
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
