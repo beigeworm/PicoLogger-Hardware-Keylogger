@@ -17,7 +17,6 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 1. A Raspberry Pi Pico OR Pico-W (RP2040 chip)
 2. USB-A female port
 3. Thin gauge wire
-4. Soldering kit
 
 **SETUP**
 1. Download Arduino 1.8.x (Legacy Version)
@@ -27,8 +26,8 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 ```
 3. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
-   - `Pico-PIO-USB-0.6.1.zip`
-   - `USBCrowKeyboard.zip`
+   - `Pico-PIO-USB-0.6.1.zip` (*Used for USB host input*)
+   - `USBCrowKeyboard.zip` (*Used for HID passthrough to the host*)
 5. Goto Tools > then change all options below
 
 *Options are the same for both Pico and Pico-W*
