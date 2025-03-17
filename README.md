@@ -21,8 +21,8 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 **SETUP** (easy method)
 1. Connect your Pico or Pico-W to your computer via USB
 2. A new drive `RPI-UF2` should appear
-3. Copy the .uf2 file from `UF2` for your specific pico to the connected drive
-4. The Pico should restart as a picologger!
+3. Copy the .uf2 file from the `UF2` folder for your specific Pico to the `RPI-UF2` drive
+4. The Pico should now restart as a picologger!
 
 **SETUP** (from source)
 1. Download Arduino 1.8.x (Legacy Version)
