@@ -71,7 +71,7 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
    - `ssid <yourssid>`        : Change the SSID (requires restart)
    - `password <newpassword>` : Change the password (requires restart)
      
-     *(WiFi state will be saved to survive restarts)*
+     *(WiFi state & settings will be saved to survive restarts)*
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view and clear logs
