@@ -7,8 +7,8 @@
 
 // ======================================= User Setup =============================================
 
-const char *ssid = "PicoLogger"; // AP Name
-const char *password = "12345678"; // AP Password
+String ssid = "PicoLogger";  // Default SSID
+String password = "12345678"; // Default Password
 
 // ======================================= Define and Variables =============================================
 
@@ -139,7 +139,6 @@ bool loadWiFiState() {
         Serial.println("WiFi config not found, defaulting to ON.");
         return true;
     }
-
     String state = file.readString();
     file.close();
     state.trim();
@@ -189,25 +188,72 @@ void formatFS() {
     Serial.println("Formatted FS : DONE");
 }
 
+// ======================================= WiFi Config Functions =============================================
 
-// ======================================= Main Script Setup and Loops =============================================
+void saveWiFiSettings() {
+    File file = LittleFS.open("/wifi_settings.txt", "w");
+    if (file) {
+        file.println(ssid);
+        file.println(password);
+        file.close();
+    } else {
+        Serial.println("Failed to save WiFi settings.");
+    }
+}
 
+void loadWiFiSettings() {
+    File file = LittleFS.open("/wifi_settings.txt", "r");
+    if (!file) {
+        Serial.println("No saved WiFi settings found. Using defaults.");
+        ssid = "PicoLogger";
+        password = "12345678";
+        saveWiFiSettings();
+        return;
+    }
+    ssid = file.readStringUntil('\n');
+    password = file.readStringUntil('\n');
+    ssid.trim();
+    password.trim();  
+    file.close();
+    Serial.println("Loaded saved WiFi settings.");
+}
+
+void changeSSID(String newSSID) {
+    if (newSSID.length() > 0) {
+        ssid = newSSID;
+        Serial.println("SSID changed to: " + ssid);
+        saveWiFiSettings();
+    } else {
+        Serial.println("Error: SSID cannot be empty.");
+    }
+}
+
+void changePassword(String newPassword) {
+    if (newPassword.length() >= 8) {
+        password = newPassword;
+        Serial.println("Password changed.");
+        saveWiFiSettings();
+    } else {
+        Serial.println("Error: Password must be at least 8 characters.");
+    }
+}
+
+// ======================================= Main Setup and Loop =============================================
 
 void setup() {
     Serial.begin(115200);
     LittleFS.begin();
     Keyboard.begin();
     delay(1000);
-
+    loadWiFiSettings();
     bool wifiEnabled = loadWiFiState();
     if (wifiEnabled) {
-        WiFi.softAP(ssid, password);
+        WiFi.softAP(ssid.c_str(), password.c_str());
         Serial.println("WiFi AP Started. Connect to: " + String(ssid));
         Serial.println(WiFi.softAPIP());
     } else {
         Serial.println("WiFi is disabled. Use 'wifion' to enable.");
     }
-
     server.on("/", HTTP_GET, handleRoot);  
     server.on("/clear", HTTP_POST, handleClearLogs);
     server.begin();
@@ -218,14 +264,19 @@ void loop() {
     if (Serial.available()) {
         String command = Serial.readStringUntil('\n');
         command.trim();
-        if (command == "read") {
+        
+        if (command.startsWith("ssid ")) {
+            changeSSID(command.substring(5));
+        } else if (command.startsWith("password ")) {
+            changePassword(command.substring(9));
+        } else if (command == "read") {
             readLog();
         } else if (command == "clear") {
             clearLog();
         } else if (command == "format") {
             formatFS();
         } else if (command == "wifion") {
-            WiFi.softAP(ssid, password);
+            WiFi.softAP(ssid.c_str(), password.c_str());
             Serial.println("WiFi enabled.");
             saveWiFiState(true);
         } else if (command == "wifioff") {
@@ -234,6 +285,7 @@ void loop() {
             saveWiFiState(false);
         }
     }
+    
     server.handleClient();
     checkInactivity();
 }
