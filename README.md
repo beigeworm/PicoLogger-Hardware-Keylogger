@@ -38,7 +38,7 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 
 *Options are the same for both Pico and Pico-W*
 
-![Board Options](https://github.com/user-attachments/assets/338ac8da-0fd3-4127-92bc-af3d02d599d4)
+![baord-options](https://github.com/user-attachments/assets/cddcc7e6-7675-4a6b-911e-3c4eba17c1c1)
 
 
 **Wiring Diagram**
