@@ -1,6 +1,6 @@
 <h2 align="center"> PicoLogger-Hardware-Keylogger </h2>
 
-![picow](https://github.com/user-attachments/assets/bea89e7e-63c2-46bb-8663-b86e8e91c17d)
+![Prototype](https://github.com/user-attachments/assets/f50db2b6-a33b-47c6-a8b3-c47fbf5de7b6)
 
 **SYNOPSIS**
 
