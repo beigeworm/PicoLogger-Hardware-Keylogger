@@ -70,6 +70,7 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
    - `wifioff`                : Disable WiFi AP
    - `ssid <yourssid>`        : Change the SSID (requires restart)
    - `password <newpassword>` : Change the password (requires restart)
+     
      *(WiFi state will be saved to survive restarts)*
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
