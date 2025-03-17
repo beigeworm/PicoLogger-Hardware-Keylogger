@@ -18,7 +18,13 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 2. USB-A female port
 3. Thin gauge wire
 
-**SETUP**
+**SETUP** (easy method)
+1. Connect your Pico or Pico-W to your computer via USB
+2. A new drive `RPI-UF2` should appear
+3. Copy the .uf2 file from `UF2` for your specific pico to the connected drive
+4. The Pico should restart as a picologger!
+
+**SETUP** (from source)
 1. Download Arduino 1.8.x (Legacy Version)
 2. Goto File > Preferences > then add this line to Additional Boards Manager URLs :
 ```
@@ -57,13 +63,15 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
 
 1. Serial Control
    - Choose your COM port and 115200 baudrate
-   - `read`    : Output logged keys to serial
-   - `clear`   : Delete all logs
-   - `format`  : Format file system (LittleFS)
-   - `wifion`  : Enable WiFi AP
-   - `wifioff` : Disable WiFi AP
+   - `read`                   : Output logged keys to serial
+   - `clear`                  : Delete all logs
+   - `format`                 : Format file system (LittleFS)
+   - `wifion`                 : Enable WiFi AP
+   - `wifioff`                : Disable WiFi AP
+   - `ssid <yourssid>`        : Change the SSID (requires restart)
+   - `password <newpassword>` : Change the password (requires restart)
      *(WiFi state will be saved to survive restarts)*
 2. Web Interface (Pico-W only)
-   - Connect to the WiFi network : SSID > `PicoLogger` PASSWORD > `12345678`
+   - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view and clear logs
 
