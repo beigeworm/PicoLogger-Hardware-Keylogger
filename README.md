@@ -91,17 +91,21 @@ An example payload is provided to show some basic functionality using this (non-
 void payload() {
   // Example Payload - modify this as needed.
   delay(2000);
+  // key press
   Keyboard.press(KEY_LEFT_GUI);
   Keyboard.press('r');
   delay(100);
+  // keys release (for multi keypresses)
   Keyboard.releaseAll();
   delay(1500);
+  // print string
   Keyboard.print("notepad");
   delay(1000);
   Keyboard.press(KEY_RETURN);
   delay(100);
   Keyboard.releaseAll();
   delay(3000);
+  // print string + return
   Keyboard.println("Hello World!");
 }
 ```
@@ -113,9 +117,12 @@ The Pico-W version has it's own handler so you can use basic Duckyscript command
 ```
 REM Example Script
 DELAY 1000
+REM press Windows key + R key
 GUI r
 DELAY 500
+REM Type a string of text
 STRING notepad
+REM press enter
 ENTER
 DELAY 3000
 STRING hello world!
