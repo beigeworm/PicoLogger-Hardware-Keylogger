@@ -76,7 +76,7 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
    - `pobenabled`             : Enable payload on boot (non-wifi version only)
    - `pobdisabled`            : Disable payload on boot (non-wifi version only)
      
-     *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove log files)*
+     *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove ALL files)*
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings.
