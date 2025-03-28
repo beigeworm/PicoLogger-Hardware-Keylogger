@@ -1,4 +1,4 @@
-<h2 align="center"> PicoLogger Hardware Keylogger and Bad-USB</h2>
+<h2 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h2>
 
 ![Prototype](https://github.com/user-attachments/assets/f50db2b6-a33b-47c6-a8b3-c47fbf5de7b6)
 
