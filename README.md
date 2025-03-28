@@ -107,7 +107,7 @@ void payload() {
 ```
 
 With the Pico-W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
-the Pico-W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
+The Pico-W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
 
 *example duckyscript*
 ```
