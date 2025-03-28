@@ -469,8 +469,8 @@ void loadWiFiSettings() {
     File file = LittleFS.open("/settings.txt", "r");
     if (!file) {
         Serial.println("No saved WiFi settings found. Using defaults.");
-        ssid = "PicoLogger";
-        password = "12345678";
+        // ssid = "PicoLogger";
+        // password = "12345678";
         saveWiFiSettings();
         return;
     }
@@ -513,8 +513,11 @@ void setup() {
     bool wifiEnabled = loadWiFiState();
     if (wifiEnabled) {
         WiFi.softAP(ssid.c_str(), password.c_str());
-        Serial.println("WiFi AP Started. Connect to: " + String(ssid));
-        Serial.println(WiFi.softAPIP());
+        // String apip = WiFi.softAPIP();
+        Serial.print("WiFi AP Started. Connect to: \n\tWiFi Name: " + String(ssid) + "\n\tPassword: " + String(password) + "\n\tWeb Interface: http://");// http://" + String(apip));
+        // Serial.print(WiFi.softAPIP() + "\n");
+        Serial.print(WiFi.softAPIP());
+        Serial.print("\n");
     } else {
         Serial.println("WiFi is disabled. Use 'wifion' to enable.");
     }
