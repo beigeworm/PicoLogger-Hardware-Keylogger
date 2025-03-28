@@ -153,6 +153,8 @@ REM press the enter key
 ENTER
 ```
 
+![picologger](https://github.com/user-attachments/assets/8ce1399d-f8d6-4f8e-95eb-0d32f3dc9d77)
+
 **TO-DO**
 1. USB Mouse support
 2. Change Hardware ID etc (settings)
