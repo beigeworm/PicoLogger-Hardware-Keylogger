@@ -4,14 +4,18 @@
 
 **SYNOPSIS**
 
-A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
+A hardware USB keylogger for $8 using the Pi Pico &amp; Pi Pico-W. This project 
 
 **FEATURES**
 - Flash, plug and play
+- Bad-USB Functionality with Duckyscript handling
 - Serial control
-- Webserver to display results (Pico-W only)
+- Webserver to display results, payload management and settings management.
 - Multi keypress handling for key combinations
 - WiFi ON/OFF serial control (Pico-W only)
+- Run Bad-USB payloads on boot
+- Create, run, edit and delete Bad-USB payloads using the webserver (Pico-W only)
+- Change wifi settings and others
 
 **COMPONENT LIST**
 1. A Raspberry Pi Pico OR Pico-W (RP2040 chip)
@@ -40,7 +44,6 @@ A hardware USB keylogger using the Pi Pico &amp; Pi Pico-W.
 
 ![baord-options](https://github.com/user-attachments/assets/cddcc7e6-7675-4a6b-911e-3c4eba17c1c1)
 
-
 **Wiring Diagram**
 
 ```
@@ -62,17 +65,44 @@ VCC          =>    5v (PIN 4)
 Place in between a keyboard and host system (PicoLogger is powered by the host)
 
 1. Serial Control
-   - Choose your COM port and 115200 baudrate
+   Choose your COM port for your Pico and use 115200 baudrate
    - `read`                   : Output logged keys to serial
    - `clear`                  : Delete all logs
    - `format`                 : Format file system (LittleFS)
-   - `wifion`                 : Enable WiFi AP
-   - `wifioff`                : Disable WiFi AP
+   - `wifion`                 : Enable WiFi AP (wifi version only)
+   - `wifioff`                : Disable WiFi AP (wifi version only)
    - `ssid <yourssid>`        : Change the SSID (requires restart)
    - `password <newpassword>` : Change the password (requires restart)
+   - `pobenabled`             : Enable payload on boot (non-wifi version only)
+   - `pobdisabled`            : Disable payload on boot (non-wifi version only)
      
      *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove log files)*
 2. Web Interface (Pico-W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
-   - Goto `http://192.168.42.1` to view and clear logs
+   - Goto `http://192.168.42.1` to view logs, manage payloads and change settings.
 
+**Bad-USB Functionality**
+
+The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
+You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
+An example payload is provided to show some basic functionality using this (non-W) version
+
+With the Pico-W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
+the Pico-W version has a handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
+
+*example duckyscript*
+```
+REM Example Script
+DELAY 1000
+GUI r
+DELAY 500
+STRING notepad
+ENTER
+DELAY 3000
+STRING hello world!
+```
+
+**TO-DO**
+1. USB Mouse support
+2. Change Hardware ID etc (settings)
+3. Add Virtual Keyboard (in browser)
