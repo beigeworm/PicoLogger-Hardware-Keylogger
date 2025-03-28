@@ -1,10 +1,10 @@
-<h2 align="center"> PicoLogger-Hardware-Keylogger </h2>
+<h2 align="center"> PicoLogger Hardware Keylogger and Bad-USB</h2>
 
 ![Prototype](https://github.com/user-attachments/assets/f50db2b6-a33b-47c6-a8b3-c47fbf5de7b6)
 
 **SYNOPSIS**
 
-A hardware USB keylogger for $8 using the Pi Pico &amp; Pi Pico-W. This project 
+A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico &amp; Pi Pico-W!
 
 **FEATURES**
 - Flash, plug and play
