@@ -83,6 +83,8 @@ Place in between a keyboard and host system (PicoLogger is powered by the host)
 
 **Bad-USB Functionality**
 
+![picologger](https://github.com/user-attachments/assets/8ce1399d-f8d6-4f8e-95eb-0d32f3dc9d77)
+
 The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
 You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
 An example payload is provided to show some basic functionality using this (non-W) version
