@@ -8,7 +8,7 @@ A hardware USB keylogger for $8 using the Pi Pico &amp; Pi Pico-W. This project
 
 **FEATURES**
 - Flash, plug and play
-- Bad-USB Functionality with Duckyscript handling
+- Bad-USB Functionality using Duckyscript
 - Serial control
 - Webserver to display results, payload management and settings management.
 - Multi keypress handling for key combinations
