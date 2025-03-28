@@ -4,7 +4,7 @@
 
 **SYNOPSIS**
 
-A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico &amp; Pi Pico-W!
+A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
 **FEATURES**
 - Flash, plug and play
@@ -12,19 +12,20 @@ A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico &amp; Pi Pi
 - Serial control
 - Webserver to display results, payload management and settings management.
 - Multi keypress handling for key combinations
-- WiFi ON/OFF serial control (Pico-W only)
+- WiFi ON/OFF serial control (Pico W &amp; Pico 2 W only)
 - Run Bad-USB payloads on boot
-- Create, run, edit and delete Bad-USB payloads using the webserver (Pico-W only)
+- Create, run, edit and delete Bad-USB payloads using the webserver (Pico W Pico 2 W only)
 - Change wifi settings and others
 
 **COMPONENT LIST**
-1. A Raspberry Pi Pico OR Pico-W (RP2040 chip)
+1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
 2. USB-A female port
-3. Thin gauge wire
+3. Thin gauge wire (22awg solid copper core wire is good)
 
 **SETUP** (easy method)
-1. Connect your Pico or Pico-W to your computer via USB
-2. A new drive `RPI-UF2` should appear
+1. Hold down the `BOOTSEL` button on your Pico or Pico W
+1. Connect your Pico or Pico W to your computer via USB
+2. A new drive named something like `RPI-UF2` should appear
 3. Copy the .uf2 file from the `UF2` folder for your specific Pico to the `RPI-UF2` drive
 4. The Pico should now restart as a picologger!
 
@@ -36,13 +37,15 @@ A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico &amp; Pi Pi
 ```
 3. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
-   - `Pico-PIO-USB-0.6.1.zip` (*Used for USB host input*)
-   - `USBCrowKeyboard.zip` (*Used for HID passthrough to the host*)
+   - [libraries/Pico-PIO-USB-0.6.1.zip](libraries/Pico-PIO-USB-0.6.1.zip)
+   - [USBCrowKeyboard.zip](libraries/USBCrowKeyboard.zip)
 5. Goto Tools > then change all options below
 
-*Options are the same for both Pico and Pico-W*
+*Options for Pico and Pico W*  
+![Board Options for Pi Pico and Pi Pico W](Images/Board-Options.png)
 
-![baord-options](https://github.com/user-attachments/assets/cddcc7e6-7675-4a6b-911e-3c4eba17c1c1)
+*Options for Pico 2 and Pico 2 W*  
+![Board Options for Pi Pico 2 &amp; Pi Pico 2 W](Images/Board-Options-2.png)
 
 **Wiring Diagram**
 
@@ -110,10 +113,10 @@ void payload() {
 }
 ```
 
-With the Pico-W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
-The Pico-W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
+With the Pico W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
+The Pico W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
 
-*example duckyscript*
+*example "hello world!" duckyscript*
 ```
 REM Example Script
 DELAY 1000
@@ -126,6 +129,28 @@ REM press enter
 ENTER
 DELAY 3000
 STRING hello world!
+```
+
+*example rickroll duckyscript*
+```
+REM rickroll!
+
+REM delay 750ms before running to make sure everything is connected
+DELAY 750
+
+REM GUI r holds down the "windows" key and R at the same time, opening the run box
+GUI r
+
+REM Delay for 500ms (half a second)
+DELAY 500
+
+REM type in the rickroll youtube link
+STRING https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+DELAY 500
+
+REM press the enter key
+ENTER
 ```
 
 **TO-DO**
