@@ -87,6 +87,25 @@ The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the co
 You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
 An example payload is provided to show some basic functionality using this (non-W) version
 
+```
+void payload() {
+  // Example Payload - modify this as needed.
+  delay(2000);
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.press('r');
+  delay(100);
+  Keyboard.releaseAll();
+  delay(1500);
+  Keyboard.print("notepad");
+  delay(1000);
+  Keyboard.press(KEY_RETURN);
+  delay(100);
+  Keyboard.releaseAll();
+  delay(3000);
+  Keyboard.println("Hello World!");
+}
+```
+
 With the Pico-W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
 the Pico-W version has a handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
 
