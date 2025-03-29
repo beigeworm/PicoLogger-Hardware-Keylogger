@@ -413,7 +413,6 @@ void handleLoadSettings() {
 void handleFormatLittleFS() {
     if (LittleFS.begin()) {
         LittleFS.format();
-        LittleFS.end();
         server.send(200, "text/plain", "LittleFS formatted successfully");
     } else {
         server.send(500, "text/plain", "Failed to format LittleFS");
@@ -502,6 +501,62 @@ void changePassword(String newPassword) {
     }
 }
 
+void handleKeyPress() {
+    if (server.hasArg("key")) {
+        String keyCombo = server.arg("key");
+        Serial.print("Key Pressed: ");
+        Serial.println(keyCombo);
+        bool guiPressed = false;
+        bool altPressed = false;
+        bool ctrlPressed = false;
+        String key = "";
+        std::vector<String> keys;
+        int start = 0;
+        int index = keyCombo.indexOf('+');
+        while (index != -1) {
+            keys.push_back(keyCombo.substring(start, index));
+            start = index + 1;
+            index = keyCombo.indexOf('+', start);
+        }
+        keys.push_back(keyCombo.substring(start));
+        for (String k : keys) {
+            k.trim();
+            if (k.equalsIgnoreCase("CTRL")) ctrlPressed = true;
+            else if (k.equalsIgnoreCase("ALT")) altPressed = true;
+            else if (k.equalsIgnoreCase("GUI")) guiPressed = true;
+            else key = k;
+        }
+        if (guiPressed && key.length() == 0) {
+            Keyboard.press(KEY_LEFT_GUI);
+            delay(100);
+            Keyboard.releaseAll();
+        } else {
+            if (guiPressed) Keyboard.press(KEY_LEFT_GUI);
+            if (altPressed) Keyboard.press(KEY_LEFT_ALT);
+            if (ctrlPressed) Keyboard.press(KEY_LEFT_CTRL);
+            if (key.length() == 1) {
+                Keyboard.press(key[0]);
+            } else if (key.equalsIgnoreCase("ENTER")) {
+                Keyboard.press(KEY_RETURN);
+            } else if (key.equalsIgnoreCase("TAB")) {
+                Keyboard.press(KEY_TAB);
+            } else if (key.equalsIgnoreCase("SPACE")) {
+                Keyboard.press(' ');
+            } else if (key.equalsIgnoreCase("BACKSPACE")) {
+                Keyboard.press(KEY_BACKSPACE);
+            } else if (key.equalsIgnoreCase("ESC")) {
+                Keyboard.press(KEY_ESC);
+            }
+            delay(100);
+            Keyboard.releaseAll();
+        }
+        server.send(200, "text/plain", "Key sent: " + keyCombo);
+    } else {
+        server.send(400, "text/plain", "Missing key parameter");
+    }
+}
+
+
 // ======================================= Main Setup and Loop =============================================
 void setup() {
     Serial.begin(115200);
@@ -536,6 +591,8 @@ void setup() {
     server.on("/save_settings", HTTP_POST, handleSaveSettings);
     server.on("/load_settings", HTTP_GET, handleLoadSettings);
     server.on("/format_littlefs", HTTP_POST, handleFormatLittleFS);
+    server.on("/keyboard", HTTP_GET, handleKeyboardPage);
+    server.on("/keypress", HTTP_POST, handleKeyPress);
     server.begin();
     Serial.println("HTTP Server Started.");
 }
@@ -902,8 +959,9 @@ void handleRoot() {
     </head>
     <body>
         <div class="top-bar">
-            <a href="/">PicoLogger</a>
+            <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
+            <a href="/keyboard">Virtual Keyboard</a>
             <a href="/settings">Settings</a>
         </div>
 <div class="ascii-container" align="center">
@@ -1208,8 +1266,9 @@ void handlePayloadsPage() {
     </head>
     <body>
         <div class="top-bar">
-            <a href="/">PicoLogger</a>
+            <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
+            <a href="/keyboard">Virtual Keyboard</a>
             <a href="/settings">Settings</a>
         </div>
 <div class="ascii-container" align="center">
@@ -1425,8 +1484,9 @@ void handleSettingsPage() {
     </head>
     <body>
         <div class="top-bar">
-            <a href="/">PicoLogger</a>
+            <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
+            <a href="/keyboard">Virtual Keyboard</a>
             <a href="/settings">Settings</a>
         </div>
         <div class="ascii-container" align="center">
@@ -1463,6 +1523,267 @@ void handleSettingsPage() {
             <button onclick="formatLittleFS()" class="warning">Format LittleFS</button>
         </div>
         <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
+    </body>
+    </html>
+    )rawliteral";
+    server.send(200, "text/html", page);
+}
+
+void handleKeyboardPage() {
+    String page = R"rawliteral(
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>PicoLogger | Virtual Keyboard</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #1e1e1e;
+                color: #ffffff;
+            }
+            .top-bar {
+                background: #333;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10%;
+            }
+            .top-bar a {
+                color: white;
+                text-decoration: none;
+                padding: 10px 15px;
+                margin: 0 5px;
+                border-radius: 5px;
+                background: #444;
+                transition: 0.3s;
+            }
+            .top-bar a:hover {
+                background: #666;
+            }
+            .container {
+                width: 90%;
+                max-width: 1000px;
+                margin: 20px auto;
+                background: #222;
+                padding: 20px 20px 40px 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+                color: #ffcc00;
+            }
+            .keyboard {
+                display: grid;
+                grid-template-columns: repeat(16, 1fr);
+                gap: 5px;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+            .key {
+                padding: 15px;
+                background: #444;
+                border-radius: 5px;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: 0.3s;
+                user-select: none;
+            }
+            .key:hover {
+                background: #ffcc00;
+                color: black;
+            }
+            .key-wide {
+                grid-column: span 2;
+            }
+            .key-space {
+                grid-column: span 11;
+                justify-content: center;
+                align-items: center;
+                margin-left: 50%;
+            }
+            #capslock, #shift, #gui, #alt, #ctrl {
+                background: #666;
+            }
+            .active {
+                background: #ffcc00 !important;
+                color: black !important;
+            }
+            .ascii-container {
+                color: #ffcc00;
+                display: auto;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                overflow: auto;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .ascii-art {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 14px;
+                font-weight: bold;
+                color: #ffcc00;
+                text-align: center;
+            }
+            .footer {
+                text-align: center;
+                color: #ffcc00;
+                font-size: 14px;
+                background: #333;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+            }
+            
+            .footer a {
+                color: #ffcc00;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+        </style>
+        <script>
+            let capsLock = false;
+            let shiftActive = false;
+            let guiActive = false;
+            let altActive = false;
+            let ctrlActive = false;
+            function sendKeyPress(key) {
+                let keys = [];
+                if (ctrlActive) keys.push("CTRL");
+                if (altActive) keys.push("ALT");
+                if (guiActive) keys.push("GUI");
+                if (key.length === 1) {
+                    if (shiftActive || capsLock) {
+                        key = key.toUpperCase();
+                    } else {
+                        key = key.toLowerCase();
+                    }
+                }
+                keys.push(key);
+                let combo = keys.join("+");
+                fetch('/keypress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'key=' + encodeURIComponent(combo)
+                }).then(response => response.text()).then(data => {
+                    console.log('Key sent:', combo);
+                }).catch(error => console.error('Error:', error));
+
+                if (shiftActive) {
+                    toggleShift(false);
+                }
+            }
+            function toggleCapsLock() {
+                capsLock = !capsLock;
+                document.getElementById('capslock').classList.toggle('active', capsLock);
+            }
+            function toggleShift(state) {
+                shiftActive = state;
+                document.getElementById('shift').classList.toggle('active', shiftActive);
+            }
+            function toggleKey(key) {
+                let element = document.getElementById(key);
+                let state = !eval(key + "Active");
+                eval(key + "Active = state;");
+                element.classList.toggle('active', state);
+            }
+        </script>
+    </head>
+    <body>
+        <div class="top-bar">
+            <a href="/">Keylogger</a>
+            <a href="/payloads">Payload Manager</a>
+            <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/settings">Settings</a>
+        </div>
+          <div class="ascii-container" align="center">
+            <pre class="ascii-art">
+   ___                 _                                  
+  (  _ \ _            ( )                                 
+  | |_) )_)  ___   _  | |      _     __    __    __  _ __ 
+  |  __/| |/ ___)/ _ \| |  _ / _ \ / _  \/ _  \/ __ \  __)
+  | |   | | (___( (_) ) |_( ) (_) ) (_) | (_) |  ___/ |   
+  (_)   (_)\____)\___/(____/ \___/ \__  |\__  |\____)_)   
+                                  ( )_) | )_) |           
+                                   \___/ \___/            
+            </pre>
+        </div>
+        <div class="container">
+            <h2>Virtual Keyboard</h2>
+            <div class="keyboard">
+                <div class="key key-wide" onclick="sendKeyPress('ESC')">ESC</div>
+                <div class="key" onclick="sendKeyPress('1')">1</div>
+                <div class="key" onclick="sendKeyPress('2')">2</div>
+                <div class="key" onclick="sendKeyPress('3')">3</div>
+                <div class="key" onclick="sendKeyPress('4')">4</div>
+                <div class="key" onclick="sendKeyPress('5')">5</div>
+                <div class="key" onclick="sendKeyPress('6')">6</div>
+                <div class="key" onclick="sendKeyPress('7')">7</div>
+                <div class="key" onclick="sendKeyPress('8')">8</div>
+                <div class="key" onclick="sendKeyPress('9')">9</div>
+                <div class="key" onclick="sendKeyPress('0')">0</div>
+                <div class="key" onclick="sendKeyPress('-')">-</div>
+                <div class="key" onclick="sendKeyPress('=')">=</div>
+                <div class="key key-wide" onclick="sendKeyPress('BACKSPACE')">BKSP</div>
+                
+                <div class="key key-wide" onclick="sendKeyPress('TAB')">TAB</div>
+                <div class="key" onclick="sendKeyPress('q')">Q</div>
+                <div class="key" onclick="sendKeyPress('w')">W</div>
+                <div class="key" onclick="sendKeyPress('e')">E</div>
+                <div class="key" onclick="sendKeyPress('r')">R</div>
+                <div class="key" onclick="sendKeyPress('t')">T</div>
+                <div class="key" onclick="sendKeyPress('y')">Y</div>
+                <div class="key" onclick="sendKeyPress('u')">U</div>
+                <div class="key" onclick="sendKeyPress('i')">I</div>
+                <div class="key" onclick="sendKeyPress('o')">O</div>
+                <div class="key" onclick="sendKeyPress('p')">P</div>
+                <div class="key" onclick="sendKeyPress('[')">[</div>
+                <div class="key" onclick="sendKeyPress(']')">]</div>
+                <div class="key key-wide" id="capslock" onclick="toggleCapsLock()">CAPS</div>
+                
+                <div class="key key-wide" id="shift" onmousedown="toggleShift(true)" onmouseup="toggleShift(false)">SHIFT</div>
+                <div class="key" onclick="sendKeyPress('a')">A</div>
+                <div class="key" onclick="sendKeyPress('s')">S</div>
+                <div class="key" onclick="sendKeyPress('d')">D</div>
+                <div class="key" onclick="sendKeyPress('f')">F</div>
+                <div class="key" onclick="sendKeyPress('g')">G</div>
+                <div class="key" onclick="sendKeyPress('h')">H</div>
+                <div class="key" onclick="sendKeyPress('j')">J</div>
+                <div class="key" onclick="sendKeyPress('k')">K</div>
+                <div class="key" onclick="sendKeyPress('l')">L</div>
+                <div class="key" onclick="sendKeyPress(';')">;</div>
+                <div class="key" onclick="sendKeyPress('\'')">&#39;</div>
+                <div class="key" onclick="sendKeyPress('\\')">\</div>
+                <div class="key key-wide" onclick="sendKeyPress('ENTER')">ENTER</div>
+                <br></br>
+                <div class="key" id="ctrl" onclick="toggleKey('ctrl')">CTRL</div>
+                <div class="key" id="alt" onclick="toggleKey('alt')">ALT</div>              
+                <div class="key" onclick="sendKeyPress('z')">Z</div>
+                <div class="key" onclick="sendKeyPress('x')">X</div>
+                <div class="key" onclick="sendKeyPress('c')">C</div>
+                <div class="key" onclick="sendKeyPress('v')">V</div>
+                <div class="key" onclick="sendKeyPress('b')">B</div>
+                <div class="key" onclick="sendKeyPress('n')">N</div>
+                <div class="key" onclick="sendKeyPress('m')">M</div>
+                <div class="key" onclick="sendKeyPress(',')">,</div>
+                <div class="key" onclick="sendKeyPress('.')">.</div>
+                <div class="key" onclick="sendKeyPress('/')">/</div>                                
+                <div class="key" id="gui" onclick="toggleKey('gui')">GUI</div>
+                <br></br>
+                <div class="key key-space" onclick="sendKeyPress('SPACE'); sendKeyPress(' ');">SPACE</div>
+            </div>
+        </div>
+            <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
     </html>
     )rawliteral";
