@@ -9,6 +9,7 @@ A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico, Pi Pico W,
 **FEATURES**
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
+- Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
 - Serial control
 - Webserver to display results, payload management and settings management.
 - Multi keypress handling for key combinations
@@ -152,10 +153,16 @@ DELAY 500
 REM press the enter key
 ENTER
 ```
+**Virtual Keyboard** (Pico W &amp; Pico 2 W only)
 
-![picologger](https://github.com/user-attachments/assets/8ce1399d-f8d6-4f8e-95eb-0d32f3dc9d77)
+With the Pico W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
+CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
+
+![picologger](https://github.com/user-attachments/assets/a8354117-2df2-41ce-9ab1-d47b5c1f71c1)
 
 **TO-DO**
 1. USB Mouse support
 2. Change Hardware ID etc (settings)
-3. Add Virtual Keyboard (in browser)
+3. Virtual Keyboard special character handling
+4. Virtual Keyboard arrow keys and others
+5. Split into multiple files
