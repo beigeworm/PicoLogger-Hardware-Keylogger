@@ -166,7 +166,7 @@ For Windows systems you can use the 'Remote Shell' page.
 2. Wait 10 - 20 seconds for the agent to start
 3. Use the command input to send Powershell commands to the host and receive output.
 
-![picogif](https://github.com/user-attachments/assets/7f82ce61-3f38-4600-b3c5-5112c02bf23d)
+![picologger](https://github.com/user-attachments/assets/67cfb803-137d-424b-8abf-b08ee533be56)
 
 **TO-DO**
 1. USB Mouse support
