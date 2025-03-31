@@ -4,19 +4,19 @@
 
 **SYNOPSIS**
 
-A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
+A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
 **FEATURES**
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
-- Hidden Remote Shell (for Windows 10/11)
+- Hidden Remote Shell for Windows (Pico W &amp; Pico 2 W only)
 - Serial control
-- Webserver to display results, payload management and settings management.
+- Webserver to display results, payload management and settings management and more. (Pico W &amp; Pico 2 W only)
 - Multi keypress handling for key combinations
 - WiFi ON/OFF serial control (Pico W &amp; Pico 2 W only)
 - Run Bad-USB payloads on boot
-- Create, run, edit and delete Bad-USB payloads using the webserver (Pico W Pico 2 W only)
+- Create, run, edit and delete Bad-USB payloads (Pico W &amp; Pico 2 W only)
 - Change wifi settings and others
 
 **COMPONENT LIST**
@@ -67,24 +67,29 @@ VCC          =>    5v (PIN 4)
 
 **USAGE**
 
-Place in between a keyboard and host system (PicoLogger is powered by the host)
-
 1. Serial Control
+   Using a serial monitor like Putty or alike, 
    Choose your COM port for your Pico and use 115200 baudrate
    - `read`                   : Output logged keys to serial
    - `clear`                  : Delete all logs
    - `format`                 : Format file system (LittleFS)
-   - `wifion`                 : Enable WiFi AP (wifi version only)
-   - `wifioff`                : Disable WiFi AP (wifi version only)
+   - `wifion`                 : Enable WiFi AP (Pico W &amp; Pico 2 W only)
+   - `wifioff`                : Disable WiFi AP (Pico W &amp; Pico 2 W only)
    - `ssid <yourssid>`        : Change the SSID (requires restart)
    - `password <newpassword>` : Change the password (requires restart)
    - `pobenabled`             : Enable payload on boot (non-wifi version only)
    - `pobdisabled`            : Disable payload on boot (non-wifi version only)
      
      *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove ALL files)*
-2. Web Interface (Pico-W only)
+3. Web Interface (Pico W &amp; Pico 2 W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings.
+
+**USB Keylogger**
+
+Place in between a keyboard and host system (PicoLogger is powered by the host).
+All keystrokes from that keyboard will be collected in a log file that can be read over serial.
+
 
 **Bad-USB Functionality**
 
@@ -154,16 +159,17 @@ DELAY 500
 REM press the enter key
 ENTER
 ```
+
 **Virtual Keyboard** (Pico W &amp; Pico 2 W only)
 
-With the Pico W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
+With the Pico W &amp; Pico 2 W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
 CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
-**Hidden Remote Shell**
+**Hidden Remote Shell** (Pico W &amp; Pico 2 W only)
 
-For Windows systems you can use the 'Remote Shell' page. 
-1. Click 'Deploy Agent' while connected to a windows host.
-2. Wait 10 - 20 seconds for the agent to start
+For Windows systems you can use the `Remote Shell` page. 
+1. Click `Deploy Agent` while connected to a windows host.
+2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1))
 3. Use the command input to send Powershell commands to the host and receive output.
 
 ![picologger](https://github.com/user-attachments/assets/67cfb803-137d-424b-8abf-b08ee533be56)
