@@ -10,6 +10,7 @@ A hardware USB keylogger and Bad-USB device for $8 using the Pi Pico, Pi Pico W,
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
+- Hidden Remote Shell (for Windows 10/11)
 - Serial control
 - Webserver to display results, payload management and settings management.
 - Multi keypress handling for key combinations
@@ -158,7 +159,14 @@ ENTER
 With the Pico W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
 CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
-![picologger](https://github.com/user-attachments/assets/a8354117-2df2-41ce-9ab1-d47b5c1f71c1)
+**Hidden Remote Shell**
+
+For Windows systems you can use the 'Remote Shell' page. 
+1. Click 'Deploy Agent' while connected to a windows host.
+2. Wait 10 - 20 seconds for the agent to start
+3. Use the command input to send Powershell commands to the host and receive output.
+
+![picogif](https://github.com/user-attachments/assets/7f82ce61-3f38-4600-b3c5-5112c02bf23d)
 
 **TO-DO**
 1. USB Mouse support
