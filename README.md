@@ -83,12 +83,12 @@ VCC          =>    5v (PIN 4)
      *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove ALL files)*
 3. Web Interface (Pico W &amp; Pico 2 W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
-   - Goto `http://192.168.42.1` to view logs, manage payloads and change settings.
+   - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
 **USB Keylogger**
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
-All keystrokes from that keyboard will be collected in a log file that can be read over serial.
+All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
 
 
 **Bad-USB Functionality**
