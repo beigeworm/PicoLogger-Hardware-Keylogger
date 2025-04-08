@@ -73,7 +73,7 @@ VCC          =>    5v (PIN 4)
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
 
 **Wiring for USB Male Connector**
-- If you dont wan't to use micro USB, you can use the test pads on the back of the Pico to attach a USB male connector.
+- If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
 
 ```
 Pico/Pico-W  ||    USB-A Port
