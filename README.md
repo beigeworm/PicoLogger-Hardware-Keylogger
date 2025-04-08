@@ -56,6 +56,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 <h3>Wiring Diagrams</h3>
 
 **Wiring Diagram for USB Female Connector** <h3></h3>
+- To use the keylogging functionality, wire a female USB port to host a keyboard.
 
 ```
 Pico/Pico-W  ||    USB-A Port
@@ -72,7 +73,7 @@ VCC          =>    5v (PIN 4)
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
 
 **Wiring for USB Male Connector**
-- If you dont wan't to use micro USB you can use the test pads on the back of the Pico to attach a USB male connector.
+- If you dont wan't to use micro USB, you can use the test pads on the back of the Pico to attach a USB male connector.
 
 ```
 Pico/Pico-W  ||    USB-A Port
@@ -90,7 +91,7 @@ VCC          =>    5v (PIN 4)
 
 ![USB-Male](https://github.com/user-attachments/assets/221f5428-713a-4b05-bcf2-bea1228a6d20)
 
-<h3>USAGE</h3>
+<h3>Usage</h3>
 
 1. Serial Control
    Using a serial monitor like Putty or alike, 
