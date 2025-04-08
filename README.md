@@ -1,6 +1,6 @@
 <h2 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h2>
 
-![Prototype](https://github.com/user-attachments/assets/f50db2b6-a33b-47c6-a8b3-c47fbf5de7b6)
+![pico](https://github.com/user-attachments/assets/febd4d8c-640b-497e-ba38-f1c178acc54a)
 
 **SYNOPSIS**
 
@@ -67,7 +67,7 @@ VCC          =>    5v (PIN 4)
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
 
 **Wiring for USB Male Connector**
-- If you dont wan't to use micro USB
+- If you dont wan't to use micro USB you can use the test pads on the back of the Pico to attach a USB male connector.
 
 ```
 Pico/Pico-W  ||    USB-A Port
