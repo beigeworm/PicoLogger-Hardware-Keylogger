@@ -65,6 +65,23 @@ VCC          =>    5v (PIN 4)
 
 ![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
 
+**Wiring for USB Male Connector**
+- If you dont wan't to use micro USB
+
+```
+Pico/Pico-W  ||    USB-A Port
+
+TP1          =>    GND (PIN 1)
+
+TP3          =>    D+ (PIN 2)
+
+TP2          =>    D- (PIN 3)
+
+VCC          =>    5v (PIN 4)
+```
+
+![USB-Male](https://github.com/user-attachments/assets/221f5428-713a-4b05-bcf2-bea1228a6d20)
+
 **USAGE**
 
 1. Serial Control
