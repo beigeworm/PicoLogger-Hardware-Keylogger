@@ -11,6 +11,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
 - Hidden Remote Shell for Windows (Pico W &amp; Pico 2 W only)
+- Remote screenshots for Windows (Pico W &amp; Pico 2 W only)
 - Serial control
 - Webserver to display results, payload management and settings management and more. (Pico W &amp; Pico 2 W only)
 - Multi keypress handling for key combinations
@@ -102,6 +103,8 @@ VCC          =>    5v (PIN 4)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
+![picolog](https://github.com/user-attachments/assets/da0c4ca7-47e1-4067-b774-8ba5d73a761d)
+
 **USB Keylogger**
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
@@ -189,7 +192,12 @@ For Windows systems you can use the `Remote Shell` page.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1))
 3. Use the command input to send Powershell commands to the host and receive output.
 
-![picologger](https://github.com/user-attachments/assets/67cfb803-137d-424b-8abf-b08ee533be56)
+**Remote Screenshots** (Pico W &amp; Pico 2 W only)
+
+For Windows systems you can use the `Screenshots` page. 
+1. Click `Deploy Agent` while connected to a windows host.
+2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1))
+3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
 **TO-DO**
 1. USB Mouse support
