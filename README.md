@@ -86,6 +86,8 @@ VCC          =>    5v (PIN 4)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
+![picolog](https://github.com/user-attachments/assets/da0c4ca7-47e1-4067-b774-8ba5d73a761d)
+
 **USB Keylogger**
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
@@ -179,8 +181,6 @@ For Windows systems you can use the `Screenshots` page.
 1. Click `Deploy Agent` while connected to a windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1))
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
-
-![picologger](https://github.com/user-attachments/assets/67cfb803-137d-424b-8abf-b08ee533be56)
 
 **TO-DO**
 1. USB Mouse support
