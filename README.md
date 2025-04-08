@@ -13,7 +13,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Hidden Remote Shell for Windows (Pico W &amp; Pico 2 W only)
 - Remote screenshots for Windows (Pico W &amp; Pico 2 W only)
 - Serial control
-- Webserver to display results, payload management and settings management and more. (Pico W &amp; Pico 2 W only)
+- Webserver to display results, payload management and more. (Pico W &amp; Pico 2 W only)
 - Multi keypress handling for key combinations
 - WiFi ON/OFF serial control (Pico W &amp; Pico 2 W only)
 - Run Bad-USB payloads on boot
