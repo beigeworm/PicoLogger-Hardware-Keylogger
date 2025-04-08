@@ -210,8 +210,8 @@ For Windows systems you can use the `Screenshots` page.
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
 <h3>TO-DO</h3>
+
 1. USB Mouse support
 2. Change Hardware ID etc (settings)
 3. Virtual Keyboard special character handling
 4. Virtual Keyboard arrow keys and others
-5. Split into multiple files
