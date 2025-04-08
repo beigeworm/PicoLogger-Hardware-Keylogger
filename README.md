@@ -6,6 +6,7 @@
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
 <h3>Features Overview</h3>
+
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
@@ -20,11 +21,13 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Change wifi settings and others
 
 <h3>Component List</h3>
+
 1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
 2. USB-A female port
 3. Thin gauge wire (22awg solid copper core wire is good)
 
 <h3>Setup (easy method)</h3>
+
 1. Hold down the `BOOTSEL` button on your Pico or Pico W
 1. Connect your Pico or Pico W to your computer via USB
 2. A new drive named something like `RPI-UF2` should appear
@@ -32,6 +35,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 4. The Pico should now restart as a picologger!
 
 <h3>Setup (from source)</h3>
+
 1. Download Arduino 1.8.x (Legacy Version)
 2. Goto File > Preferences > then add this line to Additional Boards Manager URLs :
 ```
