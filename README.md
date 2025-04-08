@@ -2,11 +2,10 @@
 
 ![pico](https://github.com/user-attachments/assets/febd4d8c-640b-497e-ba38-f1c178acc54a)
 
-**SYNOPSIS**
-
+<h3>Project Synopsis</h3>
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
-**FEATURES**
+<h3>Features Overview</h3>
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
@@ -20,19 +19,19 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Create, run, edit and delete Bad-USB payloads (Pico W &amp; Pico 2 W only)
 - Change wifi settings and others
 
-**COMPONENT LIST**
+<h3>Component List</h3>
 1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
 2. USB-A female port
 3. Thin gauge wire (22awg solid copper core wire is good)
 
-**SETUP** (easy method)
+<h3>Setup (easy method)</h3>
 1. Hold down the `BOOTSEL` button on your Pico or Pico W
 1. Connect your Pico or Pico W to your computer via USB
 2. A new drive named something like `RPI-UF2` should appear
 3. Copy the .uf2 file from the `UF2` folder for your specific Pico to the `RPI-UF2` drive
 4. The Pico should now restart as a picologger!
 
-**SETUP** (from source)
+<h3>Setup (from source)</h3>
 1. Download Arduino 1.8.x (Legacy Version)
 2. Goto File > Preferences > then add this line to Additional Boards Manager URLs :
 ```
@@ -50,7 +49,9 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 *Options for Pico 2 and Pico 2 W*  
 ![Board Options for Pi Pico 2 &amp; Pi Pico 2 W](Images/Board-Options-2.png)
 
-**Wiring Diagram**
+<h3>Wiring Diagrams</h3>
+
+**Wiring Diagram for USB Female Connector** <h3></h3>
 
 ```
 Pico/Pico-W  ||    USB-A Port
@@ -85,7 +86,7 @@ VCC          =>    5v (PIN 4)
 
 ![USB-Male](https://github.com/user-attachments/assets/221f5428-713a-4b05-bcf2-bea1228a6d20)
 
-**USAGE**
+<h3>USAGE</h3>
 
 1. Serial Control
    Using a serial monitor like Putty or alike, 
@@ -106,6 +107,8 @@ VCC          =>    5v (PIN 4)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
 ![picolog](https://github.com/user-attachments/assets/da0c4ca7-47e1-4067-b774-8ba5d73a761d)
+
+<h3>Functions</h3>
 
 **USB Keylogger**
 
@@ -201,7 +204,7 @@ For Windows systems you can use the `Screenshots` page.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1))
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
-**TO-DO**
+<h3>TO-DO</h3>
 1. USB Mouse support
 2. Change Hardware ID etc (settings)
 3. Virtual Keyboard special character handling
