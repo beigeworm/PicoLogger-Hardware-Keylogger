@@ -81,6 +81,8 @@ TP2          =>    D- (PIN 3)
 VCC          =>    5v (PIN 4)
 ```
 
+![Wiring](https://github.com/user-attachments/assets/6a63e2d2-6372-4f2c-b7dc-b3756116d704)
+
 ![USB-Male](https://github.com/user-attachments/assets/221f5428-713a-4b05-bcf2-bea1228a6d20)
 
 **USAGE**
