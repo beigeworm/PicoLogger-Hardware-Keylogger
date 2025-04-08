@@ -89,8 +89,6 @@ VCC          =>    5v (PIN 4)
 
 ![Wiring](https://github.com/user-attachments/assets/6a63e2d2-6372-4f2c-b7dc-b3756116d704)
 
-![USB-Male](https://github.com/user-attachments/assets/221f5428-713a-4b05-bcf2-bea1228a6d20)
-
 <h3>Usage</h3>
 
 1. Serial Control
@@ -199,14 +197,14 @@ CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
 For Windows systems you can use the `Remote Shell` page. 
 1. Click `Deploy Agent` while connected to a windows host.
-2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1))
+2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
 3. Use the command input to send Powershell commands to the host and receive output.
 
 **Remote Screenshots** (Pico W &amp; Pico 2 W only)
 
 For Windows systems you can use the `Screenshots` page. 
 1. Click `Deploy Agent` while connected to a windows host.
-2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1))
+2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1)
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
 <h3>TO-DO</h3>
