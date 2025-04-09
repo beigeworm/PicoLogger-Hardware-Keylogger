@@ -44,7 +44,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 3. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
    - [libraries/Pico-PIO-USB-0.6.1.zip](libraries/Pico-PIO-USB-0.6.1.zip)
-   - [HIDKeyboard.zip](libraries/HIDKeyboard.zip)
+   - [libraries/HIDKeyboard.zip](libraries/HIDKeyboard.zip)
 5. Goto Tools > then change all options below
 
 *Options for Pico and Pico W*  
