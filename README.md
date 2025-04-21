@@ -46,7 +46,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
    - [libraries/Pico-PIO-USB-0.6.1.zip](libraries/Pico-PIO-USB-0.6.1.zip)
    - [libraries/HIDKeyboard.zip](libraries/HIDKeyboard.zip)
-5. (For Screen mod ONLY) - Goto Tools > Manage Libraries then search for Adafruit_SSD1306 and click install.
+5. (For Screen mod ONLY) - Goto Tools > Manage Libraries > then search for Adafruit_SSD1306 and click install.
 6. Goto Tools > then change all options below
 
 *Options for Pico and Pico W*  
