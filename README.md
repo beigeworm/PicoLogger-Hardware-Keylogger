@@ -78,6 +78,20 @@ VCC          =>    5v (PIN 4)
 
 ![wiring](https://github.com/user-attachments/assets/fae3acb2-2fd2-49d8-a496-fd47b7bfdfb5)
 
+**Wiring for optional SD1306 OLED screen**
+- If you want a screen for general information and debugging use these connections.
+```
+Pico/Pico-W  ||    SD1306 128x32 
+
+GND          =>    GND
+
+GPIO 5       =>    SCL
+
+TP2          =>    SDA
+
+3v3          =>    VCC
+```
+
 **Wiring for USB Male Connector**
 - If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
 
@@ -91,20 +105,6 @@ TP3          =>    D+ (PIN 2)
 TP2          =>    D- (PIN 3)
 
 VCC          =>    5v (PIN 4)
-```
-
-**Wiring for optional SD1306 OLED screen**
-- If you want a screen for general information and debugging use these connections.
-```
-Pico/Pico-W  ||    SD1306 128x32 
-
-GND          =>    GND
-
-GPIO 5       =>    SCL
-
-TP2          =>    SDA
-
-3v3          =>    VCC
 ```
 
 ![Wiring](https://github.com/user-attachments/assets/6a63e2d2-6372-4f2c-b7dc-b3756116d704)
