@@ -74,7 +74,7 @@ GPIO 20      =>    D- (PIN 3)
 VCC          =>    5v (PIN 4)
 ```
 
-![Wiring](https://github.com/user-attachments/assets/9933fdf4-d53e-4493-8b7b-34116efe050c)
+![wiring](https://github.com/user-attachments/assets/fae3acb2-2fd2-49d8-a496-fd47b7bfdfb5)
 
 **Wiring for USB Male Connector**
 - If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
