@@ -63,7 +63,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 ![wiring](https://github.com/user-attachments/assets/fae3acb2-2fd2-49d8-a496-fd47b7bfdfb5)
 
-**Wiring Diagram for USB Female Connector** 
+**Wiring for USB Female Connector** 
 - To use the keylogging functionality, wire a female USB port to host a keyboard.
 
 ```
@@ -80,7 +80,7 @@ VCC          =>    5v (PIN 4)
 
 <h3>Optional Mods</h3>
 
-**Wiring for optional SD1306 OLED screen**
+**Wiring for SD1306 OLED screen**
 - If you want a screen for general information and debugging use these connections.
 ```
 Pico/Pico-W  ||    SD1306 128x32 
