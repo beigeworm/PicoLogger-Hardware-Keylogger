@@ -1,6 +1,6 @@
 <h2 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h2>
 
-![pico](https://github.com/user-attachments/assets/febd4d8c-640b-497e-ba38-f1c178acc54a)
+![picologgers](https://github.com/user-attachments/assets/ec08db1e-459d-496b-a890-b095b2197fd3)
 
 <h3>Project Synopsis</h3>
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
@@ -19,6 +19,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Run Bad-USB payloads on boot
 - Create, run, edit and delete Bad-USB payloads (Pico W &amp; Pico 2 W only)
 - Change wifi settings and others
+- Optional screen and USB-male port mods.
 
 <h3>Component List</h3>
 
@@ -45,7 +46,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
    - [libraries/Pico-PIO-USB-0.6.1.zip](libraries/Pico-PIO-USB-0.6.1.zip)
    - [libraries/HIDKeyboard.zip](libraries/HIDKeyboard.zip)
-5. Goto Tools > then change all options below
+5. (For Screen mod ONLY) - Goto Tools > Manage Libraries then search for Adafruit_SSD1306 and click install.
+6. Goto Tools > then change all options below
 
 *Options for Pico and Pico W*  
 ![Board Options for Pi Pico and Pi Pico W](Images/Board-Options.png)
@@ -53,7 +55,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 *Options for Pico 2 and Pico 2 W*  
 ![Board Options for Pi Pico 2 &amp; Pi Pico 2 W](Images/Board-Options-2.png)
 
-6. Once you have the correct options selected, upload the sketch to your Pico.
+7. Once you have the correct options selected, upload the sketch to your Pico.
 
 <h3>Wiring Diagrams</h3>
 
