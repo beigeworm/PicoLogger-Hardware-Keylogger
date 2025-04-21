@@ -26,6 +26,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
 2. USB-A female port
 3. Thin gauge wire (22awg solid copper core wire is good)
+4. USB-A Male port (optional mod)
+5. SD1306 OLED screen <128x32px> (optional mod)
 
 <h3>Setup (easy method)</h3>
 
