@@ -85,8 +85,9 @@ void formatFS() {
 // =========================================================== Main Setup and Loop =====================================================================
 void setup() {
     Serial.begin(115200);
-    LittleFS.begin();
     Keyboard.begin();
+    Mouse.begin(); 
+    LittleFS.begin();
     delay(1000);
     checkBootPayloads();   
     loadWiFiSettings();
@@ -159,7 +160,6 @@ void loop() {
 }
 
 void setup1() { 
-    Serial.println("Core1 setup to run TinyUSB host with pio-usb");
     uint32_t cpu_hz = clock_get_hz(clk_sys);
     if ( cpu_hz != 120000000UL && cpu_hz != 240000000UL ) {
       Serial.printf("Error: CPU Clock = %u, PIO USB require CPU clock must be multiple of 120 Mhz\r\n", cpu_hz);
@@ -183,16 +183,43 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t idx, uint8_t const* desc_report,
 }
 
 void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t idx, uint8_t const* report, uint16_t len) {
-    static bool reportPending = false;
+    static bool reportPending = false; 
     if (!reportPending) {
         uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, idx);
         if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD) {
             process_boot_kbd_report((hid_keyboard_report_t const*)report);
-        }        
+        }
+        if (itf_protocol == HID_ITF_PROTOCOL_MOUSE) {
+            process_boot_mouse_report( (hid_mouse_report_t const*) report );
+        }      
         reportPending = true;
         tuh_hid_receive_report(dev_addr, idx);
         reportPending = false;
     }
+}
+
+void process_boot_mouse_report(hid_mouse_report_t const * report) { 
+  hid_mouse_report_t prev_report = { 0 };
+  uint8_t button_changed_mask = report->buttons ^ prev_report.buttons;
+  if ( button_changed_mask & report->buttons) {
+    if(report->buttons & MOUSE_BUTTON_LEFT) {
+      Mouse.press(MOUSE_LEFT);
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+    else if(report->buttons & MOUSE_BUTTON_RIGHT) {
+      Mouse.press(MOUSE_RIGHT); 
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+    else if(report->buttons & MOUSE_BUTTON_MIDDLE) {
+      Mouse.press(MOUSE_MIDDLE);
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+  } 
+  int8_t x; int8_t y; int8_t wheel;
+  Mouse.move(report->x, report->y, report->wheel);
 }
 
 void SetModifiersArd(void) {
