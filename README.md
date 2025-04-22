@@ -20,6 +20,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Create, run, edit and delete Bad-USB payloads (Pico W &amp; Pico 2 W only)
 - Change wifi settings and others
 - Optional screen and USB-male port mods.
+- USB mouse support (for keyboard/mouse combo functionality)
 
 <h3>Component List</h3>
 
