@@ -5,7 +5,7 @@ void showStartupScreen(String ssid, String password) {
     display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
-    display.println("+++++++++++++++++++++\n+    PicoLogger     +\n+      v-1.5.5      +\n+++++++++++++++++++++");
+    display.println("+++++++++++++++++++++\n+    PicoLogger     +\n+       v-1.6       +\n+++++++++++++++++++++");
     display.display();
     delay(4000);
     display.clearDisplay();
