@@ -92,7 +92,7 @@ GND          =>    GND
 
 GPIO 5       =>    SCL
 
-TP2          =>    SDA
+GPIO 6       =>    SDA
 
 3v3          =>    VCC
 ```
