@@ -90,9 +90,9 @@ Pico/Pico-W  ||    SD1306 128x32
 
 GND          =>    GND
 
-GPIO 5       =>    SCL
+GPIO 6       =>    SCL
 
-GPIO 6       =>    SDA
+GPIO 5       =>    SDA
 
 3v3          =>    VCC
 ```
