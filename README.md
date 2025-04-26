@@ -64,7 +64,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 Although PicoLogger works fine without any of these additions, a USB-A female port is needed for keylogging functionality.
 
-![wiring](https://github.com/user-attachments/assets/fae3acb2-2fd2-49d8-a496-fd47b7bfdfb5)
+![pico-wiring](https://github.com/user-attachments/assets/95d64e1b-ff6b-48f7-86c2-c48805c0cd1a)
 
 **Wiring for USB Female Connector** 
 - To use the keylogging functionality, wire a female USB port to host a keyboard.
