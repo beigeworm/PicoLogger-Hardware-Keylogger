@@ -1,6 +1,6 @@
 <h2 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h2>
 
-![picologgers](https://github.com/user-attachments/assets/a451e4fe-6161-4f0d-8883-1689297cf8b7)
+![picologger](https://github.com/user-attachments/assets/2f773544-be37-440b-b288-ff93ca61129c)
 
 <h3>Project Synopsis</h3>
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
@@ -19,7 +19,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Run Bad-USB payloads on boot
 - Create, run, edit and delete Bad-USB payloads (Pico W &amp; Pico 2 W only)
 - Change wifi settings and others
-- Optional screen and USB-male port mods.
+- Optional screen + nav-switch and USB-male port mods.
 - USB mouse support (for keyboard/mouse combo functionality)
 
 <h3>Component List</h3>
@@ -29,6 +29,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 3. Thin gauge wire (22awg solid copper core wire is good)
 4. USB-A Male port (optional mod)
 5. SD1306 OLED screen 128x32px (optional mod)
+6. 5-Way Thru-Hole Nav Switch `SKRHADE010` *small* or `ADA504` *large* (optional mod)
 
 <h3>Setup (easy method)</h3>
 
@@ -64,7 +65,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 Although PicoLogger works fine without any of these additions, a USB-A female port is needed for keylogging functionality.
 
-![pico-wiring](https://github.com/user-attachments/assets/95d64e1b-ff6b-48f7-86c2-c48805c0cd1a)
+![pico-wiring-diagram](https://github.com/user-attachments/assets/3979f149-843c-4aac-825e-6a76bbe14143)
 
 **Wiring for USB Female Connector** 
 - To use the keylogging functionality, wire a female USB port to host a keyboard.
@@ -84,18 +85,39 @@ VCC          =>    5v (PIN 4)
 <h3>Optional Mods</h3>
 
 **Wiring for SD1306 OLED screen**
-- If you want a screen for general information and debugging use these connections.
+- If you are using PicoLogger-OLED, you will need to wire a screen and nav switch (wiring and pinout images are in [/Images](Images))
 ```
 Pico/Pico-W  ||    SD1306 128x32 
 
 GND          =>    GND
 
-GPIO 6       =>    SCL
+GPIO 4       =>    SDA
 
-GPIO 5       =>    SDA
+GPIO 5       =>    SCL
 
 3v3          =>    VCC
 ```
+
+**Wiring for 5-Way Thru-Hole Nav Switch**
+
+```
+Pico/Pico-W  ||    5-Way Nav Switch
+
+GND          =>    GND
+
+GPIO 6       =>    PIN 1 (Up)
+
+GPIO 7       =>    PIN 2 (Down)
+
+GPIO 8       =>    PIN 3 (Left)
+
+GPIO 9       =>    PIN 4 (Right)
+
+GPIO 10      =>    PIN 5 (Center)
+
+```
+
+![Nav-Switches](https://github.com/user-attachments/assets/cf73ba33-4097-4971-af8a-11e592980ea0)
 
 **Wiring for USB Male Connector**
 - If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
