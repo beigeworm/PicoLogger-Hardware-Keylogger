@@ -254,9 +254,16 @@ For Windows systems you can use the `Screenshots` page.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1)
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
+**OLED User Interface** (Pico W &amp; Pico 2 W only)
+
+Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on device!
+
+![GIF 04-05-2025 20-11-25](https://github.com/user-attachments/assets/d38e391a-5b01-4350-b8de-eab8391329a0)
+
 <h3>TO-DO</h3>
 
-1. USB Mouse support
+1. Bash Reverse Shell
 2. Change Hardware ID etc (settings)
 3. Virtual Keyboard special character handling
 4. Virtual Keyboard arrow keys and others
+5. Restart Pico from WebUI.
