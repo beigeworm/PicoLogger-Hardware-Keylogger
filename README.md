@@ -27,9 +27,10 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
 2. USB-A female port
 3. Thin gauge wire (22awg solid copper core wire is good)
-4. USB-A Male port (optional mod)
-5. SD1306 OLED screen 128x32px (optional mod)
-6. 5-Way Thru-Hole Nav Switch `SKRHADE010` *small* or `ADA504` *large* (optional mod)
+4. A glue gun to secure components (for 3D printed case)
+5. USB-A Male port (optional mod)
+6. SD1306 OLED screen 128x32px (optional mod)
+7. 5-Way Thru-Hole Nav Switch `SKRHADE010` *small* or `ADA504` *large* (optional mod)
 
 <h3>Setup (easy method)</h3>
 
@@ -100,6 +101,7 @@ GPIO 5       =>    SCL
 
 **Wiring for 5-Way Thru-Hole Nav Switch**
 
+- the smaller button `SKRHADE010` is recomended for space constraints inside a case. 
 ```
 Pico/Pico-W  ||    5-Way Nav Switch
 
