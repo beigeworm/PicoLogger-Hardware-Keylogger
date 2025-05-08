@@ -10,9 +10,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
 - Virtual 'in browser' keyboard (Pico W &amp; Pico 2 W only)
-- Hidden Remote Shell for Windows (Pico W &amp; Pico 2 W only)
+- Hidden Remote Shell for Windows and Linux (Pico W &amp; Pico 2 W only)
 - Remote screenshots for Windows (Pico W &amp; Pico 2 W only)
-- Serial control
 - Webserver to display results, payload management and more. (Pico W &amp; Pico 2 W only)
 - Multi keypress handling for key combinations
 - WiFi ON/OFF serial control (Pico W &amp; Pico 2 W only)
@@ -21,6 +20,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Change wifi settings and others
 - Optional screen + nav-switch and USB-male port mods.
 - USB mouse support (for keyboard/mouse combo functionality)
+- Sudo Password sniffer
 
 <h3>Component List</h3>
 
@@ -242,23 +242,34 @@ ENTER
 With the Pico W &amp; Pico 2 W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
 CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
-**Hidden Remote Shell** (Pico W &amp; Pico 2 W only)
+**Windows Remote Shell** (Pico W &amp; Pico 2 W only)
 
-For Windows systems you can use the `Remote Shell` page. 
-1. Click `Deploy Agent` while connected to a windows host.
+Navigate to the `Remote Shell` page. 
+1. Click `Deploy Windows Agent` while connected to a Windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
+3. Use the command input to send Powershell commands to the host and receive output.
+
+**Linux Remote Shell** (Pico W &amp; Pico 2 W only)
+The Linux agent requires a sudo password - if it has not been automatically sniffed (see sudo pass sniffing below), it can be specified in the password box.
+1. Click `Deploy Agent` while connected to a Linux host.
+2. Wait 10 - 20 seconds for the agent to start on the host (the Bash script for this can be found in `Scripts` folder. [Remote-Shell-Agent.sh](Scripts/Remote-Shell-Agent.sh)
 3. Use the command input to send Powershell commands to the host and receive output.
 
 **Remote Screenshots** (Pico W &amp; Pico 2 W only)
 
 For Windows systems you can use the `Screenshots` page. 
-1. Click `Deploy Agent` while connected to a windows host.
+1. Click `Deploy Agent` while connected to a Windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1)
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
+**Sudo Password Sniffing**
+
+PicoLogger has an automatic password sniffer - it works by listening for any sudo command, and assumes the next line will be the password in between enter keypresses.
+if the password has already been found the sniffer will be deactivated until Picologger has been powered off or restarted.
+
 **OLED User Interface** (Pico W &amp; Pico 2 W only)
 
-Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on device!
+Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on-device using the PicoLogger UI!
 
 ![GIF 04-05-2025 20-11-25](https://github.com/user-attachments/assets/d38e391a-5b01-4350-b8de-eab8391329a0)
 
