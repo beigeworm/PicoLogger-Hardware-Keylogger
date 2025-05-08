@@ -222,6 +222,24 @@ void SSagentMenuHandler_Hidden() {
   drawMenu();
 }
 
+void linuxAgentMenuHandler_Hidden() {
+  linuxAgentHiddenFlag = true;
+  fromMenu = true;
+  showWaitScreen("Deploying Linux Agent..");
+  handleLinuxAgent();
+  delay(1500);
+  drawMenu();
+}
+
+void linuxAgentMenuHandler_Normal() {
+  linuxAgentHiddenFlag = false;
+  fromMenu = true;
+  showWaitScreen("Deploying Linux Agent..");
+  handleLinuxAgent();
+  delay(1500);
+  drawMenu();
+}
+
 void ExitMenuHandler() {
     showWaitScreen("Exiting Agent...");
     fromMenu = true;
@@ -254,6 +272,12 @@ MenuItem shellAgentSubMenu[] = {
   { " Main Menu", backToMainMenu, nullptr, 0 }
 };
 
+MenuItem linuxAgentSubMenu[] = {
+  { " Run", linuxAgentMenuHandler_Normal, nullptr, 0 },
+  { " Run Hidden", linuxAgentMenuHandler_Hidden, nullptr, 0 },
+  { " Main Menu", backToMainMenu, nullptr, 0 }
+};
+
 MenuItem screenshotAgentSubMenu[] = {
   { " Run", SSagentMenuHandler_Normal, nullptr, 0 },
   { " Run Hidden", SSagentMenuHandler_Hidden, nullptr, 0 },
@@ -268,7 +292,8 @@ MenuItem screenshotsMenu[] = {
 };
 
 MenuItem shellMenu[] = {
-  { " Deploy Agent", nullptr, shellAgentSubMenu, sizeof(shellAgentSubMenu) / sizeof(MenuItem) },
+  { " Deploy Windows Agent", nullptr, shellAgentSubMenu, sizeof(shellAgentSubMenu) / sizeof(MenuItem) },
+  { " Deploy Linux Agent", nullptr, linuxAgentSubMenu, sizeof(linuxAgentSubMenu) / sizeof(MenuItem) },
   { " Main Menu", backToMainMenu, nullptr, 0 }
 };
 
@@ -283,7 +308,7 @@ MenuItem systemMenu[] = {
 MenuItem mainMenu[] = {
   { " Keylogger", nullptr, keyloggerMenu, 3 },
   { " Bad-USB", nullptr, nullptr, 0 },
-  { " Remote Shell", nullptr, shellMenu, 2 },
+  { " Remote Shell", nullptr, shellMenu, 3 },
   { " Screenshots", nullptr, screenshotsMenu, 4 },
   { " System", nullptr, systemMenu, 5 }
 };
