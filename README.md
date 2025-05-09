@@ -257,9 +257,9 @@ Navigate to the `Remote Shell` page.
 **Linux Remote Shell** (Pico W &amp; Pico 2 W only)
 
 The Linux agent requires a sudo password - if it has not been automatically sniffed (see sudo pass sniffing below), it can be specified in the password box.
-1. Click `Deploy Agent` while connected to a Linux host.
+1. Click `Deploy Linux Agent` while connected to a Linux host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Bash script for this can be found in `Scripts` folder. [Remote-Shell-Agent.sh](Scripts/Remote-Shell-Agent.sh)
-3. Use the command input to send Powershell commands to the host and receive output.
+3. Use the command input to send Bash commands to the host and receive output.
 
 
 
