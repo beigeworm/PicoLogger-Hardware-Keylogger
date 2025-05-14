@@ -56,7 +56,7 @@
 - Added read and clear keylogger logs menu options
 - Added menu options for Bad-USB, Remote Shell, Remote screenshots and system settings.
 
-**Version 1.8** - File Browser + Web UI update
+**Version 1.9** - File Browser + Web UI update
 - Updated web UI Page selection
 - New webpage : File Explorer - Download, edit, and delete all files on the file system.
 - Added Screen rotation option in system menu for left handed use
