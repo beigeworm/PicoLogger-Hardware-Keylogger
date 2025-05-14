@@ -279,6 +279,13 @@ if the password has already been found the sniffer will be deactivated until Pic
 
 
 
+**File Explorer** (Pico W &amp; Pico 2 W only)
+
+Navigate to the `File Explorer` page. 
+This allows you to download, edit, and delete all files on the file system.
+
+
+
 **OLED User Interface** (Pico W &amp; Pico 2 W only)
 
 Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on-device using the PicoLogger UI!
