@@ -158,7 +158,7 @@ VCC          =>    5v (PIN 4)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
-![picolog](https://github.com/user-attachments/assets/da0c4ca7-47e1-4067-b774-8ba5d73a761d)
+![web-demo](https://github.com/user-attachments/assets/3e92467c-74ce-4b64-8039-835495b062fd)
 
 <h3>Functions</h3>
 
