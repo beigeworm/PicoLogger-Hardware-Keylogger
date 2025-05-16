@@ -3,7 +3,7 @@
 ![pico-cluster](https://github.com/user-attachments/assets/8225fd94-7930-4ced-aa54-1fadeddc440f)
 
 <h3>Project Synopsis</h3>
-A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $8 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
+A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $10 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
 <h3>Features Overview</h3>
 
