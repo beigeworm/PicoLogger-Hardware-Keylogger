@@ -36,8 +36,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 1. Hold down the `BOOTSEL` button on your Pico or Pico W
 1. Connect your Pico or Pico W to your computer via USB
-2. A new drive named something like `RPI-UF2` should appear
-3. Copy the .uf2 file from the `UF2` folder for your specific Pico to the `RPI-UF2` drive
+2. A new drive named something like `RPI-UF2` or `RP2350` should appear
+3. Copy the .uf2 file from the `UF2` folder for your specific Pico to the `RPI-UF2` drive (*use OLED verion if you are using the screen mod*)
 4. The Pico should now restart as a picologger!
 
 <h3>Setup (from source)</h3>
