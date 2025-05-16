@@ -521,6 +521,7 @@ void buildBadUsbMenu() {
 }
 
 void runPayloadHandler() {
+  showWaitScreen("Running Payload...");
   executePayload(currentPayload);
 }
  
