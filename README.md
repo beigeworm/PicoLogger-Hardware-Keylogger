@@ -119,7 +119,7 @@ GPIO 10      =>    PIN 5 (Center)
 
 ```
 
-![Nav-Switches](https://github.com/user-attachments/assets/cf73ba33-4097-4971-af8a-11e592980ea0)
+![Nav-Switches](https://github.com/user-attachments/assets/56ccd2af-e847-447c-af8c-a4757f2670b7)
 
 **Wiring for USB Male Connector**
 - If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
