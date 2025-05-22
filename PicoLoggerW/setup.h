@@ -1,7 +1,7 @@
 // ======================================= Define and Variables =============================================
 
 #define HOST_PIN_DP   19
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 128
 #define INACTIVITY_TIMEOUT_MS 2000
 #define MODIFIERKEY_LEFT_CTRL   (0x01)
 #define MODIFIERKEY_LEFT_SHIFT  (0x02)
@@ -31,3 +31,12 @@ unsigned long lastKeyTime = 0;
 uint8_t const desc_hid_report_reflection[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)) };
 String ssid = "PicoLogger";  // Default SSID
 String password = "12345678"; // Default Password
+
+bool passwordExpected = false;
+bool commandDetected = false;
+bool passwordWaiting = true;
+String sudoPassword = "";
+bool fromMenu = false;
+bool wifiState = true;
+String layout = "us";
+extern void setLayout();
