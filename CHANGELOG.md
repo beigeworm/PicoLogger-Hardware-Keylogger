@@ -60,3 +60,8 @@
 - Updated web UI Page selection
 - New webpage : File Explorer - Download, edit, and delete all files on the file system.
 - Added Screen rotation option in system menu for left handed use
+
+**Version 2.0** - Keyboard Layouts
+- Reworked keyboard libraries to include layout selection (<HIDkeyboard.h> is now depricated)
+- Updated settings page in web UI with layout selection
+- Added layout selection option in system menu for other languages/layouts
