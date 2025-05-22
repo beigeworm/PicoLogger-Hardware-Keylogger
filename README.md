@@ -21,6 +21,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Optional screen + nav-switch and USB-male port mods.
 - USB mouse support (for keyboard/mouse combo functionality)
 - Sudo Password sniffer
+- Keyboard layout switching (Pico W &amp; Pico 2 W only)
 
 <h3>Component List</h3>
 
@@ -277,6 +278,10 @@ For Windows systems you can use the `Screenshots` page.
 PicoLogger has an automatic password sniffer - it works by listening for any sudo command, and assumes the next line will be the password in between enter keypresses.
 if the password has already been found the sniffer will be deactivated until Picologger has been powered off or restarted.
 
+**Keyboard Layout Selection**
+
+On both the web UI and screen UI, you can now select the keyboard layout for using Bad-USB, Remote Shell, and Remote Screenshot functions. 
+This changes the selected layout without needing to reboot PicoLogger!
 
 
 **File Explorer** (Pico W &amp; Pico 2 W only)
