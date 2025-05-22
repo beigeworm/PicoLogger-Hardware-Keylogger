@@ -50,7 +50,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 3. Goto Tools > Board > Boards Manager > then search and install Raspberry Pi Pico/RP2040/RP2350
 4. Goto Sketch > Include Library > Add ZIP Library > then add the files from `librares` folder
    - [libraries/Pico-PIO-USB-0.6.1.zip](libraries/Pico-PIO-USB-0.6.1.zip)
-   - [libraries/HIDKeyboard.zip](libraries/HIDKeyboard.zip) \[Depricated\] (No longer required PicoLogger-v2.0 and above)
+   - [libraries/HIDKeyboard.zip](libraries/HIDKeyboard.zip) \[Deprecated\] (No longer required PicoLogger-v2.0 and above)
 5. (For Screen mod ONLY) - Goto Tools > Manage Libraries > then search for Adafruit_SSD1306 and click install.
 6. Goto Tools > then change all options below
 
