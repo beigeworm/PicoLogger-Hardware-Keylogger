@@ -62,6 +62,6 @@
 - Added Screen rotation option in system menu for left handed use
 
 **Version 2.0** - Keyboard Layouts
-- Reworked keyboard libraries to include layout selection (<HIDkeyboard.h> is now depricated)
+- Reworked keyboard libraries to include layout selection (<HIDkeyboard.h> is now deprecated)
 - Updated settings page in web UI with layout selection
 - Added layout selection option in system menu for other languages/layouts
