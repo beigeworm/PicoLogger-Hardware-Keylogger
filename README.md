@@ -165,14 +165,14 @@ VCC          =>    5v (PIN 4)
 
 <h3>Functions</h3>
 
-**USB Keylogger**
+<h4>**USB Keylogger**</h4>
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
 
 
 
-**Bad-USB Functionality**
+<h4>**Bad-USB Functionality**</h4>
 
 The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
 You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
@@ -204,21 +204,6 @@ void payload() {
 With the Pico W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
 The Pico W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
 
-*example "hello world!" duckyscript*
-```
-REM Example Script
-DELAY 1000
-REM press Windows key + R key
-GUI r
-DELAY 500
-REM Type a string of text
-STRING notepad
-REM press enter
-ENTER
-DELAY 3000
-STRING hello world!
-```
-
 *example rickroll duckyscript*
 ```
 REM rickroll!
@@ -242,22 +227,24 @@ ENTER
 ```
 
 
-
-**Virtual Keyboard** (Pico W &amp; Pico 2 W only)
+<h4>**Virtual Keyboard** (Pico W &amp; Pico 2 W only)</h4>
 
 With the Pico W &amp; Pico 2 W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
 CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
 
 
-**Windows Remote Shell** (Pico W &amp; Pico 2 W only)
+
+<h4>**Windows Remote Shell** (Pico W &amp; Pico 2 W only)</h4>
 
 Navigate to the `Remote Shell` page. (you can use the hidden switch to hide the console once running)
 1. Click `Deploy Windows Agent` while connected to a Windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
 3. Use the command input to send Powershell commands to the host and receive output.
 
-**Linux Remote Shell** (Pico W &amp; Pico 2 W only)
+
+
+<h4>**Linux Remote Shell** (Pico W &amp; Pico 2 W only)</h4>
 
 The Linux agent requires a sudo password - if it has not been automatically sniffed (see sudo pass sniffing below), it can be specified in the password box.
 1. Click `Deploy Linux Agent` while connected to a Linux host.
@@ -266,7 +253,7 @@ The Linux agent requires a sudo password - if it has not been automatically snif
 
 
 
-**Remote Screenshots** (Pico W &amp; Pico 2 W only)
+<h4>**Remote Screenshots** (Pico W &amp; Pico 2 W only)</h4>
 
 For Windows systems you can use the `Screenshots` page. 
 1. Click `Deploy Agent` while connected to a Windows host. (you can use the hidden switch to hide the console once running)
@@ -275,25 +262,28 @@ For Windows systems you can use the `Screenshots` page.
 
 
 
-**Sudo Password Sniffing**
+<h4>**Sudo Password Sniffing**</h4>
 
 PicoLogger has an automatic password sniffer - it works by listening for any sudo command, and assumes the next line will be the password in between enter keypresses.
 if the password has already been found the sniffer will be deactivated until Picologger has been powered off or restarted.
 
 
-**Keyboard Layout Selection**
+
+<h4>**Keyboard Layout Selection**</h4>
 
 On both the web UI and screen UI, you can now select the keyboard layout for using Bad-USB, Remote Shell, and Remote Screenshot functions. 
 This changes the selected layout without needing to reboot PicoLogger!
 
 
-**File Explorer** (Pico W &amp; Pico 2 W only)
+
+<h4>**File Explorer** (Pico W &amp; Pico 2 W only)</h4>
 
 Navigate to the `File Explorer` page. 
 This allows you to download, edit, and delete all files on the file system.
 
 
-**Windows File Exfiltration** (Pico W &amp; Pico 2 W only)
+
+<h4>**Windows File Exfiltration** (Pico W &amp; Pico 2 W only)</h4>
 
 Navigate to the `Exfiltration` page. 
 Here you can deploy a file exfiltration agent to run on windows. this allows you to navigate all drives on the host and save them to Picologger (3MB max for pico 2w) over serial 
@@ -303,7 +293,8 @@ Here you can deploy a file exfiltration agent to run on windows. this allows you
 4. you can also use Picologger as a wireless usb drive this way.
 
 
-**OLED User Interface** (Pico W &amp; Pico 2 W only)
+
+<h4>**OLED User Interface** (Pico W &amp; Pico 2 W only)</h4>
 
 Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on-device using the PicoLogger UI!
 
