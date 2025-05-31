@@ -22,6 +22,7 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - USB mouse support (for keyboard/mouse combo functionality)
 - Sudo Password sniffer
 - Keyboard layout switching (Pico W &amp; Pico 2 W only)
+- Windows File Exfiltration (Pico W &amp; Pico 2 W only)
 
 <h3>Component List</h3>
 
@@ -159,7 +160,8 @@ VCC          =>    5v (PIN 4)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
 
-![web-demo](https://github.com/user-attachments/assets/3e92467c-74ce-4b64-8039-835495b062fd)
+![GIF 31-05-2025 12-21-56](https://github.com/user-attachments/assets/d10f6799-8cba-4b7a-8600-c25a255b5804)
+
 
 <h3>Functions</h3>
 
@@ -250,7 +252,7 @@ CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 
 **Windows Remote Shell** (Pico W &amp; Pico 2 W only)
 
-Navigate to the `Remote Shell` page. 
+Navigate to the `Remote Shell` page. (you can use the hidden switch to hide the console once running)
 1. Click `Deploy Windows Agent` while connected to a Windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
 3. Use the command input to send Powershell commands to the host and receive output.
@@ -267,7 +269,7 @@ The Linux agent requires a sudo password - if it has not been automatically snif
 **Remote Screenshots** (Pico W &amp; Pico 2 W only)
 
 For Windows systems you can use the `Screenshots` page. 
-1. Click `Deploy Agent` while connected to a Windows host.
+1. Click `Deploy Agent` while connected to a Windows host. (you can use the hidden switch to hide the console once running)
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1)
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
@@ -277,6 +279,7 @@ For Windows systems you can use the `Screenshots` page.
 
 PicoLogger has an automatic password sniffer - it works by listening for any sudo command, and assumes the next line will be the password in between enter keypresses.
 if the password has already been found the sniffer will be deactivated until Picologger has been powered off or restarted.
+
 
 **Keyboard Layout Selection**
 
@@ -290,6 +293,15 @@ Navigate to the `File Explorer` page.
 This allows you to download, edit, and delete all files on the file system.
 
 
+**Windows File Exfiltration** (Pico W &amp; Pico 2 W only)
+
+Navigate to the `Exfiltration` page. 
+Here you can deploy a file exfiltration agent to run on windows. this allows you to navigate all drives on the host and save them to Picologger (3MB max for pico 2w) over serial 
+1. Click `Deploy Agent` while connected to a Windows host. (you can use the hidden switch to hide the console once running)
+2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Exfiltration-Agent.ps1](Scripts/Remote-Exfiltration-Agent.ps1)
+3. You should now be able to navigate any specified drive (C:\ by default)
+4. you can also use Picologger as a wireless usb drive this way.
+
 
 **OLED User Interface** (Pico W &amp; Pico 2 W only)
 
@@ -298,9 +310,8 @@ Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger o
 ![GIF 04-05-2025 20-11-25](https://github.com/user-attachments/assets/d38e391a-5b01-4350-b8de-eab8391329a0)
 
 
-
 <h3>TO-DO</h3>
-
+1. Add SD card support for larger exfiltration storage.
 2. Change Hardware ID etc (settings)
 3. Virtual Keyboard special character handling
 4. Virtual Keyboard arrow keys and others
