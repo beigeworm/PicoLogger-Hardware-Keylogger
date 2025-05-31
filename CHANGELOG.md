@@ -65,3 +65,7 @@
 - Reworked keyboard libraries to include layout selection (<HIDkeyboard.h> is now deprecated)
 - Updated settings page in web UI with layout selection
 - Added layout selection option in system menu for other languages/layouts
+
+**Version 2.1** - Exfiltration in Windows
+- New webpage : Exfiltration - Navigate, Download, and read all files on the file system.
+- Added Windows exfiltration over serial powershell script 
