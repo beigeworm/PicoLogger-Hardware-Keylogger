@@ -165,14 +165,14 @@ VCC          =>    5v (PIN 4)
 
 <h3>Functions</h3>
 
-<h4>**USB Keylogger**
+**USB Keylogger**
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
 
 
 
-<h4>**Bad-USB Functionality**
+**Bad-USB Functionality**
 
 The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
 You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
