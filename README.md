@@ -23,6 +23,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Sudo Password sniffer
 - Keyboard layout switching (Pico W &amp; Pico 2 W only)
 - Windows File Exfiltration (Pico W &amp; Pico 2 W only)
+- Password Manager with Autofill functionality
+- Basic secure login system for web UI and Pass Manager menu option. 
 
 <h3>Component List</h3>
 
@@ -155,13 +157,14 @@ VCC          =>    5v (PIN 4)
    - `pobenabled`             : Enable payload on boot (non-wifi version only)
    - `pobdisabled`            : Disable payload on boot (non-wifi version only)
      
-     *(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove ALL files)*
-3. Web Interface (Pico W &amp; Pico 2 W only)
+*(All logs, WiFi state & settings will be saved to survive restarts and reflashing - use `format` command to reset defaults & remove ALL files)*
+
+2. Web Interface (Pico W &amp; Pico 2 W only)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
-   - Goto `http://192.168.42.1` to view logs, manage payloads and change settings etc.
+   - Goto `http://192.168.42.1` to login. (Default USERNAME > `admin` PASSWORD > `password`)
+   - Use menu icon (top left) view logs, manage payloads and change settings etc.
 
-![GIF 31-05-2025 12-21-56](https://github.com/user-attachments/assets/d10f6799-8cba-4b7a-8600-c25a255b5804)
-
+![picogif](https://github.com/user-attachments/assets/fb17ff0c-cc6c-4b77-aa30-9b2c278260e2)
 
 <h3>Functions</h3>
 
@@ -169,7 +172,7 @@ VCC          =>    5v (PIN 4)
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
-
+<br></br>
 
 
 **Bad-USB Functionality**
@@ -225,13 +228,13 @@ DELAY 500
 REM press the enter key
 ENTER
 ```
-
+<br></br>
 
 **Virtual Keyboard** (Pico W &amp; Pico 2 W only)
 
 With the Pico W &amp; Pico 2 W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
 CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
-
+<br></br>
 
 **Windows Remote Shell** (Pico W &amp; Pico 2 W only)
 
@@ -239,7 +242,7 @@ Navigate to the `Remote Shell` page. (you can use the hidden switch to hide the 
 1. Click `Deploy Windows Agent` while connected to a Windows host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
 3. Use the command input to send Powershell commands to the host and receive output.
-
+<br></br>
 
 
 **Linux Remote Shell** (Pico W &amp; Pico 2 W only)
@@ -248,7 +251,7 @@ The Linux agent requires a sudo password - if it has not been automatically snif
 1. Click `Deploy Linux Agent` while connected to a Linux host.
 2. Wait 10 - 20 seconds for the agent to start on the host (the Bash script for this can be found in `Scripts` folder. [Remote-Shell-Agent.sh](Scripts/Remote-Shell-Agent.sh)
 3. Use the command input to send Bash commands to the host and receive output.
-
+<br></br>
 
 
 **Remote Screenshots** (Pico W &amp; Pico 2 W only)
@@ -259,26 +262,25 @@ For Windows systems you can use the `Screenshots` page.
 3. Use the 'Take Screenshot' button to receive screenshots of the host display.
 
 
-
 **Sudo Password Sniffing**
 
 PicoLogger has an automatic password sniffer - it works by listening for any sudo command, and assumes the next line will be the password in between enter keypresses.
 if the password has already been found the sniffer will be deactivated until Picologger has been powered off or restarted.
-
+<br></br>
 
 
 **Keyboard Layout Selection**
 
 On both the web UI and screen UI, you can now select the keyboard layout for using Bad-USB, Remote Shell, and Remote Screenshot functions. 
 This changes the selected layout without needing to reboot PicoLogger!
-
+<br></br>
 
 
 **File Explorer** (Pico W &amp; Pico 2 W only)
 
 Navigate to the `File Explorer` page. 
 This allows you to download, edit, and delete all files on the file system.
-
+<br></br>
 
 **Windows File Exfiltration** (Pico W &amp; Pico 2 W only)
 
@@ -288,7 +290,33 @@ Here you can deploy a file exfiltration agent to run on windows. this allows you
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Exfiltration-Agent.ps1](Scripts/Remote-Exfiltration-Agent.ps1)
 3. You should now be able to navigate any specified drive (C:\ by default)
 4. you can also use Picologger as a wireless usb drive this way.
+<br></br>
 
+**Password Manager**
+
+Store, Edit, Delete and View Username and Password information. Autofill feature types the information on connected host.
+1. Navigate to `Pass Manager` webpage.
+2. Create an entry and click save
+3. You can edit and delete entries.
+4. Autofill will send Username and Password seperated by prompt intervals. 
+
+**Warning** - Credentials Are Stored As Plain Text! Anyone with physical access to the device can recover them easily! Encryption will be in a future update soon :)
+<br></br>
+
+**Web UI Secure Login**
+
+For the Web UI and Pass Manager menu, any user is required to authenticate in the Web UI.
+1. Goto `http://192.168.42.1` to login.
+2. Enter your credentials (Default USERNAME > `admin` PASSWORD > `password`)
+3. Once authenticated you can navigate the Web UI and access the Pass Manager menu. 
+
+<br></br>
+
+**Live Capture**
+
+Can be found in `System` menu. This is a feature for testing and debugging. It displays live information of keys pressed, webserver activity etc..
+
+<br></br>
 
 **OLED User Interface** (Pico W &amp; Pico 2 W only)
 
