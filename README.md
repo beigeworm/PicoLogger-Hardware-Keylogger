@@ -326,7 +326,9 @@ Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger o
 
 
 <h3>TO-DO</h3>
-1. Add SD card support for larger exfiltration storage.
-2. Change Hardware ID etc (settings)
-3. Virtual Keyboard special character handling
-4. Virtual Keyboard arrow keys and others
+
+1. Add SD card support for larger exfiltration storage
+2. Add Encryption
+3. Change Hardware ID etc (settings)
+4. Virtual Keyboard special character handling
+5. Virtual Keyboard arrow keys and others
