@@ -69,3 +69,10 @@
 **Version 2.1** - Exfiltration in Windows
 - New webpage : Exfiltration - Navigate, Download, and read all files on the file system.
 - Added Windows exfiltration over serial powershell script 
+
+**Version 2.2** - Passwords and Security
+- New webpage : Pass Manager - Store, Edit, Delete and Autofill Username and Password info.
+- Added `Pass Manager` Menu option - View, Delete and Autofill Username and Password info. (Web UI authentication needed)
+- Added `Exfitration` Menu option - Run Filesystem agent and Exit agent options
+- New User login system to add some web UI security.
+- Added Change Web UI Username and password in /settings page. 
