@@ -265,6 +265,18 @@ Store, Edit, Delete and View Username and Password information. Autofill feature
 **Warning** - Credentials Are Stored As Plain Text! Anyone with physical access to the device can recover them easily! Encryption will be in a future update soon :)
 <br></br>
 
+**Web UI Secure Login**
+
+For the Web UI and Pass Manager menu on screen, any user is required to authenticate in the Web UI.
+1. Goto `http://192.168.42.1` to login.
+2. Enter your credentials (Default USERNAME > `admin` PASSWORD > `password`)
+3. Once authenticated you can navigate the Web UI and access the Pass Manager menu. 
+
+**Live Capture**
+
+Can be found in `System` menu. This is a feature for testing and debugging. It displays live information of keys pressed, webserver activity etc..
+
+<br></br>
 
 **Bad-USB Functionality**
 
@@ -319,21 +331,6 @@ DELAY 500
 REM press the enter key
 ENTER
 ```
-<br></br>
-
-**Web UI Secure Login**
-
-For the Web UI and Pass Manager menu on screen, any user is required to authenticate in the Web UI.
-1. Goto `http://192.168.42.1` to login.
-2. Enter your credentials (Default USERNAME > `admin` PASSWORD > `password`)
-3. Once authenticated you can navigate the Web UI and access the Pass Manager menu. 
-
-<br></br>
-
-**Live Capture**
-
-Can be found in `System` menu. This is a feature for testing and debugging. It displays live information of keys pressed, webserver activity etc..
-
 <br></br>
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
