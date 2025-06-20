@@ -175,62 +175,6 @@ Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
 <br></br>
 
-
-**Bad-USB Functionality**
-
-The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
-You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
-An example payload is provided to show some basic functionality using this (non-W) version
-
-```
-void payload() {
-  // Example Payload - modify this as needed.
-  delay(2000);
-  // key press
-  Keyboard.press(KEY_LEFT_GUI);
-  Keyboard.press('r');
-  delay(100);
-  // keys release (for multi keypresses)
-  Keyboard.releaseAll();
-  delay(1500);
-  // print string
-  Keyboard.print("notepad");
-  delay(1000);
-  Keyboard.press(KEY_RETURN);
-  delay(100);
-  Keyboard.releaseAll();
-  delay(3000);
-  // print string + return
-  Keyboard.println("Hello World!");
-}
-```
-
-With the Pico W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
-The Pico W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
-
-*example rickroll duckyscript*
-```
-REM rickroll!
-
-REM delay 750ms before running to make sure everything is connected
-DELAY 750
-
-REM GUI r holds down the "windows" key and R at the same time, opening the run box
-GUI r
-
-REM Delay for 500ms (half a second)
-DELAY 500
-
-REM type in the rickroll youtube link
-STRING https://www.youtube.com/watch?v=dQw4w9WgXcQ
-
-DELAY 500
-
-REM press the enter key
-ENTER
-```
-<br></br>
-
 **Virtual Keyboard** (Pico W &amp; Pico 2 W only)
 
 With the Pico W &amp; Pico 2 W you can use the Virtual Keyboard webpage to send keystrokes to the host! 
@@ -304,6 +248,62 @@ Store, Edit, Delete and View Username and Password information. Autofill feature
 4. Autofill will send Username and Password seperated by prompt intervals. 
 
 **Warning** - Credentials Are Stored As Plain Text! Anyone with physical access to the device can recover them easily! Encryption will be in a future update soon :)
+<br></br>
+
+
+**Bad-USB Functionality**
+
+The Pi Pico (non-W) can be setup to run a pre-coded payload on boot using the command `pobenabled`. 
+You will need to flash the pico after editing the `payload()` function in the PicoLogger.ino file.
+An example payload is provided to show some basic functionality using this (non-W) version
+
+```
+void payload() {
+  // Example Payload - modify this as needed.
+  delay(2000);
+  // key press
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.press('r');
+  delay(100);
+  // keys release (for multi keypresses)
+  Keyboard.releaseAll();
+  delay(1500);
+  // print string
+  Keyboard.print("notepad");
+  delay(1000);
+  Keyboard.press(KEY_RETURN);
+  delay(100);
+  Keyboard.releaseAll();
+  delay(3000);
+  // print string + return
+  Keyboard.println("Hello World!");
+}
+```
+
+With the Pico W you can use the 'Payload Manager' webpage to create, run, edit and delete payloads as well as enable any payload on boot.
+The Pico W version has it's own handler so you can use basic Duckyscript commands to create Bad-USB scripts in the editor.
+
+*example rickroll duckyscript*
+```
+REM rickroll!
+
+REM delay 750ms before running to make sure everything is connected
+DELAY 750
+
+REM GUI r holds down the "windows" key and R at the same time, opening the run box
+GUI r
+
+REM Delay for 500ms (half a second)
+DELAY 500
+
+REM type in the rickroll youtube link
+STRING https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+DELAY 500
+
+REM press the enter key
+ENTER
+```
 <br></br>
 
 **Web UI Secure Login**
