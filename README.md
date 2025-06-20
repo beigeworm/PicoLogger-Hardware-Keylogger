@@ -24,7 +24,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Keyboard layout switching (Pico W &amp; Pico 2 W only)
 - Windows File Exfiltration (Pico W &amp; Pico 2 W only)
 - Password Manager with Autofill functionality
-- Basic secure login system for web UI and Pass Manager menu option. 
+- Basic secure login system for web UI and Pass Manager menu option.
+- Mobile-Friendly Web UI
 
 <h3>Component List</h3>
 
