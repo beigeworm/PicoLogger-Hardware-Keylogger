@@ -260,7 +260,9 @@ The Linux agent requires a sudo password - if it has not been automatically snif
 For Windows systems you can use the `Screenshots` page. 
 1. Click `Deploy Agent` while connected to a Windows host. (you can use the hidden switch to hide the console once running)
 2. Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Screenshot-Agent.ps1](Scripts/Remote-Screenshot-Agent.ps1)
-3. Use the 'Take Screenshot' button to receive screenshots of the host display.
+3. Use the `Take Screenshot` button to receive screenshots of the host display.
+
+*This function can be tempremental.. it may take 2-3 `Take Screenshot` button presses*
 
 
 **Sudo Password Sniffing**
