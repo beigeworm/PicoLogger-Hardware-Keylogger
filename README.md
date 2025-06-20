@@ -1,11 +1,12 @@
-<h2 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h2>
+<h1 align="center"> PicoLogger Hardware USB Keylogger and Bad-USB</h1>
 
 ![pico-cluster](https://github.com/user-attachments/assets/8225fd94-7930-4ced-aa54-1fadeddc440f)
 
-<h3>Project Synopsis</h3>
+<h2 align=center>Overview</h2>
+
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $10 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
 
-<h3>Features Overview</h3>
+<h3>Features</h3>
 
 - Flash, plug and play
 - Bad-USB Functionality using Duckyscript
@@ -27,15 +28,10 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Basic secure login system for web UI and Pass Manager menu option.
 - Mobile-Friendly Web UI
 
-<h3>Component List</h3>
 
-1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
-2. USB-A female port
-3. Thin gauge wire (22awg solid copper core wire is good)
-4. A glue gun to secure components (for 3D printed case)
-5. USB-A Male port (optional mod)
-6. SD1306 OLED screen 128x32px (optional mod)
-7. 5-Way Thru-Hole Nav Switch `SKRHADE010` *small* or `ADA504` *large* (optional mod)
+<h2 align=center>Installation</h2>
+
+**IMPORTANT : Use the `PicoLoggerW` files if you are NOT using the screen and navigation switch**  
 
 <h3>Setup (easy method)</h3>
 
@@ -67,6 +63,19 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 7. Once you have the correct options selected, upload the sketch to your Pico.
 
+
+<h2 align=center>Hardware Setup</h2>
+
+<h3>Component List</h3>
+
+1. A Raspberry Pi Pico, Pico W, Pi Pico 2, or Pi Pico 2 W
+2. USB-A female port
+3. Thin gauge wire (22awg solid copper core wire is good)
+4. A glue gun to secure components (for 3D printed case)
+5. USB-A Male port (optional mod)
+6. SD1306 OLED screen 128x32px (optional mod)
+7. 5-Way Thru-Hole Nav Switch `SKRHADE010` *small* or `ADA504` *large* (optional mod)
+
 <h3>Wiring Diagrams</h3>
 
 Although PicoLogger works fine without any of these additions, a USB-A female port is needed for keylogging functionality.
@@ -89,6 +98,29 @@ VCC          =>    5v (PIN 4)
 ```
 
 <h3>Optional Mods</h3>
+
+**Wiring for USB Male Connector**
+- If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
+
+```
+Pico/Pico-W  ||    USB-A Port
+
+TP1          =>    GND (PIN 1)
+
+TP3          =>    D+ (PIN 2)
+
+TP2          =>    D- (PIN 3)
+
+VCC          =>    5v (PIN 4)
+```
+
+![Wiring](https://github.com/user-attachments/assets/6a63e2d2-6372-4f2c-b7dc-b3756116d704)
+
+**OLED User Interface** (Pico W &amp; Pico 2 W only)
+
+Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on-device using the PicoLogger UI!
+
+![GIF 04-05-2025 20-11-25](https://github.com/user-attachments/assets/d38e391a-5b01-4350-b8de-eab8391329a0)
 
 **Wiring for SD1306 OLED screen**
 - If you are using PicoLogger-OLED, you will need to wire a screen and nav switch (wiring and pinout images are in [/Images](Images))
@@ -126,24 +158,7 @@ GPIO 10      =>    PIN 5 (Center)
 
 ![Nav-Switches](https://github.com/user-attachments/assets/56ccd2af-e847-447c-af8c-a4757f2670b7)
 
-**Wiring for USB Male Connector**
-- If you don't want to use the Pi's built in Micro-USB, you can use the test pads on the back of the Pico to attach a USB male connector.
-
-```
-Pico/Pico-W  ||    USB-A Port
-
-TP1          =>    GND (PIN 1)
-
-TP3          =>    D+ (PIN 2)
-
-TP2          =>    D- (PIN 3)
-
-VCC          =>    5v (PIN 4)
-```
-
-![Wiring](https://github.com/user-attachments/assets/6a63e2d2-6372-4f2c-b7dc-b3756116d704)
-
-<h3>Usage</h3>
+<h2 align=center>How To Start</h2>
 
 1. Serial Control
    Using a serial monitor like Putty or alike, 
@@ -167,7 +182,7 @@ VCC          =>    5v (PIN 4)
 
 ![picogif](https://github.com/user-attachments/assets/fb17ff0c-cc6c-4b77-aa30-9b2c278260e2)
 
-<h3>Functions</h3>
+<h2 align=center>Functions Overview</h2>
 
 **USB Keylogger**
 
@@ -321,11 +336,7 @@ Can be found in `System` menu. This is a feature for testing and debugging. It d
 
 <br></br>
 
-**OLED User Interface** (Pico W &amp; Pico 2 W only)
-
-Using an SD1306 128x32 screen and 5-way nav-switch, you can control PicoLogger on-device using the PicoLogger UI!
-
-![GIF 04-05-2025 20-11-25](https://github.com/user-attachments/assets/d38e391a-5b01-4350-b8de-eab8391329a0)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 <h3>TO-DO</h3>
