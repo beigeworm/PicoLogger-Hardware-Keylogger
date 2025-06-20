@@ -75,4 +75,5 @@
 - Added `Pass Manager` Menu option - View, Delete and Autofill Username and Password info. (Web UI authentication needed)
 - Added `Exfitration` Menu option - Run Filesystem agent and Exit agent options
 - New User login system to add some web UI security.
-- Added Change Web UI Username and password in /settings page. 
+- Added Change Web UI Username and password in /settings page.
+- Smartphone-Friendly Web UI for ease of use on smaller screens. 
