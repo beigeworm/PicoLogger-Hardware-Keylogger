@@ -308,7 +308,7 @@ Store, Edit, Delete and View Username and Password information. Autofill feature
 
 **Web UI Secure Login**
 
-For the Web UI and Pass Manager menu, any user is required to authenticate in the Web UI.
+For the Web UI and Pass Manager menu on screen, any user is required to authenticate in the Web UI.
 1. Goto `http://192.168.42.1` to login.
 2. Enter your credentials (Default USERNAME > `admin` PASSWORD > `password`)
 3. Once authenticated you can navigate the Web UI and access the Pass Manager menu. 
