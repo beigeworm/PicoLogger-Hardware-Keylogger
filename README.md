@@ -180,7 +180,8 @@ GPIO 10      =>    PIN 5 (Center)
    - Goto `http://192.168.42.1` to login. (Default USERNAME > `admin` PASSWORD > `password`)
    - Use menu icon (top left) view logs, manage payloads and change settings etc.
 
-![picogif](https://github.com/user-attachments/assets/fb17ff0c-cc6c-4b77-aa30-9b2c278260e2)
+![pico](https://github.com/user-attachments/assets/f5bbff66-1837-40b2-b1af-69c22de32ea6)
+
 
 <h2 align=center>Functions Overview</h2>
 
