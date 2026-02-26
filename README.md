@@ -180,12 +180,13 @@ GPIO 10      =>    PIN 5 (Center)
    - Goto `http://192.168.42.1` to login. (Default USERNAME > `admin` PASSWORD > `password`)
    - Use menu icon (top left) view logs, manage payloads and change settings etc.
 
-![pico](https://github.com/user-attachments/assets/f5bbff66-1837-40b2-b1af-69c22de32ea6)
+![pico](https://github.com/user-attachments/assets/7990c660-98e4-4eff-9abf-826810cf7365)
 
 
 <h2 align=center>Functions Overview</h2>
 
 **USB Keylogger**
+
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
