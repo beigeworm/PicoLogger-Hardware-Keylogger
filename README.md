@@ -27,6 +27,8 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Basic secure login system for web UI and Pass Manager menu option.
 - Mobile-Friendly Web UI
 
+![pico (3)](https://github.com/user-attachments/assets/af82140a-4125-4d9e-adce-232e34cabe11)
+
 
 <h2 align=center>Installation</h2>
 
@@ -178,9 +180,7 @@ GPIO 10      =>    PIN 5 (Center)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to login. (Default USERNAME > `admin` PASSWORD > `password`)
    - Use menu icon (top left) view logs, manage payloads and change settings etc.
-  
- 
-![pico (3)](https://github.com/user-attachments/assets/af82140a-4125-4d9e-adce-232e34cabe11)
+
 
 
 
