@@ -179,8 +179,10 @@ GPIO 10      =>    PIN 5 (Center)
    - Connect to the WiFi network - (Default SSID > `PicoLogger` PASSWORD > `12345678`)
    - Goto `http://192.168.42.1` to login. (Default USERNAME > `admin` PASSWORD > `password`)
    - Use menu icon (top left) view logs, manage payloads and change settings etc.
+  
+ 
+![pico (3)](https://github.com/user-attachments/assets/af82140a-4125-4d9e-adce-232e34cabe11)
 
-![pico](https://github.com/user-attachments/assets/7990c660-98e4-4eff-9abf-826810cf7365)
 
 
 <h2 align=center>Functions Overview</h2>
