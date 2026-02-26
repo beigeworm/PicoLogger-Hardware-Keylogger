@@ -24,7 +24,6 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 - Sudo Password sniffer
 - Keyboard layout switching (Pico W &amp; Pico 2 W only)
 - Windows File Exfiltration (Pico W &amp; Pico 2 W only)
-- Password Manager with Autofill functionality
 - Basic secure login system for web UI and Pass Manager menu option.
 - Mobile-Friendly Web UI
 
@@ -258,15 +257,6 @@ Here you can deploy a file exfiltration agent to run on windows. this allows you
 4. you can also use Picologger as a wireless usb drive this way.
 <br></br>
 
-**Password Manager**
-
-Store, Edit, Delete and View Username and Password information. Autofill feature types the information on connected host.
-1. Navigate to `Pass Manager` webpage.
-2. Create an entry and click save
-3. You can edit and delete entries.
-4. Autofill will send Username and Password seperated by prompt intervals. 
-
-**Warning** - Credentials Are Stored As Plain Text! Anyone with physical access to the device can recover them easily! Encryption will be in a future update soon :)
 <br></br>
 
 **Web UI Secure Login**
