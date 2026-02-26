@@ -80,3 +80,5 @@
 - New web UI
 - Smartphone-Friendly Web UI for ease of use on smaller screens.
 - Keylogger support for BACK , ESC , TAB, UP , DOWN , LEFT , RIGHT
+- Removed Password Manager (Moved to a new project!)
+
