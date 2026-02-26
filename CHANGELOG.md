@@ -72,8 +72,11 @@
 
 **Version 2.2** - Passwords and Security
 - New webpage : Pass Manager - Store, Edit, Delete and Autofill Username and Password info.
-- Added `Pass Manager` Menu option - View, Delete and Autofill Username and Password info. (Web UI authentication needed)
 - Added `Exfitration` Menu option - Run Filesystem agent and Exit agent options
 - New User login system to add some web UI security.
 - Added Change Web UI Username and password in /settings page.
-- Smartphone-Friendly Web UI for ease of use on smaller screens. 
+
+**Version 3.0** - New Web UI & Function Key Logging
+- New web UI
+- Smartphone-Friendly Web UI for ease of use on smaller screens.
+- Keylogger support for BACK , ESC , TAB, UP , DOWN , LEFT , RIGHT
