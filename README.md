@@ -32,6 +32,11 @@ A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shel
 
 <h2 align=center>Installation</h2>
 
+**INFO** You can build the WiFi enabled version in 3 ways.
+1. A Pi Pico by itself.
+2. A Pi Pico with female usb and/or male usb.
+3. A Pi Pico with usb's AND OLED screen with switch.
+
 **IMPORTANT : Use the `PicoLoggerW` files if you are NOT using the screen and navigation switch**  
 
 <h3>Setup (easy method)</h3>
