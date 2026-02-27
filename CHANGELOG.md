@@ -5,8 +5,9 @@
 **Version 3.0** - New Web UI & Function Key Logging
 - New web UI
 - Smartphone-Friendly Web UI for ease of use on smaller screens.
-- Keylogger support for BACK , ESC , TAB, UP , DOWN , LEFT , RIGHT
+- Keylogging recording for function keys such as BACK , ESC , TAB, UP , DOWN , LEFT , RIGHT
 - Removed Password Manager (Moved to a new project!)
+- webserver code optimization 
 
 **Version 2.2** - Passwords and Security
 - New webpage : Pass Manager - Store, Edit, Delete and Autofill Username and Password info.
@@ -81,4 +82,5 @@
 - Added logging special characters
 - Added Multi keypress handling for key combinations
 - Added serial commands for Read, Clear logs and Format FS
+
 
