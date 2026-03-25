@@ -92,6 +92,8 @@ Navigate to the `File Explorer` page.
 This allows you to download, edit, and delete all files on the Picologger file system.
 Upload files to the current directory using the upload button
 
+*Careful! the PicoW has 1MB disk space and Pico2W has 3MB.*
+
 <br></br>
 
 ## Settings Page
