@@ -85,10 +85,12 @@ Here you can deploy a file exfiltration agent to run on windows. this allows you
 
 ## File Explorer
 
-<img width="1599" height="892" alt="littlefs" src="https://github.com/user-attachments/assets/0b3f6646-3017-4e21-9ed5-83a85b649a0b" />
+<img width="1588" height="817" alt="fileex" src="https://github.com/user-attachments/assets/1accc11f-6b3c-4eab-8e6c-66c645499396" />
+
 
 Navigate to the `File Explorer` page. 
 This allows you to download, edit, and delete all files on the Picologger file system.
+Upload files to the current directory using the upload button
 
 <br></br>
 
