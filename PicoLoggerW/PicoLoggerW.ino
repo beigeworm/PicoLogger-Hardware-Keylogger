@@ -254,7 +254,15 @@ void setup() {
     server.on("/deletepass", HTTP_GET, handleDeletePass);
     server.on("/autofill-username", HTTP_POST, handleAutofillUsername);
     server.on("/autofill-password", HTTP_POST, handleAutofillPassword); 
-
+    server.on("/upload", HTTP_POST, []() {
+        String path = "/";
+        if (server.hasArg("path")) {
+            path = server.arg("path");
+        }
+        server.sendHeader("Location", "/dashboard?path=" + path + "#section7");
+        server.send(303);
+    }, handleFileUpload);
+  
     server.begin();
     Serial.println("HTTP Server Started.");
 }
