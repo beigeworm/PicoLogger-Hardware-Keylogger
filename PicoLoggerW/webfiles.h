@@ -339,7 +339,7 @@ void handleDashboard() {
 
       <div class="sidebar-footer">
         <div>
-          <div class="mono">v3.0</div>
+          <div class="mono">v3.1</div>
           <div style="margin-top:4px;">Made by @beigeworm</div>
         </div>
 
