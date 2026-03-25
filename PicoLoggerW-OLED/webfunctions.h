@@ -12,6 +12,56 @@ void routeWithLog(const char* path, HTTPMethod method, std::function<void()> han
 
 // =================================================== WiFi Config Functions ========================================================
 
+void handleFileUpload() {
+    HTTPUpload& upload = server.upload();
+
+    static File uploadFile;
+    static String uploadPath;
+    static String fullPath;
+
+    if (upload.status == UPLOAD_FILE_START) {
+        uploadPath = "/";
+        if (server.hasArg("path")) {
+            uploadPath = server.arg("path");
+        }
+        if (uploadPath.length() == 0) uploadPath = "/";
+        if (!uploadPath.startsWith("/")) uploadPath = "/" + uploadPath;
+        if (uploadPath.length() > 1 && uploadPath.endsWith("/")) {
+            uploadPath.remove(uploadPath.length() - 1);
+        }
+        String filename = upload.filename;
+        filename.replace("\\", "/");
+        filename.replace("..", "");
+        int slash = filename.lastIndexOf('/');
+        if (slash >= 0) {
+            filename = filename.substring(slash + 1);
+        }
+        fullPath = uploadPath + (uploadPath == "/" ? "" : "/") + filename;
+        Serial.println("Upload Start: " + fullPath);
+        uploadFile = LittleFS.open(fullPath, "w");
+        if (!uploadFile) {
+            Serial.println("Failed to open file for writing");
+        }
+    }
+    else if (upload.status == UPLOAD_FILE_WRITE) {
+        if (uploadFile) {
+            uploadFile.write(upload.buf, upload.currentSize);
+        }
+    }
+    else if (upload.status == UPLOAD_FILE_END) {
+        if (uploadFile) {
+            uploadFile.close();
+        }
+        Serial.println("Upload Complete: " + fullPath);
+    }
+    else if (upload.status == UPLOAD_FILE_ABORTED) {
+        if (uploadFile) {
+            uploadFile.close();
+        }
+        Serial.println("Upload Aborted");
+    }
+}
+
 void saveWiFiSettings(String ssid, String password, bool wifiState, String layout) {
     File file = LittleFS.open("/config.txt", "w");
     if (file) {
