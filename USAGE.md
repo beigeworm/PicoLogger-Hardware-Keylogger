@@ -7,7 +7,8 @@
 
 <br></br>
 
-**USB Keylogger**
+## USB Keylogger
+
 <img width="1598" height="893" alt="logs" src="https://github.com/user-attachments/assets/11501cfd-5fc7-4f13-9726-61608f7b43e5" />
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
@@ -20,7 +21,7 @@ All keystrokes from that keyboard will be shown in the output window.
 
 <br></br>
 
-**Bad-USB Payload Manager**
+## Bad-USB Payload Manager
 
 <img width="1598" height="898" alt="payloads" src="https://github.com/user-attachments/assets/143949f7-f44a-4540-933a-e36c7091a8d5" />
 
@@ -29,7 +30,7 @@ Picologger has it's own handler so you can use basic Duckyscript commands to cre
 
 <br></br>
 
-**Virtual Keyboard**
+## Virtual Keyboard
 
 <img width="1596" height="898" alt="kb" src="https://github.com/user-attachments/assets/36f2affa-6bce-4b9f-9789-fdc146cbc19b" />
 
@@ -39,7 +40,7 @@ CTRL, ALT, GUI and SHIFT can be toggled for key combinations.
 <br></br>
 
 
-**Remote Shell**
+## Remote Shell
 
 <img width="1597" height="893" alt="shell" src="https://github.com/user-attachments/assets/d4be50a8-2da8-4119-9f4e-e3d8acdc7255" />
 
@@ -47,7 +48,6 @@ Navigate to the `Remote Shell` page. (you can use the hidden switch to hide the 
 - Click `Deploy Windows Agent` while connected to a Windows host.
 - Wait 10 - 20 seconds for the agent to start on the host (the Powershell script for this can be found in `Scripts` folder. [Remote-Shell-Agent.ps1](Scripts/Remote-Shell-Agent.ps1)
 - Use the command input to send Powershell commands to the host and receive output.
-
 
 The Linux agent requires a sudo password - if it has not been automatically sniffed (see sudo pass sniffing below), it can be specified in the password box.
 - Click `Deploy Linux Agent` while connected to a Linux host.
@@ -58,7 +58,7 @@ if the password has already been found the sniffer will be deactivated until Pic
 
 <br></br>
 
-**Remote Screenshots**
+## Remote Screenshots
 
 <img width="1592" height="896" alt="Screenshots" src="https://github.com/user-attachments/assets/63609969-4b9a-4b71-80f7-c88713855d88" />
 
@@ -71,7 +71,7 @@ For Windows systems you can use the `Screenshots` page.
 <br></br>
 
 
-**Windows File Exfiltration**
+## Windows File Exfiltration
 
 <img width="1594" height="888" alt="exfil" src="https://github.com/user-attachments/assets/02f16fe7-73c2-498a-8241-f8233d5920f1" />
 
@@ -83,7 +83,7 @@ Here you can deploy a file exfiltration agent to run on windows. this allows you
 
 <br></br>
 
-**File Explorer** (Pico W &amp; Pico 2 W only)
+## File Explorer
 
 <img width="1599" height="892" alt="littlefs" src="https://github.com/user-attachments/assets/0b3f6646-3017-4e21-9ed5-83a85b649a0b" />
 
@@ -92,7 +92,7 @@ This allows you to download, edit, and delete all files on the Picologger file s
 
 <br></br>
 
-**Settings Page**
+## Settings Page
 
 <img width="1594" height="897" alt="settings" src="https://github.com/user-attachments/assets/555d78ac-3c6b-4798-8a9c-2239d8a326b0" />
 
