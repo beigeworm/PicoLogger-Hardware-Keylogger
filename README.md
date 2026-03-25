@@ -191,8 +191,10 @@ GPIO 10      =>    PIN 5 (Center)
 
 <h2 align=center>Functions Overview</h2>
 
-**USB Keylogger**
+**Check the full usage guide here** - [Usage Guide](USAGE.md)
 
+
+**USB Keylogger**
 
 Place in between a keyboard and host system (PicoLogger is powered by the host).
 All keystrokes from that keyboard will be collected in a log file that can be read over serial (all Pico's), or over the webserver (Pico W &amp; Pico 2 W only).
