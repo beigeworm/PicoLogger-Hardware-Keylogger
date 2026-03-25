@@ -82,7 +82,14 @@ void setup() {
     server.on("/list_files", HTTP_GET, handleListFiles);
     server.on("/download_file", HTTP_GET, handleDownloadFile);
     server.on("/exit_agent", HTTP_POST, handleExitAgent);
-
+    server.on("/upload", HTTP_POST, []() {
+        String path = "/";
+        if (server.hasArg("path")) {
+            path = server.arg("path");
+        }
+        server.sendHeader("Location", "/dashboard?path=" + path + "#section7");
+        server.send(303);
+    }, handleFileUpload);
     
     server.begin();
     Serial.println("HTTP Server Started.");
