@@ -605,14 +605,23 @@ void handleDashboard() {
 <!-- --------------------------- LITTLEFS FILES ---------------------------- -->
 
       
-      <section class="tab" id="tab-section7">
-        <div class="card">
-        <div class="container">
-            <div class="breadcrumb">Current Directory: )rawliteral" + generateBreadcrumb(path) + R"rawliteral(</div>
-            <table>
-                <tr><th>Name</th><th>Type</th><th>Size</th><th>Actions</th></tr>
-    )rawliteral";
-
+      
+<section class="tab" id="tab-section7">
+  <div class="card">
+    <div class="container">
+      <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+        <div class="breadcrumb">
+          Current Directory: )rawliteral" + generateBreadcrumb(path) + R"rawliteral(
+        </div>
+        <form method="POST" action="/upload?path=)rawliteral" + path + R"rawliteral(" enctype="multipart/form-data" style="display:flex; gap:10px; align-items:center;">
+          <input class="shellexp" type="file" name="upload">
+          <button class="shellexp" type="submit">Upload</button>
+        </form>
+      </div>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Size</th><th>Actions</th></tr>
+)rawliteral";
+  
     if (path != "/") {
         String parentPath = path.substring(0, path.lastIndexOf('/'));
         if (parentPath == "") parentPath = "/";
