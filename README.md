@@ -2,6 +2,25 @@
 
 ![pico-cluster](https://github.com/user-attachments/assets/8225fd94-7930-4ced-aa54-1fadeddc440f)
 
+-------------------------------------------------------------------
+
+## ⚠️ Legal & Ethical Notice
+
+This repository is intended solely for **education, research, laboratory environments, and authorized security assessments**.
+
+The tools and techniques demonstrated here must only be used:
+- In your own lab or testing environment.
+- Against systems you own.
+- Against systems for which you have obtained explicit permission from the owner.
+
+**Unauthorized use of these materials against third-party systems is illegal and unethical.**
+
+The author does not encourage, condone, or authorize the use of these materials for unlawful purposes. All responsibility for the use or misuse of this repository rests solely with the user.
+
+Use responsibly, follow responsible disclosure practices where applicable, and comply with all local, national, and international laws
+
+-------------------------------------------------------------------
+
 <h2 align=center>Overview</h2>
 
 A hardware USB keylogger, Bad-USB device, Virtual Keyboard, and Remote WiFi Shell for $10 using the Pi Pico, Pi Pico W, Pi Pico 2, &amp; Pi Pico 2 W!
